@@ -373,8 +373,6 @@ $(document).ready(function() {
             if (player.level === player.maxlevel) {
                 player.maxlevel += 1;
             }
-            document.getElementById("pause").click();
-            setTimeout(function(){document.getElementById("pause").click();}, 500);
             if (document.getElementById("autoprogress").checked === true) {
                 gotoLevel(player.maxlevel);
             } else {
