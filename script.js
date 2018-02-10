@@ -4,6 +4,7 @@ $(document).ready(function() {
         format: 'scientific',
         sigfigs: places,
     });
+    var costscaling = 1.176;
     var autohealbought = 0;
     var player = {
         gold: 0,
@@ -12,7 +13,10 @@ $(document).ready(function() {
         maxlevel: 1,
         attackspeed: 1,
         attackreq: 0,
+        bulkamount: 10,
         maxbulkamount: 0,
+        kills: 0,
+        deaths: 0,
     };
     player.maxbulkamount = player.bulkamount;
     var healer = {
@@ -222,8 +226,11 @@ $(document).ready(function() {
         $("#stats44").text("Gold: " + f.format(enemy.gold));
         $("#stats51").text("Attack speed: " + Math.floor(player.attackspeed * 100) / 100 + "/s");
         $("#stats52").text("Autocast speed: " + f.format(1 * healer.autohealspeed) + " per second");
-        $("#stats97").text("Total Unlimited Upgrades purchased: " + (upgrades.healup.bought + upgrades.healcost.bought + upgrades.maxmana.bought + upgrades.maxhp.bought + upgrades.armor.bought + upgrades.blockfactor.bought + upgrades.dmg.bought + upgrades.critfactor.bought));
-        $("#stats98").text("Total gold earned: " + f.format(player.totalgold));
+        $("#stats95").text("Enemy Kills: " + player.kills);
+        $("#stats96").text("Hero Deaths: " + player.deaths);
+        $("#stats97").text("Game version: 7");
+        $("#stats98").text("Total Upgrades purchased: " + (upgrades.healup.bought + upgrades.healcost.bought + upgrades.maxmana.bought + upgrades.maxhp.bought + upgrades.armor.bought + upgrades.blockfactor.bought + upgrades.dmg.bought + upgrades.critfactor.bought));
+        $("#stats99").text("Total gold earned: " + f.format(player.totalgold));
     }
 
     function updateMaxLevels() {
@@ -239,7 +246,7 @@ $(document).ready(function() {
             upgrades.attackspeed.bought = 20;
             $("#attackspeed").css("display", "none");
         }
-        if (healer.autohealspeed > 24.99) {
+          if (healer.autohealspeed > 4.99) {
             upgrades.autohealspeed.bought = 20;
             $("#autohealspeed").css("display", "none");
         }
@@ -345,9 +352,9 @@ $(document).ready(function() {
         }
     }
     updateCosts();
-
     function checkDeath() {
         if (hero.hp <= 0) {
+          player.deaths+=1;
             if (document.getElementById("autoprogress").checked === true) {
                 if (player.level > 1) {
                     gotoLevel(player.level - 1);
@@ -357,6 +364,7 @@ $(document).ready(function() {
             gotoLevel(player.level);
         }
         if (enemy.hp <= 0) {
+            player.kills+=1;
             player.gold += enemy.gold;
             player.totalgold += enemy.gold;
             if (player.level === player.maxlevel) {
@@ -610,7 +618,7 @@ $(document).ready(function() {
       }
     });
     document.getElementById('loadbutton').click();
-    var saveTimer = setInterval(function(){document.getElementById('savebutton').click();}, 5000);
+    var saveTimer = setInterval(function(){document.getElementById('savebutton').click();}, 2000);
     ////////
     //LOOP//
     ////////
