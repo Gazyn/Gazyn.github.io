@@ -1,0 +1,226 @@
+html * {
+  text-shadow:0.5px 0.5px #d3d3d3;
+}
+#stats {
+  width:250px;
+  font-size:13px;
+  text-shadow:2px 2px #d3d3d3;
+  background-color:lightyellow;
+  white-space: nowrap;
+}
+#herohp {
+  position:absolute;
+  white-space: nowrap;
+  top:48px;
+  height:24px;
+  width: 200px;
+  background: #00ff00;
+  transition: width;
+  transition-duration: 0.05s;
+}
+#mana {
+  position:absolute;
+  white-space: nowrap;
+  top:72px;
+  height:24px;
+  width: 200px;
+  color: blue;
+  background: #4444ff;
+  transition: width;
+  transition-duration: 0.05s;
+}
+#castbar {
+  position:absolute;
+  white-space: nowrap;
+  top:96px;
+  height:px;
+  width: 200px;
+  color: #ffffff;
+  background: #000000;
+}
+#enemyhp {
+  position:absolute;
+  white-space: nowrap;
+  top:120px;
+  height:24px;
+  width: 200px;
+  background: #ff0000;
+}
+#gold {
+  background: gold;
+  cursor:pointer;
+}
+#healerupgradesbutton {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:18px;
+  font-weight: bold;
+}
+#heroupgradesbutton {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:18px;
+  font-weight: bold;
+}
+#archerupgradesbutton {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:18px;
+  font-weight: bold;
+}
+#buyeverythingbutton {
+  position:absolute;
+  top:-50px;
+  left:520px;
+  width:200px;
+  border-radius: 4px;
+  font-family: arial;
+  font-size:18px;
+  font-weight: bold;
+}
+#healup {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#healcost {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#maxmana {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#manaregen {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#maxhp {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#armor {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#blockchance {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#blockfactor {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#dmg {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#critchance {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#critfactor {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#attackspeed {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#autohealspeed {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#castspeed {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#tab1button {
+  border-radius:4px;
+  background-color:lightblue;
+}
+#tab2button {
+  border-radius:4px;
+  background-color:lightblue;
+}
+#tab3button {
+  border-radius:4px;
+  background-color:lightblue;
+}
+#tab4button {
+  border-radius:4px;
+  background-color:lightblue;
+}
+#tab4 {
+  display:none;
+}
+#tab3 {
+  display:none;
+}
+#tab2 {
+  display:none;
+}
+#tab1 {
+  display:none;
+  margin: 10px;
+  padding: 10px;
+  font-size: 20;
+  text-align: center;
+  position:absolute;
+  top:180px;
+  left:-10px;
+}
+#healerupgrades {
+  position:absolute;
+  background: #50FF50;
+  width: 300px;
+  height: 250px;
+}
+#heroupgrades {
+  position:absolute;
+  left: 315px;
+  background: #7070FF;
+  width: 300px;
+  height: 250px;
+}
+#archerupgrades {
+  position:absolute;
+  left: 620px;
+  background: red;
+  width: 300px;
+  height: 250px;
+}
+#generalupgrades {
+  position:absolute;
+  left:925px;
+  background-color:gray;
+  width:300px;
+  height:250px;
+}
