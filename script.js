@@ -225,7 +225,7 @@ $(document).ready(function() {
         $("#stats52").text("Autocast speed: " + f.format(1 * healer.autohealspeed) + "/s");
         $("#stats95").text("Enemy Kills: " + player.kills);
         $("#stats96").text("Hero Deaths: " + player.deaths);
-        $("#stats97").text("Game version: 7.2");
+        //$("#stats97").text("Game version:"); Update in HTML
         $("#stats98").text("Total Upgrades purchased: " + (upgrades.healup.bought + upgrades.healcost.bought + upgrades.maxmana.bought + upgrades.maxhp.bought + upgrades.armor.bought + upgrades.blockfactor.bought + upgrades.dmg.bought + upgrades.critfactor.bought));
         $("#stats99").text("Total gold earned: " + f.format(player.totalgold));
     }
@@ -262,6 +262,7 @@ $(document).ready(function() {
             $("#tab3button").css("display", "inline");
         }
         //Update visible data
+        $("#tabname").text(Math.round(player.gold/enemy.gold)+" Kills");
         $("#gold").text("Gold: " + f.format(player.gold) + " (" + f.format(enemy.gold) + ")");
         $("#mana").text(f.format(healer.mana) + "/" + f.format(healer.maxmana));
         $("#currlevel").text("Level: " + f.format(player.level) + "/" + f.format(player.maxlevel));
