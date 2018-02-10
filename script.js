@@ -4,7 +4,7 @@ $(document).ready(function() {
         format: 'scientific',
         sigfigs: places,
     });
-    var costscaling = 1.176;
+    var costscaling = 1.177;
     var autohealbought = 0;
     var player = {
         gold: 0,
