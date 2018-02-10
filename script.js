@@ -262,7 +262,7 @@ $(document).ready(function() {
             $("#tab3button").css("display", "inline");
         }
         //Update visible data
-        $("#tabname").text(Math.round(player.gold/enemy.gold)+" Kills");
+        $("#tabname").text(Math.floor(player.gold/enemy.gold)+" Kills");
         $("#gold").text("Gold: " + f.format(player.gold) + " (" + f.format(enemy.gold) + ")");
         $("#mana").text(f.format(healer.mana) + "/" + f.format(healer.maxmana));
         $("#currlevel").text("Level: " + f.format(player.level) + "/" + f.format(player.maxlevel));
