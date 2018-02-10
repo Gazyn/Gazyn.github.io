@@ -270,20 +270,11 @@ $(document).ready(function() {
         $("#castbar").text((f.format(healer.castreq / healer.castspeed) / 100) + "/" + (f.format(100 / healer.castspeed) / 100));
         $("#buyeverythingbutton").text("Buy up to " + player.bulkamount + " cheapest");
         //Update bars
-        $("#mana").css({
-            "width": (healer.mana / healer.maxmana) * 300
-        });
-        $("#herohp").css({
-            "width": (hero.hp / hero.maxhp) * 300
-        });
-        $("#enemyhp").css({
-            "width": (enemy.hp / enemy.maxhp) * 300
-        });
-        $("#castbar").css({
-            "width": (healer.castreq / (healer.castspeed * 100 / healer.castspeed)) * 300
-        });
-        $("#level").text("Level: " + player.level + "/" + player.maxlevel);
-    }
+        $("#mana").css({"width": ((healer.mana / healer.maxmana) * 300)});
+        $("#herohp").css({"width": ((hero.hp / hero.maxhp) * 300)});
+        $("#enemyhp").css({"width": ((enemy.hp / enemy.maxhp) * 300)});
+        $("#castbar").css({"width": ((healer.castreq / (healer.castspeed * 100 / healer.castspeed)) * 300)});
+        $("#level").text("Level: " + player.level + "/" + player.maxlevel);}
 
     function getCheapest() {
         cheapest = healerupgradescost;
@@ -612,6 +603,7 @@ $(document).ready(function() {
     });
     document.getElementById('loadbutton').click();
     var saveTimer = setInterval(function(){document.getElementById('savebutton').click();}, 5000);
+    player.gold=1e10;
     ////////
     //LOOP//
     ////////
