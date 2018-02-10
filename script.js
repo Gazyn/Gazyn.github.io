@@ -4,7 +4,7 @@ $(document).ready(function() {
         format: 'scientific',
         sigfigs: places,
     });
-    var costscaling = 1.176;
+    var costscaling = 1.177;
     var autohealbought = 0;
     var player = {
         gold: 0,
@@ -262,7 +262,11 @@ $(document).ready(function() {
             $("#tab3button").css("display", "inline");
         }
         //Update visible data
-        $("#tabname").text(Math.round(player.gold/enemy.gold)+" Kills");
+        if((player.gold/enemy.gold)>100000) {
+          $("#tabname").text(Math.floor(player.gold/enemy.gold)+" Kills");
+        } else {
+          $("#tabname").text("Many Kills");
+        }
         $("#gold").text("Gold: " + f.format(player.gold) + " (" + f.format(enemy.gold) + ")");
         $("#mana").text(f.format(healer.mana) + "/" + f.format(healer.maxmana));
         $("#currlevel").text("Level: " + f.format(player.level) + "/" + f.format(player.maxlevel));
