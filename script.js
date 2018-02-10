@@ -4,7 +4,6 @@ $(document).ready(function() {
         format: 'scientific',
         sigfigs: places,
     });
-    var costscaling = 1.175;
     var autohealbought = 0;
     var player = {
         gold: 0,
@@ -13,7 +12,6 @@ $(document).ready(function() {
         maxlevel: 1,
         attackspeed: 1,
         attackreq: 0,
-        bulkamount: 5,
         maxbulkamount: 0,
     };
     player.maxbulkamount = player.bulkamount;
@@ -578,7 +576,6 @@ $(document).ready(function() {
       localStorage.setItem("archer", JSON.stringify(archer));
       localStorage.setItem("upgrades", JSON.stringify(upgrades));
     });
-
     $("#loadbutton").on('click', function() {
       var a = JSON.parse(localStorage.getItem("player"));
       for(var f in a) {
@@ -599,6 +596,17 @@ $(document).ready(function() {
       var e = JSON.parse(localStorage.getItem("upgrades"));
       for(var j in e) {
         upgrades[j]=e[j];
+      }
+    });
+    $("#deletesavebutton").on('click', function() {
+      var deletionprompt = prompt("You will not gain ANYTHING and you will lose EVERYTHING! Are you sure? Type 'DELETE' into the prompt to confirm.");
+      if (deletionprompt == "DELETE") {
+      localStorage.removeItem("player");
+      localStorage.removeItem("healer");
+      localStorage.removeItem("hero");
+      localStorage.removeItem("archer");
+      localStorage.removeItem("upgrades");
+      location.reload();
       }
     });
     document.getElementById('loadbutton').click();
