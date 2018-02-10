@@ -402,7 +402,6 @@ $(document).ready(function() {
             }
         });
     }
-
     ///////////
     //Buttons//
     ///////////
@@ -472,21 +471,29 @@ $(document).ready(function() {
         }
     });
     $("#buyeverythingbutton").on("click", function() {
+        if(upgrades.manaregen.bought<10) {
         if (player.gold > 1e8) {
             upgrades.manaregen.bought = 10;
             player.gold -= 1e6;
         }
+        }
+        if(upgrades.attackspeed.bought<20) {
         if (player.gold > 1e12) {
             upgrades.attackspeed.bought = 20;
             player.gold -= 1e10;
         }
+        }
+        if(upgrades.autohealspeed.bought<40) {
         if (player.gold > 1e18) {
             upgrades.autohealspeed.bought = 40;
             player.gold -= 1e16;
         }
+        }
+        if(upgrades.castspeed.bought<61) {
         if (player.gold > 1e26) {
             upgrades.castspeed.bought = 61;
             player.gold -= 1e24;
+        }
         }
         for (var i = 0; i < player.bulkamount; i++) {
             updateCosts();
