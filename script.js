@@ -13,7 +13,7 @@ $(document).ready(function() {
         maxlevel: 1,
         attackspeed: 1,
         attackreq: 0,
-        bulkamount: 10,
+        bulkamount: 5,
         maxbulkamount: 0,
     };
     player.maxbulkamount = player.bulkamount;
@@ -117,25 +117,20 @@ $(document).ready(function() {
     var gscaling = pscaling / 0.933;
     function gotoLevel(dest) {
         player.level = dest;
-        if (player.level === 1600) {
-            enemy.maxhp = Infinity;
-            enemy.dmg = Infinity;
-            enemy.gold = 0;
-        } else
         if (Number.isInteger(player.level / 1000)) {
             enemy.maxhp = enemy.basehp * 100 * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * 150 * Math.pow(pscaling, player.level - 1);
-            enemy.gold = enemy.basegold * 1000 * Math.pow(gscaling, player.level - 1);
+            enemy.gold = enemy.basegold * 400 * Math.pow(gscaling, player.level - 1);
         } else
         if (Number.isInteger(player.level / 100)) {
             enemy.maxhp = enemy.basehp * 7 * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * 10 * Math.pow(pscaling, player.level - 1);
-            enemy.gold = enemy.basegold * 75 * Math.pow(gscaling, player.level - 1);
+            enemy.gold = enemy.basegold * 25 * Math.pow(gscaling, player.level - 1);
         } else
         if (Number.isInteger(player.level / 10)) {
             enemy.maxhp = enemy.basehp * 1.5 * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * 2 * Math.pow(pscaling, player.level - 1);
-            enemy.gold = enemy.basegold * 15 * Math.pow(gscaling, player.level - 1);
+            enemy.gold = enemy.basegold * 5 * Math.pow(gscaling, player.level - 1);
         } else {
             enemy.maxhp = enemy.basehp * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * Math.pow(pscaling, player.level - 1);
@@ -378,6 +373,8 @@ $(document).ready(function() {
             if (player.level === player.maxlevel) {
                 player.maxlevel += 1;
             }
+            document.getElementById("pause").click();
+            setTimeout(function(){document.getElementById("pause").click();}, 500);
             if (document.getElementById("autoprogress").checked === true) {
                 gotoLevel(player.maxlevel);
             } else {
@@ -582,9 +579,10 @@ $(document).ready(function() {
       localStorage.setItem("player", JSON.stringify(player));
       localStorage.setItem("healer", JSON.stringify(healer));
       localStorage.setItem("hero", JSON.stringify(hero));
-      localStorage.setItem("hero", JSON.stringify(archer));
-      localStorage.setItem("hero", JSON.stringify(upgrades));
+      localStorage.setItem("archer", JSON.stringify(archer));
+      localStorage.setItem("upgrades", JSON.stringify(upgrades));
     });
+
     $("#loadbutton").on('click', function() {
       var a = JSON.parse(localStorage.getItem("player"));
       for(var f in a) {

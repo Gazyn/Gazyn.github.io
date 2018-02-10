@@ -1,6 +1,9 @@
 html * {
   text-shadow:0.5px 0.5px #d3d3d3;
 }
+#pause {
+  visibility:hidden;
+}
 #stats {
   width:250px;
   font-size:13px;
