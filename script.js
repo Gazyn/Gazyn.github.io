@@ -603,7 +603,6 @@ $(document).ready(function() {
     });
     document.getElementById('loadbutton').click();
     var saveTimer = setInterval(function(){document.getElementById('savebutton').click();}, 5000);
-    player.gold=1e10;
     ////////
     //LOOP//
     ////////
