@@ -160,7 +160,7 @@ $(document).ready(function() {
     }
     gotoLevel(1);
     function heal() {
-        if (hero.hp < hero.maxhp * 2) {
+        if (hero.hp < hero.maxhp) {
             if (healer.castreq === 0) {
                 if (healer.mana > healer.cost) {
                     healer.castreq = 1;
@@ -206,7 +206,7 @@ $(document).ready(function() {
         healer.cost *= Math.pow(0.945, upgrades.healcost.bought);
         healer.maxmana = 100 + (upgrades.maxmana.bought * 0.5);
         healer.maxmana *= Math.pow(1.04895, upgrades.maxmana.bought);
-        hero.maxhp = 25 + (upgrades.maxhp.bought * 0.5);
+        hero.maxhp = 50 + (upgrades.maxhp.bought * 1);
         hero.maxhp *= Math.pow(1.0697808535, upgrades.maxhp.bought);
         hero.blockchance = 5 + (1 * upgrades.blockchance.bought);
         hero.armor = 1 * Math.pow(1.02, upgrades.armor.bought);
@@ -323,8 +323,8 @@ $(document).ready(function() {
                     }
                     healer.mana -= healer.cost;
                     healer.castreq = 0;
-                    if (hero.hp > hero.maxhp * 2) {
-                        hero.hp = hero.maxhp * 2;
+                    if (hero.hp > hero.maxhp) {
+                        hero.hp = hero.maxhp;
                     }
                 }
             }
@@ -409,8 +409,8 @@ $(document).ready(function() {
         if (healer.mana > healer.maxmana) {
             healer.mana = healer.maxmana;
         }
-        if (hero.hp > hero.maxhp * 2) {
-            hero.hp = hero.maxhp * 2;
+        if (hero.hp > hero.maxhp) {
+            hero.hp = hero.maxhp;
         }
         if (enemy.hp > enemy.maxhp) {
             enemy.hp = enemy.maxhp;
