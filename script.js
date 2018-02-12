@@ -296,7 +296,7 @@ $(document).ready(function() {
         $("#buyeverythingbutton").text("Buy up to " + player.bulkamount + " cheapest");
         //Update bars
         $("#mana").css({"width": ((healer.mana / healer.maxmana) * 450)});
-        $("#herohp").css({"width": ((hero.hp / hero.maxhp) * 225)});
+        $("#herohp").css({"width": ((hero.hp / hero.maxhp) * 450)});
         $("#enemyhp").css({"width": ((enemy.hp / enemy.maxhp) * 450)});
         $("#castbar").css({"width": ((healer.castreq / (healer.castspeed * 100 / healer.castspeed)) * 450)});
         $("#level").text("Level: " + player.level + "/" + player.maxlevel);}
