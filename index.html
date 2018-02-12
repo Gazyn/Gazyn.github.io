@@ -19,18 +19,20 @@ Pause: <input type="checkbox" id="pause"></input>
 <div id="herohp"><span id="herotext"></span></div>
 <div id="enemyhp"><span id="enemytext"></span></div>
 <div id="castbar"><span id="casttext"></span></div>
-<br><br><br><br><br>
+<div id="levelselector">
 <button id="prevlevel"><</button><button id="level">Level: 100000</button><button id="nextlevel">></button>
-Autoprogress: <input type="checkbox" id="autoprogress"><br>
+</div>
+<button id="buyeverythingbutton">Buy 0 cheapest</button>
+<span id="autoprogresstext">Autoprogress</span><input type="checkbox" id="autoprogress">
 <button id="tab1button">Upgrades</button><button id="tab2button">Statistics</button><button id="tab3button">Ascension</button><button id="tab4button">Settings</button><br>
 <div id="tab1" class="tab">
-	<button id="buyeverythingbutton">Buy 0 cheapest</button>
 <div id="healerupgrades">
   <p>Healer Upgrades</p>
 	<button id="healerupgradesbutton"></button>
   <button id="healup"></button>
   <button id="healcost"></button>
   <button id="maxmana"></button>
+	<button id="healercritchance"></button>
 </div>
 <div id="heroupgrades">
   <p>Hero Upgrades</p>
@@ -66,7 +68,8 @@ Autoprogress: <input type="checkbox" id="autoprogress"><br>
 	<span id="stats22"></span><br>
 	<span id="stats23"></span><br>
 	<span id="stats24"></span><br>
-	<span id="stats25"></span></div><br>
+	<span id="stats25"></span><br>
+	<span id="stats26"></span></div><br>
 	<div id="stats">Archer stats<br><br>
 	<span id="stats31"></span><br>
 	<span id="stats32"></span><br>
@@ -75,13 +78,15 @@ Autoprogress: <input type="checkbox" id="autoprogress"><br>
 	<span id="stats41"></span><br>
 	<span id="stats42"></span><br>
 	<span id="stats43"></span><br>
-	<span id="stats44"></span></div><br>
+	<span id="stats44"></span><br>
+	<span id="stats45"></span></div><br>
 	<div id="stats">General stats<br><br>
 	<span id="stats51"></span><br>
 	<span id="stats52"></span><br>
+	<span id="stats91"></span><br>
 	<span id="stats95"></span><br>
 	<span id="stats96"></span><br>
-	<span id="stats97">Game version 7.5</span><br>
+	<span id="stats97">Update 8</span><br>
 	<span id="stats98"></span><br>
 	<span id="stats99"></span></div><br>
 </div>
@@ -89,12 +94,13 @@ Autoprogress: <input type="checkbox" id="autoprogress"><br>
 
 </div>
 <div id="tab4" class="tab">
-	<button id="scientific">Scientific notation</button><br>
-	<button id="standard">Standard notation</button><br>
+	<button id="scientific">Scientific notation</button>
+	<button id="standard">Standard notation</button>
 	<button id="engineering">Engineering notation</button><br>
-	<button id="savebutton">Save</button><br>
+	<button id="savebutton">Save</button>
 	<button id="loadbutton">Load</button><br>
 	<button id="deletesavebutton">DELETE SAVE</button><br>
+	<a target="_blank" href="changelog.html">Changelog</a>
 </div>
 </body>
 </html>

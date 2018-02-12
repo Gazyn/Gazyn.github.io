@@ -1,5 +1,53 @@
 html * {
-  text-shadow:0.5px 0.5px #d3d3d3;
+  text-shadow:0.5px 0.5px 1px #d3d3d3;
+}
+#buyeverythingbutton {
+  position:absolute;
+  top:0px;
+  left:333px;
+  border-radius: 4px;
+  height:50px;
+  font-size:20px;
+}
+#level {
+  position:absolute;
+  left:calc(40% + 58px);
+  background-color:lightgreen;
+  border:none;
+  top:0%;
+  width:208px;
+  font-size:20px;
+}
+#prevlevel {
+  z-index:10;
+  position:absolute;
+  left:calc(40% + 40px);
+  background-color:lightgreen;
+  border:none;
+  top:0%;
+  font-size:20px;
+  width:20px;
+}
+#nextlevel {
+  z-index:10;
+  position:absolute;
+  left:calc(40% + 238px);
+  background-color:lightgreen;
+  border:none;
+  top:0%;
+  font-size:20px;
+  width:20px;
+}
+#autoprogress {
+  position:absolute;
+  left:calc(42.5% + 135px);
+  top:33px;
+}
+#autoprogresstext {
+  position:absolute;
+  left:calc(42.5% + 0px);
+  top:22px;
+  font-size:20px;
 }
 #stats {
   width:250px;
@@ -11,44 +59,81 @@ html * {
 #herohp {
   position:absolute;
   white-space: nowrap;
-  top:48px;
-  height:24px;
-  width: 200px;
+  top:8%;
+  left:35%;
+  height:36px;
+  border: 1px solid black;
   background: #00ff00;
+  text-align:left;
   transition: width;
   transition-duration: 0.05s;
+	font-family: Copperplate, Copperplate Gothic Light, fantasy;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 25px;
 }
 #mana {
   position:absolute;
   white-space: nowrap;
-  top:72px;
-  height:24px;
-  width: 200px;
+  height:36px;
+  border: 1px solid black;
+  top:calc(8% + 36px);
+  left:35%;
   color: blue;
   background: #4444ff;
+  text-align:left;
   transition: width;
   transition-duration: 0.05s;
+	font-family: Copperplate, Copperplate Gothic Light, fantasy;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 25px;
 }
 #castbar {
   position:absolute;
   white-space: nowrap;
-  top:96px;
-  height:px;
-  width: 200px;
+  height:36px;
+  left:35%;
+  top:calc(8% + 72px);
   color: #ffffff;
   background: #000000;
+  text-align:left;
+	font-family: Copperplate, Copperplate Gothic Light, fantasy;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 25px;
 }
 #enemyhp {
   position:absolute;
   white-space: nowrap;
-  top:120px;
-  height:24px;
-  width: 200px;
+  left:calc(35%);
+  top:calc(8% + 108px);
+  height:36px;
+  border: 1px solid black;
   background: #ff0000;
+  text-align:left;
+	font-family: Copperplate, Copperplate Gothic Light, fantasy;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 25px;
 }
 #gold {
   background: gold;
   cursor:pointer;
+	font-family: Copperplate, Copperplate Gothic Light, fantasy;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 25px;
 }
 #healerupgradesbutton {
   border-radius: 4px;
@@ -68,16 +153,6 @@ html * {
   font-size:18px;
   font-weight: bold;
 }
-#buyeverythingbutton {
-  position:absolute;
-  top:-50px;
-  left:520px;
-  width:200px;
-  border-radius: 4px;
-  font-family: arial;
-  font-size:18px;
-  font-weight: bold;
-}
 #healup {
   border-radius: 4px;
   font-family: arial;
@@ -91,6 +166,12 @@ html * {
   font-weight: bold;
 }
 #maxmana {
+  border-radius: 4px;
+  font-family: arial;
+  font-size:15px;
+  font-weight: bold;
+}
+#healercritchance {
   border-radius: 4px;
   font-family: arial;
   font-size:15px;
@@ -164,19 +245,31 @@ html * {
 }
 #tab1button {
   border-radius:4px;
-  background-color:lightblue;
+  background-color:#add8e6;
+}
+#tab1button:hover {
+  background-color:#9bc2cf;
 }
 #tab2button {
   border-radius:4px;
   background-color:lightblue;
 }
+#tab2button:hover {
+  background-color:#9bc2cf;
+}
 #tab3button {
   border-radius:4px;
   background-color:lightblue;
 }
+#tab3button:hover {
+  background-color:#9bc2cf;
+}
 #tab4button {
   border-radius:4px;
   background-color:lightblue;
+}
+#tab4button:hover {
+  background-color:#9bc2cf;
 }
 #tab4 {
   display:none;
@@ -188,23 +281,26 @@ html * {
   display:none;
 }
 #tab1 {
+  position:absolute;
   display:none;
   margin: 10px;
   padding: 10px;
   font-size: 20;
   text-align: center;
   position:absolute;
-  top:180px;
+  top:60px;
   left:-10px;
 }
 #healerupgrades {
   position:absolute;
+  top:35px;
   background: #50FF50;
   width: 300px;
   height: 250px;
 }
 #heroupgrades {
   position:absolute;
+  top:35px;
   left: 315px;
   background: #7070FF;
   width: 300px;
@@ -212,14 +308,16 @@ html * {
 }
 #archerupgrades {
   position:absolute;
-  left: 620px;
+  top: 290px;
+  left: 10px;
   background: red;
   width: 300px;
   height: 250px;
 }
 #generalupgrades {
   position:absolute;
-  left:925px;
+  top: 290px;
+  left:315px;
   background-color:gray;
   width:300px;
   height:250px;
