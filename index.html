@@ -17,7 +17,9 @@
 Pause: <input type="checkbox" id="pause"></input>
 <div id="mana"><span id="manatext"></span></div>
 <div id="herohp"><span id="herotext"></span></div>
+<div id="playerattackbar"></div>
 <div id="enemyhp"><span id="enemytext"></span></div>
+<div id="enemyattackbar"></div>
 <div id="castbar"><span id="casttext"></span></div>
 <div id="levelselector">
 <button id="prevlevel"><</button><button id="level">Level: 100000</button><button id="nextlevel">></button>
@@ -62,7 +64,8 @@ Pause: <input type="checkbox" id="pause"></input>
 	<span id="stats11"></span><br>
 	<span id="stats12"></span><br>
 	<span id="stats13"></span><br>
-	<span id="stats14"></span></div><br>
+	<span id="stats14"></span><br>
+	<span id="stats15"></span></div><br>
 	<div id="stats">Healer stats<br><br>
 	<span id="stats21"></span><br>
 	<span id="stats22"></span><br>
@@ -94,6 +97,7 @@ Pause: <input type="checkbox" id="pause"></input>
 
 </div>
 <div id="tab4" class="tab">
+	<input id="slider" type="range" min="1" max="6"></input><span id="significantfigures"></span><br>
 	<button id="scientific">Scientific notation</button>
 	<button id="standard">Standard notation</button>
 	<button id="engineering">Engineering notation</button><br>
@@ -102,5 +106,6 @@ Pause: <input type="checkbox" id="pause"></input>
 	<button id="deletesavebutton">DELETE SAVE</button><br>
 	<a target="_blank" href="changelog.html">Changelog</a>
 </div>
+<div id="enemycontainer"></div>
 </body>
 </html>

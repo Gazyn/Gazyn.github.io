@@ -1,10 +1,25 @@
 html * {
   text-shadow:0.5px 0.5px 1px #d3d3d3;
 }
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#enemycontainer {
+  z-index: 11;
+  background-repeat:no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  position:absolute;
+  top:250px;
+  left:750px;
+  height:500px;
+  width:500px;
+}
 #buyeverythingbutton {
   position:absolute;
-  top:0px;
-  left:333px;
+  top:27px;
+  left:337px;
   border-radius: 4px;
   height:50px;
   font-size:20px;
@@ -74,6 +89,26 @@ html * {
 	font-weight: 500;
 	line-height: 25px;
 }
+#playerattackbar {
+  position:absolute;
+  white-space: nowrap;
+  top:calc(8% + 30px);
+  left:35%;
+  height:6px;
+  border: 1px solid black;
+  background: #ffff00;
+  z-index:1;
+}
+#enemyattackbar {
+  position:absolute;
+  white-space: nowrap;
+  top:calc(8% + 138px);
+  left:35%;
+  height:6px;
+  border: 1px solid black;
+  background: #ffff00;
+  z-index:1;
+}
 #mana {
   position:absolute;
   white-space: nowrap;
@@ -136,18 +171,24 @@ html * {
 	line-height: 25px;
 }
 #healerupgradesbutton {
+  visibility: hidden;
+  position:absolute;
   border-radius: 4px;
   font-family: arial;
   font-size:18px;
   font-weight: bold;
 }
 #heroupgradesbutton {
+  visibility: hidden;
+  position:absolute;
   border-radius: 4px;
   font-family: arial;
   font-size:18px;
   font-weight: bold;
 }
 #archerupgradesbutton {
+  visibility: hidden;
+  position:absolute;
   border-radius: 4px;
   font-family: arial;
   font-size:18px;
