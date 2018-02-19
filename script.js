@@ -504,11 +504,31 @@ $(document).ready(function() {
         $("#tab2").css("display", "none");
         $("#tab3").css("display", "inline");
         $("#tab4").css("display", "none");
-        console.log(localStorage.getItem("playersave"));
-        console.log(localStorage.getItem("healersave"));
-        console.log(localStorage.getItem("herosave"));
-        console.log(localStorage.getItem("archersave"));
-        console.log(localStorage.getItem("upgradessave"));
+        console.log(localStorage.getItem("player"));
+        console.log(localStorage.getItem("healer"));
+        console.log(localStorage.getItem("hero"));
+        console.log(localStorage.getItem("archer"));
+        console.log(localStorage.getItem("upgrades"));
+        var f = JSON.parse(localStorage.getItem("player"));
+        for(var a in f) {
+          player[a]=f[a];
+        }
+        var g = JSON.parse(localStorage.getItem("healer"));
+        for(var b in g) {
+          healer[b]=g[b];
+        }
+        var h = JSON.parse(localStorage.getItem("hero"));
+        for(var c in h) {
+          hero[c]=h[c];
+        }
+        var i = JSON.parse(localStorage.getItem("archer"));
+        for(var d in i) {
+          archer[d]=i[d];
+        }
+        var j = JSON.parse(localStorage.getItem("upgrades"));
+        for(var e in j) {
+          upgrades[e].bought=j[e].bought;
+        }
     });
     $("#tab4button").on("click", function() {
         $("#tab1").css("display", "none");
