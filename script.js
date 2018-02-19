@@ -504,6 +504,7 @@ $(document).ready(function() {
         $("#tab2").css("display", "none");
         $("#tab3").css("display", "inline");
         $("#tab4").css("display", "none");
+        console.log("Loading old save...");
         console.log(localStorage.getItem("player"));
         console.log(localStorage.getItem("healer"));
         console.log(localStorage.getItem("hero"));
