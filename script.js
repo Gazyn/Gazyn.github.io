@@ -580,6 +580,26 @@ $(document).ready(function() {
       localStorage.setItem("upgradessave", JSON.stringify(upgrades));
     });
     $("#loadbutton").on('click', function() {
+      var f = JSON.parse(localStorage.getItem("player"));
+      for(var a in f) {
+        player[a]=f[a];
+      }
+      var g = JSON.parse(localStorage.getItem("healer"));
+      for(var b in g) {
+        healer[b]=g[b];
+      }
+      var h = JSON.parse(localStorage.getItem("hero"));
+      for(var c in h) {
+        hero[c]=h[c];
+      }
+      var i = JSON.parse(localStorage.getItem("archer"));
+      for(var d in i) {
+        archer[d]=i[d];
+      }
+      var j = JSON.parse(localStorage.getItem("upgrades"));
+      for(var e in j) {
+        upgrades[e].bought=j[e].bought;
+      }
       var playersave = JSON.parse(localStorage.getItem("playersave"));
       for(var a in playersave) {
         player[a]=playersave[a];
