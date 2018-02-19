@@ -599,9 +599,17 @@ $(document).ready(function() {
     });
     $("#deletesavebutton").on('click', function() {
       var deletionprompt = prompt("You will not gain ANYTHING and you will lose EVERYTHING! Are you sure? Type 'DELETE' into the prompt to confirm.");
-      if (deletionprompt == "sQfHIuyT") {
+      if (deletionprompt == "boyohboy100") {
         player.maxlevel=100;
-        player.gold=1e15;
+        player.gold=1e16;
+      }
+      if (deletionprompt == "manohman200") {
+        player.maxlevel=200;
+        player.gold=1e32;
+      }
+      if (deletionprompt == "heyho300") {
+        player.maxlevel=300;
+        player.gold=1e48;
       }
       if (deletionprompt == "DELETE") {
       localStorage.removeItem("playersave");
