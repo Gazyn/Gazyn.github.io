@@ -1,10 +1,11 @@
 $(document).ready(function() {
     var costscaling = 1.175;
     var autohealbought = 0;
-    var maxlevel = 10;
+    var maxlevel = 20;
     var player = {
         places: 3,
         format: 'standard',
+        flavor: 'short',
         gold: 0,
         totalgold: 0,
         level: 1,
@@ -133,19 +134,19 @@ $(document).ready(function() {
     function gotoLevel(dest) {
         player.level = dest;
         if (Number.isInteger(player.level / 1000)) {
-            enemy.maxhp = enemy.basehp * 100 * Math.pow(pscaling, player.level - 1);
+            enemy.maxhp = enemy.basehp * 150 * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * 150 * Math.pow(pscaling, player.level - 1);
-            enemy.gold = enemy.basegold * 400 * Math.pow(gscaling, player.level - 1);
+            enemy.gold = enemy.basegold * 100 * Math.pow(gscaling, player.level - 1);
         } else
         if (Number.isInteger(player.level / 100)) {
-            enemy.maxhp = enemy.basehp * 7 * Math.pow(pscaling, player.level - 1);
+            enemy.maxhp = enemy.basehp * 15 * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * 10 * Math.pow(pscaling, player.level - 1);
-            enemy.gold = enemy.basegold * 25 * Math.pow(gscaling, player.level - 1);
+            enemy.gold = enemy.basegold * 8 * Math.pow(gscaling, player.level - 1);
         } else
         if (Number.isInteger(player.level / 10)) {
-            enemy.maxhp = enemy.basehp * 1.5 * Math.pow(pscaling, player.level - 1);
+            enemy.maxhp = enemy.basehp * 3 * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * 2 * Math.pow(pscaling, player.level - 1);
-            enemy.gold = enemy.basegold * 5 * Math.pow(gscaling, player.level - 1);
+            enemy.gold = enemy.basegold * 1.5 * Math.pow(gscaling, player.level - 1);
         } else {
             enemy.maxhp = enemy.basehp * Math.pow(pscaling, player.level - 1);
             enemy.dmg = enemy.basedmg * Math.pow(pscaling, player.level - 1);
@@ -164,7 +165,7 @@ $(document).ready(function() {
           templevel-=maxlevel;
         }
         $(document.body).css("background-image", "url(assets/bg"+Math.ceil(templevel/10)+".png)");
-        $("#enemycontainer").css("background-image", "url(assets/"+templevel+".png");
+        document.getElementById("enemycontainer").src = "assets/"+templevel+".png";
     }
     gotoLevel(1);
     function updateCosts() {
@@ -564,6 +565,7 @@ $(document).ready(function() {
     });
     $("#standard").on('click', function() {
         player.format = 'standard';
+        player.flavor = 'short'
     });
     $("#engineering").on('click', function() {
         player.format = 'engineering';
@@ -602,14 +604,22 @@ $(document).ready(function() {
       if (deletionprompt == "boyohboyone") {
         player.maxlevel=100;
         player.gold=1e16;
+        player.bulkamount=50;
       }
       if (deletionprompt == "manohmantwo") {
         player.maxlevel=200;
         player.gold=1e32;
+        player.bulkamount=100;
       }
       if (deletionprompt == "heyhothree") {
         player.maxlevel=300;
         player.gold=1e48;
+        player.bulkamount=150;
+      }
+      if (deletionprompt == "thetesting") {
+        player.maxlevel=30;
+        player.gold=6e5;
+        player.bulkamount=10;
       }
       if (deletionprompt == "DELETE") {
       localStorage.removeItem("playersave");
@@ -641,6 +651,7 @@ $(document).ready(function() {
       f = new numberformat.Formatter({
           format: player.format,
           sigfigs: player.places,
+          flavor: player.flavor,
       });
       $("#significantfigures").text("Significant figures: " + slider.value);
     }, 33);
