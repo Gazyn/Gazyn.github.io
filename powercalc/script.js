@@ -327,7 +327,7 @@ setInterval(function() {
 		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[1] + totalpowerstring[2] + totalpowerstring[3] + totalpowerstring[4];
 		$("#totalpower").text("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
 		if(totalpower<1e5) {
-		$("#totalpower").text("Total Power: " + Math.round(totalpower));
+		$("#totalpower").text("Total Power: " + (Math.floor(totalpower*100)/100));
 		}
 	}
 }, 200)
