@@ -1,5 +1,5 @@
 $(document).ready(function() {
-//////////
+///////////
 function updateawakening1() {
 if($("#input1")[0].value>70) {
 	$("#input1")[0].value=70;
@@ -7,25 +7,25 @@ if($("#input1")[0].value>70) {
 var level = $("#input1")[0].value;
 var ghostlevel=level;
 var curr=10;
-var total=100;
+var total=0;
 while(ghostlevel>0) {
 	total+=curr;
   curr+=2;
 	ghostlevel-=1;
 }
 var lasttotal=total-curr+2;
-var displaytotal = Math.floor(total)/100;
-var displaylasttotal=Math.floor(lasttotal)/100;
+var displaytotal = Math.floor(total);
+var displaylasttotal=Math.floor(lasttotal);
 var exp=Math.floor((total/lasttotal-1)*10000)/100;
-$("#eff1").text("Effect: " + displaytotal + "x");
+$("#eff1").text("Effect: " + displaytotal + "%");
 if(level>1) {
-	$("#lasteff1").text("Last level's effect: " + displaylasttotal + "x")
+	$("#lasteff1").text("Last level's effect: " + displaylasttotal + "%")
 	$("#rel1").text("Relative increase from last level: " + exp + "%")
 } else {
 	$("#lasteff1").text("Last level's effect: N/A")
 	$("#rel1").text("Relative increase from last level: N/A")
 }
-return total/100;
+return total/100+1;
 }
 //////////
 function updateawakening2() {
@@ -35,25 +35,25 @@ if($("#input2")[0].value>30) {
 var level = $("#input2")[0].value;
 var ghostlevel=level;
 var curr=10;
-var total=100;
+var total=0;
 while(ghostlevel>0) {
 	total+=curr;
 	curr+=2;
 	ghostlevel-=1;
 }
 var lasttotal=total-curr+2;
-var displaytotal = Math.floor(total)/100;
-var displaylasttotal=Math.floor(lasttotal)/100;
+var displaytotal = Math.floor(total);
+var displaylasttotal=Math.floor(lasttotal);
 var exp=Math.floor((total/lasttotal-1)*10000)/100;
-$("#eff2").text("Effect: " + displaytotal + "x");
+$("#eff2").text("Effect: " + displaytotal + "%");
 if(level>1) {
-	$("#lasteff2").text("Last level's effect: " + displaylasttotal + "x")
+	$("#lasteff2").text("Last level's effect: " + displaylasttotal + "%")
 	$("#rel2").text("Relative increase from last level: " + exp + "%")
 } else {
 	$("#lasteff2").text("Last level's effect: N/A")
 	$("#rel2").text("Relative increase from last level: N/A")
 }
-return total/100;
+return total/100+1;
 }
 //////////
 function updatemithrilsword() {
