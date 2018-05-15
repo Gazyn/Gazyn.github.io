@@ -318,13 +318,13 @@ setInterval(function() {
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
 		console.log(totalpowerstring);
-		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3] + totalpowerstring[4] + totalpowerstring[5];
+		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3];
 		$("#totalpower").text("Total Power: " + totalpowernum + "e+" + Math.floor(totalpowerexp));
 	} else if(totalpower<1e20) {
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
 		console.log(totalpowerstring);
-		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[1] + totalpowerstring[2] + totalpowerstring[3] + totalpowerstring[4];
+		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[1] + totalpowerstring[2];
 		$("#totalpower").text("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
 		if(totalpower<1e5) {
 		$("#totalpower").text("Total Power: " + (Math.floor(totalpower*100)/100));
