@@ -67,7 +67,7 @@ input[type=number] {
 	width:325px;
 	height:125px;
 }
-#totalpower {
+#totalpowerdisplay {
 	z-index:10;
 	position:absolute;
 	top:10px;

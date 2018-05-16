@@ -1,38 +1,10 @@
-$(document).ready(function() {
-///////////
-function updateawakening1() {
-if($("#input1")[0].value>70) {
-	$("#input1")[0].value=70;
-}
-var level = $("#input1")[0].value;
-var ghostlevel=level;
-var curr=10;
-var total=0;
-while(ghostlevel>0) {
-	total+=curr;
-  curr+=2;
-	ghostlevel-=1;
-}
-var lasttotal=total-curr+2;
-var displaytotal = Math.floor(total);
-var displaylasttotal=Math.floor(lasttotal);
-var exp=Math.floor((total/lasttotal-1)*10000)/100;
-$("#eff1").text("Effect: " + displaytotal + "%");
-if(level>1) {
-	$("#lasteff1").text("Last level's effect: " + displaylasttotal + "%")
-	$("#rel1").text("Relative increase from last level: " + exp + "%")
-} else {
-	$("#lasteff1").text("Last level's effect: N/A")
-	$("#rel1").text("Relative increase from last level: N/A")
-}
-return total/100+1;
-}
+document.addEventListener("DOMContentLoaded", function(event) { 
 //////////
-function updateawakening2() {
-if($("#input2")[0].value>30) {
-	$("#input2")[0].value=30;
+function updateawakening1() {
+if(input1.value>70) {
+	input1.value=70;
 }
-var level = $("#input2")[0].value;
+var level = input1.value;
 var ghostlevel=level;
 var curr=10;
 var total=0;
@@ -45,22 +17,50 @@ var lasttotal=total-curr+2;
 var displaytotal = Math.floor(total);
 var displaylasttotal=Math.floor(lasttotal);
 var exp=Math.floor((total/lasttotal-1)*10000)/100;
-$("#eff2").text("Effect: " + displaytotal + "%");
+eff1.textContent = ("Effect: " + displaytotal + "%");
 if(level>1) {
-	$("#lasteff2").text("Last level's effect: " + displaylasttotal + "%")
-	$("#rel2").text("Relative increase from last level: " + exp + "%")
+	lasteff1.textContent = ("Last level's effect: " + displaylasttotal + "%");
+	rel1.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff2").text("Last level's effect: N/A")
-	$("#rel2").text("Relative increase from last level: N/A")
+	lasteff1.textContent = ("Last level's effect: N/A");
+	rel1.textContent = ("Relative increase from last level: N/A");
+}
+return total/100+1;
+}
+//////////
+function updateawakening2() {
+if(input2.value>30) {
+	input2.value=30;
+}
+var level = input2.value;
+var ghostlevel=level;
+var curr=10;
+var total=0;
+while(ghostlevel>0) {
+	total+=curr;
+	curr+=2;
+	ghostlevel-=1;
+}
+var lasttotal=total-curr+2;
+var displaytotal = Math.floor(total);
+var displaylasttotal=Math.floor(lasttotal);
+var exp=Math.floor((total/lasttotal-1)*10000)/100;
+eff2.textContent = ("Effect: " + displaytotal + "%");
+if(level>1) {
+	lasteff2.textContent = ("Last level's effect: " + displaylasttotal + "%");
+	rel2.textContent = ("Relative increase from last level: " + exp + "%");
+} else {
+	lasteff2.textContent = ("Last level's effect: N/A");
+	rel2.textContent = ("Relative increase from last level: N/A");
 }
 return total/100+1;
 }
 //////////
 function updatemithrilsword() {
-if($("#input3")[0].value>45) {
-	$("#input3")[0].value=45;
+if(input3.value>45) {
+	input3.value=45;
 }
-var level = $("#input3")[0].value;
+var level = input3.value;
 var ghostlevel=level;
 var total=1;
 if(ghostlevel>=45) {
@@ -83,26 +83,26 @@ if(level<20) {
 	var lasttotal=total+0.02;
 } else {
 	var lasttotal=total+0.01;
-};
+}
 var displaytotal = 100-(Math.floor(total*10000)/100);
 var displaylasttotal = 100-(Math.floor(lasttotal*10000)/100);
 var exp=Math.floor(lasttotal/total*10000-10000)/100;
-$("#eff3").text("Effect: -" + Math.round(displaytotal) + "%");
+eff3.textContent = ("Effect: -" + Math.round(displaytotal) + "%");
 if(level>1) {
-	$("#lasteff3").text("Last level's Effect: -" + Math.round(displaylasttotal) + "%")
-	$("#rel3").text("Relative increase from last level: " + exp + "%")
+	lasteff3.textContent = ("Last level's Effect: -" + Math.round(displaylasttotal) + "%");
+	rel3.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff3").text("Last level's Effect: N/A")
-	$("#rel3").text("Relative increase from last level: N/A")
+	lasteff3.textContent = ("Last level's Effect: N/A");
+	rel3.textContent = ("Relative increase from last level: N/A");
 }
 return 1/total;
 }
 //////////
 function updatemistilteinn() {
-if($("#input4")[0].value>105) {
-	$("#input4")[0].value=105;
+if(input4.value>105) {
+	input4.value=105;
 }
-var level = $("#input4")[0].value;
+var level = input4.value;
 var ghostlevel=level;
 var total=1;
 if(ghostlevel>=105) {
@@ -147,19 +147,19 @@ if(level>75) {
 var displaytotal = 100-(Math.floor(total*10000)/100);
 var displaylasttotal = 100-(Math.floor(lasttotal*10000)/100);
 var exp=Math.floor(lasttotal/total*10000-10000)/100;
-$("#eff4").text("Effect: -" + (Math.floor(displaytotal*20)/20) + "%");
+eff4.textContent = ("Effect: -" + (Math.floor(displaytotal*20)/20) + "%");
 if(level>1) {
-	$("#lasteff4").text("Last level's Effect: -" + (Math.floor(displaylasttotal*20)/20) + "%")
-	$("#rel4").text("Relative increase from last level: " + exp + "%")
+	lasteff4.textContent = ("Last level's Effect: -" + (Math.floor(displaylasttotal*20)/20) + "%");
+	rel4.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff4").text("Last level's Effect: N/A")
-	$("#rel4").text("Relative increase from last level: N/A")
+	lasteff4.textContent = ("Last level's Effect: N/A");
+	rel4.textContent = ("Relative increase from last level: N/A");
 }
 return 1/total;
 }
 //////////
 function updategoldengloves() {
-var level = $("#input5")[0].value;
+var level = input5.value;
 var ghostlevel=level;
 var total=0;
 if(ghostlevel>=200) {
@@ -176,26 +176,26 @@ if(ghostlevel>=200) {
 	}
 }
 if(level>200) {
-	lasttotal=total-10;
+	var lasttotal=total-10;
 } else {
-	lasttotal=total-15;
+	var lasttotal=total-15;
 }
 var displaytotal = Math.floor(total);
 var displaylasttotal = Math.floor(lasttotal);
 var exp = Math.floor(total/lasttotal*1000000-1000000)/10000;
-$("#eff5").text("Effect: " + Math.round(displaytotal) + "%");
+eff5.textContent = ("Effect: " + Math.round(displaytotal) + "%");
 if(level>1) {
-	$("#lasteff5").text("Last level's Effect: " + Math.round(displaylasttotal) + "%")
-	$("#rel5").text("Relative increase from last level: " + exp + "%")
+	lasteff5.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
+	rel5.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff5").text("Last level's Effect: N/A")
-	$("#rel5").text("Relative increase from last level: N/A")
+	lasteff5.textContent = ("Last level's Effect: N/A");
+	rel5.textContent = ("Relative increase from last level: N/A");
 }
 return total/100+1;
 }
 //////////
 function updategoldvessels() {
-var level = $("#input6")[0].value;
+var level = input6.value;
 var ghostlevel=level;
 var total=0;
 if(ghostlevel>=100) {
@@ -212,26 +212,26 @@ if(ghostlevel>=100) {
 	}
 }
 if(level>100) {
-	lasttotal=total-5;
+	var lasttotal=total-5;
 } else {
-	lasttotal=total-10;
+	var lasttotal=total-10;
 }
 var displaytotal = Math.floor(total);
 var displaylasttotal = Math.floor(lasttotal);
 var exp = Math.floor(total/lasttotal*1000000-1000000)/10000;
-$("#eff6").text("Effect: " + Math.round(displaytotal) + "%");
+eff6.textContent = ("Effect: " + Math.round(displaytotal) + "%");
 if(level>1) {
-	$("#lasteff6").text("Last level's Effect: " + Math.round(displaylasttotal) + "%")
-	$("#rel6").text("Relative increase from last level: " + exp + "%")
+	lasteff6.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
+	rel6.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff6").text("Last level's Effect: N/A")
-	$("#rel6").text("Relative increase from last level: N/A")
+	lasteff6.textContent = ("Last level's Effect: N/A");
+	rel6.textContent = ("Relative increase from last level: N/A");
 }
 return total/100+1;
 }
 //////////
 function updatephilostone() {
-var level = $("#input7")[0].value;
+var level = input7.value;
 var ghostlevel=level;
 var total=0;
 if(ghostlevel>=500) {
@@ -248,26 +248,26 @@ if(ghostlevel>=500) {
 	}
 }
 if(level>500) {
-	lasttotal=total-2;
+	var lasttotal=total-2;
 } else {
-	lasttotal=total-10;
+	var lasttotal=total-10;
 }
 var displaytotal = Math.floor(total);
 var displaylasttotal = Math.floor(lasttotal);
 var exp = Math.floor(total/lasttotal*1000000-1000000)/10000;
-$("#eff7").text("Effect: " + Math.round(displaytotal) + "%");
+eff7.textContent = ("Effect: " + Math.round(displaytotal) + "%");
 if(level>1) {
-	$("#lasteff7").text("Last level's Effect: " + Math.round(displaylasttotal) + "%")
-	$("#rel7").text("Relative increase from last level: " + exp + "%")
+	lasteff7.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
+	rel7.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff7").text("Last level's Effect: N/A")
-	$("#rel7").text("Relative increase from last level: N/A")
+	lasteff7.textContent = ("Last level's Effect: N/A");
+	rel7.textContent = ("Relative increase from last level: N/A");
 }
 return total/100+1;
 }
 //////////
 function updatehalberd() {
-var level = $("#input8")[0].value;
+var level = input8.value;
 var ghostlevel=level;
 var total=0;
 if(ghostlevel>=100) {
@@ -291,19 +291,19 @@ if(level>100) {
 var displaytotal = Math.floor(total);
 var displaylasttotal = Math.floor(lasttotal);
 var exp = Math.floor(total/lasttotal*1000000-1000000)/10000;
-$("#eff8").text("Effect: " + Math.round(displaytotal) + "%");
+eff8.textContent = ("Effect: " + Math.round(displaytotal) + "%");
 if(level>1) {
-	$("#lasteff8").text("Last level's Effect: " + Math.round(displaylasttotal) + "%")
-	$("#rel8").text("Relative increase from last level: " + exp + "%")
+	lasteff8.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
+	rel8.textContent = ("Relative increase from last level: " + exp + "%");
 } else {
-	$("#lasteff8").text("Last level's Effect: N/A")
-	$("#rel8").text("Relative increase from last level: N/A")
+	lasteff8.textContent = ("Last level's Effect: N/A");
+	rel8.textContent = ("Relative increase from last level: N/A");
 }
 return total/100+1;
 }
 //////////
 setInterval(function() {
-	var baseattack = $("#baseattackinput")[0].value;
+	var baseattack = baseattackinput.value;
 	baseattack = baseattack/100+1;
 	var awakening1power = updateawakening1();
 	var awakening2power = updateawakening2();
@@ -319,16 +319,16 @@ setInterval(function() {
 		var totalpowerstring = totalpower.toString();
 		console.log(totalpowerstring);
 		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3];
-		$("#totalpower").text("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
+		totalpowerdisplay.textContent = ("Total Power: " + totalpowernum + "e+" + Math.floor(totalpowerexp));
 	} else if(totalpower<1e20) {
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
 		console.log(totalpowerstring);
 		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[1] + totalpowerstring[2];
-		$("#totalpower").text("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
+		totalpowerdisplay.textContent = ("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
 		if(totalpower<1e5) {
-		$("#totalpower").text("Total Power: " + (Math.floor(totalpower*100)/100));
+		totalpowerdisplay.textContent = ("Total Power: " + (Math.floor(totalpower*100)/100));
 		}
 	}
-}, 200)
+}, 200);
 });
