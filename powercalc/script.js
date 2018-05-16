@@ -319,7 +319,7 @@ setInterval(function() {
 		var totalpowerstring = totalpower.toString();
 		console.log(totalpowerstring);
 		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3];
-		$("#totalpower").text("Total Power: " + totalpowernum + "e+" + Math.floor(totalpowerexp));
+		$("#totalpower").text("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
 	} else if(totalpower<1e20) {
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
