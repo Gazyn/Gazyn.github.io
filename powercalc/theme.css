@@ -70,7 +70,6 @@ input[type=number] {
 #totalpower {
 	z-index:10;
 	position:absolute;
-	-webkit-transform: translate3d(0,0,0);
 	top:10px;
 	left:450px;
 	background-color:blue;
