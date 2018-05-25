@@ -342,6 +342,46 @@ if(level>1) {
 return total+1;
 }
 //////////
+function updatecoatofgold() {
+if(input10.value>300) {
+	input10.value=300;
+}
+var level = input10.value;
+var ghostlevel=level;
+var total=0;
+if(ghostlevel==300) {
+	total=9;
+	ghostlevel=0;
+} else if(ghostlevel>100) {
+	total+=5;
+	ghostlevel-=100;
+	while(ghostlevel>0) {
+		total+=0.02;
+		ghostlevel-=1;
+	}
+} else while(ghostlevel>0) {
+	total+=0.05;
+	ghostlevel-=1; 
+}
+if(level>100) {
+	var lasttotal=total-0.02;
+} else {
+	var lasttotal=total-0.05;
+}
+var displaytotal = Math.floor(total*100);
+var displaylasttotal = Math.floor(lasttotal*100);
+var exp = Math.floor(total/lasttotal*10000-10000)/100
+eff10.textContent = ("Effect: " + Math.round(displaytotal) + "%");
+if(level>1) {
+	lasteff10.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
+	rel10.textContent = ("Relative increase from last level: " + exp + "%");
+} else {
+	lasteff10.textContent = ("Last level's Effect: N/A");
+	rel10.textContent = ("Relative increase from last level: N/A");
+}
+return total+1;
+}
+//////////
 setInterval(function() {
 	var baseattack = baseattackinput.value;
 	baseattack = baseattack/100+1;
@@ -354,7 +394,8 @@ setInterval(function() {
 	var philostonepower = updatephilostone();
 	var goldenglovespower = updategoldengloves();
 	var caduceuspower = updatecaduceus();
-	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower*caduceuspower;
+	var coatofgoldpower = updatecoatofgold();
+	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower*caduceuspower*coatofgoldpower;
 	if(totalpower>1e20) {	
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
