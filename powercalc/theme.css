@@ -75,6 +75,14 @@ input[type=number] {
 	width:325px;
 	height:125px;
 }
+#coatofgold {
+	position:absolute;
+	top:200px;
+	left:700px;
+	background: rgba(250, 200, 70, 0.2);
+	width:325px;
+	height:125px;
+}
 #totalpowerdisplay {
 	z-index:10;
 	position:absolute;
