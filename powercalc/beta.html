@@ -7,8 +7,10 @@
 	<link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 <body>
-<b>Basic +Attack: </b><input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation and omit the %."><br>
+<button id="tab1button">Power Calculation</button><button id="tab2button">Floor Calculation (beta)</button><br>
 <div id="tab1">
+Basic +Attack: <input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation."></input><br>
+<div id="allitems">
 <div id="awakening1">
 <b>Awakening Sword</b><br>
 Level: <input type="number" min="0" max="70" id="input1"><br>
@@ -88,8 +90,12 @@ Level: <input type="number" min="0" max="300" id="input10"><br>
 <span id="eff10"></span><br>
 <span id="lasteff10"></span><br>
 </div>
-
 </div>
 <br><br><span id="totalpowerdisplay"></span><br>
+</div>
+<div id="tab2">
+Power increase: <input type="number" id="powermultinput">x</input><br>
+Estimated floors gained: <span id="powermultoutput"></span>
+</div>
 </body>
 </html>
