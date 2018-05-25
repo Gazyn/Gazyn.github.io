@@ -1,5 +1,13 @@
 document.addEventListener("DOMContentLoaded", function(event) { 
 //////////
+tab1button.addEventListener("click", function() {
+	tab1.style.visibility="visible";
+	tab2.style.visibility="hidden";
+});
+tab2button.addEventListener("click", function() {
+	tab1.style.visibility="hidden";
+	tab2.style.visibility="visible";
+});
 function updateawakening1() {
 if(input1.value>70) {
 	input1.value=70;
@@ -396,11 +404,15 @@ setInterval(function() {
 	var caduceuspower = updatecaduceus();
 	var coatofgoldpower = updatecoatofgold();
 	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower*caduceuspower*coatofgoldpower;
-	if(totalpower>1e20) {	
+	if(totalpower>=1e20) {	
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
 		console.log(totalpowerstring);
-		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3];
+		if(totalpowerstring.length>6) {
+			var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3];
+		} else {
+			var totalpowernum = totalpowerstring[0] + ".00";
+		}
 		totalpowerdisplay.textContent = ("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
 	} else if(totalpower<1e20) {
 		var totalpowerexp = Math.log10(totalpower);
@@ -411,5 +423,8 @@ setInterval(function() {
 		totalpowerdisplay.textContent = ("Total Power: " + (Math.floor(totalpower*100)/100));
 		}
 	}
-}, 200);
+	if(!powermultinput.value=="") {
+	powermultoutput.textContent = (Math.round(Math.log(powermultinput.value)/Math.log(1.035)*10)/10);
+	}
+	}, 200);
 });
