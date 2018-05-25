@@ -4,6 +4,9 @@ html {
 input[type=number] {
 	width:50px;
 }
+#tab2 {
+	visibility:hidden;
+}
 #baseattackinput {
 	font-size:15px;
 }
@@ -93,6 +96,6 @@ input[type=number] {
 	font-size:20px;
 	font-family:Helvetica;
 }
-#tab1 {
+#allitems {
 	text-align:center;
 }
