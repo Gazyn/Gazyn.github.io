@@ -71,7 +71,7 @@ input[type=number] {
 	position:absolute;
 	top:50px;
 	left:700px;
-	background: rgba(150, 100, 70, 0.2);
+	background: rgba(150, 150, 150, 0.2);
 	width:325px;
 	height:125px;
 }
