@@ -8,11 +8,6 @@ tab2button.addEventListener("click", function() {
 	tab1.style.visibility="hidden";
 	tab2.style.visibility="visible";
 });
-//Dumb temporary thing because css won't go live
-tab1.style.text-align="left";
-allitems.style.text-align="center";
-tab2.style.visibility="hidden";
-//Remove this later ^
 function updateawakening1() {
 if(input1.value>70) {
 	input1.value=70;
