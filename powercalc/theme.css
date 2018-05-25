@@ -67,6 +67,14 @@ input[type=number] {
 	width:325px;
 	height:125px;
 }
+#caduceus {
+	position:absolute;
+	top:50px;
+	left:700px;
+	background: rgba(150, 100, 70, 0.2);
+	width:325px;
+	height:125px;
+}
 #totalpowerdisplay {
 	z-index:10;
 	position:absolute;
