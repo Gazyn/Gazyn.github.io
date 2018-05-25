@@ -404,25 +404,7 @@ setInterval(function() {
 	var caduceuspower = updatecaduceus();
 	var coatofgoldpower = updatecoatofgold();
 	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower*caduceuspower*coatofgoldpower;
-	if(totalpower>=1e20) {	
-		var totalpowerexp = Math.log10(totalpower);
-		var totalpowerstring = totalpower.toString();
-		console.log(totalpowerstring);
-		if(totalpowerstring.length>6) {
-			var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[2] + totalpowerstring[3];
-		} else {
-			var totalpowernum = totalpowerstring[0] + ".00";
-		}
-		totalpowerdisplay.textContent = ("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
-	} else if(totalpower<1e20) {
-		var totalpowerexp = Math.log10(totalpower);
-		var totalpowerstring = totalpower.toString();
-		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[1] + totalpowerstring[2];
-		totalpowerdisplay.textContent = ("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
-		if(totalpower<1e5) {
-		totalpowerdisplay.textContent = ("Total Power: " + (Math.floor(totalpower*100)/100));
-		}
-	}
+	totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
 	if(!powermultinput.value=="") {
 	powermultoutput.textContent = (Math.round(Math.log(powermultinput.value)/Math.log(1.035)*10)/10);
 	}
