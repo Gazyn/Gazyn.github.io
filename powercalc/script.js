@@ -284,9 +284,9 @@ if(ghostlevel>=100) {
 	}
 }
 if(level>100) {
-	lasttotal=total-5;
+	var lasttotal=total-5;
 } else {
-	lasttotal=total-10;
+	var lasttotal=total-10;
 }
 var displaytotal = Math.floor(total);
 var displaylasttotal = Math.floor(lasttotal);
@@ -302,6 +302,46 @@ if(level>1) {
 return total/100+1;
 }
 //////////
+function updatecaduceus() {
+if(input9.value>600) {
+	input9.value=600;
+}
+var level = input9.value;
+var ghostlevel=level;
+var total=0;
+if(ghostlevel==600) {
+	total=28;
+	ghostlevel=0;
+} else if(ghostlevel>200) {
+	total+=20;
+	ghostlevel-=200;
+	while(ghostlevel>0) {
+		total+=0.02;
+		ghostlevel-=1;
+	}
+} else while(ghostlevel>0) {
+	total+=0.1;
+	ghostlevel-=1; 
+}
+if(level>200) {
+	var lasttotal=total-0.02;
+} else {
+	var lasttotal=total-0.1;
+}
+var displaytotal = Math.floor(total*100);
+var displaylasttotal = Math.floor(lasttotal*100);
+var exp = Math.floor(total/lasttotal*10000-10000)/100
+eff9.textContent = ("Effect: " + Math.round(displaytotal) + "%");
+if(level>1) {
+	lasteff9.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
+	rel9.textContent = ("Relative increase from last level: " + exp + "%");
+} else {
+	lasteff9.textContent = ("Last level's Effect: N/A");
+	rel9.textContent = ("Relative increase from last level: N/A");
+}
+return total+1;
+}
+//////////
 setInterval(function() {
 	var baseattack = baseattackinput.value;
 	baseattack = baseattack/100+1;
@@ -313,7 +353,8 @@ setInterval(function() {
 	var halberdpower = updatehalberd();
 	var philostonepower = updatephilostone();
 	var goldenglovespower = updategoldengloves();
-	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower;
+	var caduceuspower = updatecaduceus();
+	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower*caduceuspower;
 	if(totalpower>1e20) {	
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
