@@ -405,9 +405,6 @@ setInterval(function() {
 	} else if(totalpower<1e20) {
 		var totalpowerexp = Math.log10(totalpower);
 		var totalpowerstring = totalpower.toString();
-		console.log("Total Power: " + totalpower);
-		console.log("Total Power String: " + totalpowerstring);
-		console.log("Total Power Exponent: " + totalpowerexp);
 		var totalpowernum = totalpowerstring[0] + "." + totalpowerstring[1] + totalpowerstring[2];
 		totalpowerdisplay.textContent = ("Total Power: " + totalpowernum + "e" + Math.floor(totalpowerexp));
 		if(totalpower<1e5) {
