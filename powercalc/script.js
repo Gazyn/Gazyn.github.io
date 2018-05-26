@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var totalpower = baseattack * awakening1power * awakening2power * mithrilswordpower * mistilteinnpower * goldvesselspower * halberdpower * philostonepower * goldenglovespower * caduceuspower * coatofgoldpower;
         totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
         if (!powermultinput.value == "") {
-            powermultoutput.textContent = (Math.round(Math.log(powermultinput.value) / Math.log(1.0345)) + " - " + Math.round(Math.log(powermultinput.value) / Math.log(1.0317)));
+            powermultoutput.textContent = (Math.round(Math.log(powermultinput.value) / Math.log(1.034)) + " - " + Math.round(Math.log(powermultinput.value) / Math.log(1.0322)));
         }
     }, 200);
 });
