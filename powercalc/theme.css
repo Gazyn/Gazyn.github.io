@@ -4,11 +4,22 @@ html {
 input[type=number] {
 	width:50px;
 }
+#tab1button {
+	position:absolute;
+	top:0px;
+}
+#tab2button {
+	position:absolute;
+	top:0px;
+	left:125px;
+}
 #tab2 {
 	visibility:hidden;
 }
 #baseattackinput {
 	font-size:15px;
+	position:absolute;
+	top:23px;
 }
 #awakening1 {
 	position:absolute;
@@ -93,10 +104,11 @@ input[type=number] {
 	left:450px;
 	background-color:blue;
 	color:white;
+	white-space:nowrap;
 	font-size:20px;
 	font-family:Helvetica;
 }
 #allitems {
 	text-align:center;
 }
-}
+

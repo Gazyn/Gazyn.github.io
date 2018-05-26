@@ -3,11 +3,13 @@
 <head>
 	<title id="tabname">Tower of Hero Power Calculator</title>
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<script src="script.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="theme.min.css">
+	<script src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 <body>
-<b>Basic +Attack: </b><input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation and omit the %."><br>
+<button id="tab1button">Power Calculation</button><button id="tab2button">Floor Estimation</button><br>
+<div id="tab1">
+Basic +Attack: <input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation."></input><br>
 <div id="allitems">
 <div id="awakening1">
 <b>Awakening Sword</b><br>
@@ -27,7 +29,7 @@ Level: <input type="number" min="0" max="30" id="input2"><br>
 
 <div id="mithrilsword">
 <b>Mithril Sword</b><br>
-Level: <input type="number" min="0" max="45 "id="input3"><br>
+Level: <input type="number" min="0" max="45" id="input3"><br>
 <span id="rel3"></span><br>
 <span id="eff3"></span><br>
 <span id="lasteff3"></span><br>
@@ -72,7 +74,29 @@ Level: <input type="number" min="0" id="input8"><br>
 <span id="eff8"></span><br>
 <span id="lasteff8"></span><br>
 </div>
+
+<div id="caduceus">
+<b>Caduceus</b><br>
+Level: <input type="number" min="0" max="600" id="input9"><br>
+<span id="rel9"></span><br>
+<span id="eff9"></span><br>
+<span id="lasteff9"></span><br>
+</div>
+	
+<div id="coatofgold">
+<b>Coat of Gold</b><br>
+Level: <input type="number" min="0" max="300" id="input10"><br>
+<span id="rel10"></span><br>
+<span id="eff10"></span><br>
+<span id="lasteff10"></span><br>
+</div>
 </div>
 <br><br><span id="totalpowerdisplay"></span><br>
+</div>
+<div id="tab2">
+<a target="_blank" href="howdoyouestimatefloors.html">How to use?</a><br>
+Power increase: <input type="number" min="1" step="0.1" id="powermultinput">x</input><br>
+Estimated floors gained: <span id="powermultoutput"></span>
+</div>
 </body>
 </html>

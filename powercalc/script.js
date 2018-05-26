@@ -336,8 +336,8 @@ if(level>200) {
 } else {
 	var lasttotal=total-0.1;
 }
-var displaytotal = Math.floor(total*100);
-var displaylasttotal = Math.floor(lasttotal*100);
+var displaytotal = Math.round(total*100);
+var displaylasttotal = Math.round(lasttotal*100);
 var exp = Math.floor(total/lasttotal*10000-10000)/100
 eff9.textContent = ("Effect: " + Math.round(displaytotal) + "%");
 if(level>1) {
@@ -376,8 +376,8 @@ if(level>100) {
 } else {
 	var lasttotal=total-0.05;
 }
-var displaytotal = Math.floor(total*100);
-var displaylasttotal = Math.floor(lasttotal*100);
+var displaytotal = Math.round(total*100);
+var displaylasttotal = Math.round(lasttotal*100);
 var exp = Math.floor(total/lasttotal*10000-10000)/100
 eff10.textContent = ("Effect: " + Math.round(displaytotal) + "%");
 if(level>1) {
@@ -406,7 +406,7 @@ setInterval(function() {
 	var totalpower = baseattack*awakening1power*awakening2power*mithrilswordpower*mistilteinnpower*goldvesselspower*halberdpower*philostonepower*goldenglovespower*caduceuspower*coatofgoldpower;
 	totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
 	if(!powermultinput.value=="") {
-	powermultoutput.textContent = (Math.round(Math.log(powermultinput.value)/Math.log(1.035)*10)/10);
+	powermultoutput.textContent = (Math.round(Math.log(powermultinput.value)/Math.log(1.04)) + " - " + Math.round(Math.log(powermultinput.value)/Math.log(1.03)));
 	}
 	}, 200);
 });
