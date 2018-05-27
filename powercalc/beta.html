@@ -1,12 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="refresh" content="0; url=index.html">
-	<script>
-		console.log("The live version has been updated and there is currently no beta version. Redirecting to live version as it's more lightweight and literally the same thing.")
-	</script>
+	<title id="tabname">Tower of Hero Power Calculator</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<script src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 <body>
-<p><a href="index.html">Redirect</a></p>
+<button id="tab1button">Power Calculation</button><button id="tab2button">Floor Estimation</button><br>
+<div id="tab1">
+Basic +Attack: <input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation."></input><br>
+<div id="allitems">
+<div id="awakening1">
+<b>Awakening Sword</b><br>
+Level: <input type="number" min="0" max="70" id="input1"><br>
+<span id="rel1"></span><br>
+<span id="eff1"></span><br>
+<span id="lasteff1"></span><br>
+</div>
+
+<div id="awakening2">
+<b>Awakening Sword +1</b><br>
+Level: <input type="number" min="0" max="30" id="input2"><br>
+<span id="rel2"></span><br>
+<span id="eff2"></span><br>
+<span id="lasteff2"></span><br>
+</div>
+
+<div id="caduceus">
+<b>Caduceus</b><br>
+Level: <input type="number" min="0" max="600" id="input9"><br>
+<span id="rel9"></span><br>
+<span id="eff9"></span><br>
+<span id="lasteff9"></span><br>
+</div>
+
+<div id="mithrilsword">
+<b>Mithril Sword</b><br>
+Level: <input type="number" min="0" max="45" id="input3"><br>
+<span id="rel3"></span><br>
+<span id="eff3"></span><br>
+<span id="lasteff3"></span><br>
+</div>
+
+<div id="mistilteinn">
+<b>Mistilteinn</b><br>
+Level: <input type="number" min="0" max="105" id="input4"><br>
+<span id="rel4"></span><br>
+<span id="eff4"></span><br>
+<span id="lasteff4"></span><br>
+</div>
+
+<div id="coatofgold">
+<b>Coat of Gold</b><br>
+Level: <input type="number" min="0" max="300" id="input10"><br>
+<span id="rel10"></span><br>
+<span id="eff10"></span><br>
+<span id="lasteff10"></span><br>
+</div>
+
+<div id="goldengloves">
+<b>Golden Gloves</b><br>
+Level: <input type="number" min="0" id="input5"><br>
+<span id="rel5"></span><br>
+<span id="eff5"></span><br>
+<span id="lasteff5"></span><br>
+</div>
+
+<div id="goldvessels">
+<b>Gold Vessels</b><br>
+Level: <input type="number" min="0" id="input6"><br>
+<span id="rel6"></span><br>
+<span id="eff6"></span><br>
+<span id="lasteff6"></span><br>
+</div>
+
+<div id="philostone">
+<b>Philosopher's Stone</b><br>
+Level: <input type="number" min="0" id="input7"><br>
+<span id="rel7"></span><br>
+<span id="eff7"></span><br>
+<span id="lasteff7"></span><br>
+</div>
+
+<div id="halberd">
+<b>Halberd</b><br>
+Level: <input type="number" min="0" id="input8"><br>
+<span id="rel8"></span><br>
+<span id="eff8"></span><br>
+<span id="lasteff8"></span><br>
+</div>
+
+</div>
+<br><br><span id="totalpowerdisplay"></span><br>
+</div>
+<div id="tab2">
+Top Floor: <input type="number" min="0" step="1" id="topfloorinput"><br>
+Power: <input type="number" min="1" id="powerinput"><br>
+Estimated top floor: <span id="powermultoutput"></span><br>
+This has a 4% margin for error, with outliers being 6%
+</div>
 </body>
 </html>
