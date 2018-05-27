@@ -430,8 +430,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
         if (!powerinput.value == "") {
             var log = 1+(1.585+topfloorinput.value*0.001117)/100
+			var lowestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*0.98/5)*5;
+			var highestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*1.02/5)*5;
             console.log(log);
-            powermultoutput.textContent = (Math.round(Math.log(powerinput.value) / Math.log(log)*0.98) + " - " + Math.round(Math.log(powerinput.value) / Math.log(log)*1.02));
+            console.log(lowestimate+highestimate/2);
+            floorestimateoutput.textContent = lowestimate + " - " + highestimate;
         }
     }, 200);
 });
