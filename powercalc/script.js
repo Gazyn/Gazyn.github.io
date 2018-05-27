@@ -431,7 +431,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if (!powerinput.value == "") {
             var log = 1+(1.585+topfloorinput.value*0.001117)/100
             console.log(log);
-            powermultoutput.textContent = (Math.round(Math.log(powerinput.value) / Math.log(log)));
+            powermultoutput.textContent = (Math.round(Math.log(powerinput.value) / Math.log(log)*0.96) + " - " + Math.round(Math.log(powerinput.value) / Math.log(log)*1.04));
         }
     }, 200);
 });
