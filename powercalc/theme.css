@@ -111,4 +111,6 @@ input[type=number] {
 #allitems {
 	text-align:center;
 }
-
+#powerinput {
+	width:80px;
+}
