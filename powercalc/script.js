@@ -433,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			var lowestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*0.98/5)*5;
 			var highestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*1.02/5)*5;
             console.log(log);
-            console.log(lowestimate+highestimate/2);
+            console.log((lowestimate+highestimate)/2);
             floorestimateoutput.textContent = lowestimate + " - " + highestimate;
         }
     }, 200);
