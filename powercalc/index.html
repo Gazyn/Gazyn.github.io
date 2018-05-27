@@ -3,8 +3,8 @@
 <head>
 	<title id="tabname">Tower of Hero Power Calculator</title>
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<script src="script.js"></script>
-	<link rel="stylesheet" type="text/css" href="theme.css">
+	<script src="script.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="theme.min.css">
 </head>
 <body>
 <button id="tab1button">Power Calculation</button><button id="tab2button">Floor Estimation</button><br>
@@ -95,10 +95,9 @@ Level: <input type="number" min="0" id="input8"><br>
 <br><br><span id="totalpowerdisplay"></span><br>
 </div>
 <div id="tab2">
-Top Floor: <input type="number" min="0" step="1" id="topfloorinput"><br>
-Power: <input type="number" min="1" id="powerinput"><br>
-Estimated top floor: <span id="powermultoutput"></span><br>
-This has a 4% margin for error, with outliers being 6%
+<a target="_blank" href="howdoyouestimatefloors.html">How to use?</a><br>
+Power increase: <input type="number" min="1" step="0.1" id="powermultinput">x</input><br>
+Estimated floors gained: <span id="powermultoutput"></span>
 </div>
 </body>
 </html>
