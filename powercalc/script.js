@@ -193,10 +193,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
         if(exp<1) {
-        	var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
-    	} else {
-    		var exp = exp.toPrecision(3);
-    	}
+            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        } else {
+            var exp = exp.toPrecision(3);
+        }
         eff5.textContent = ("Effect: " + Math.round(displaytotal) + "%");
         if (level > 1) {
             lasteff5.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
@@ -234,10 +234,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
         if(exp<1) {
-        	var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
-    	} else {
-    		var exp = exp.toPrecision(3);
-    	}
+            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        } else {
+            var exp = exp.toPrecision(3);
+        }
         eff6.textContent = ("Effect: " + Math.round(displaytotal) + "%");
         if (level > 1) {
             lasteff6.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
@@ -275,10 +275,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
         if(exp<1) {
-        	var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
-    	} else {
-    		var exp = exp.toPrecision(3);
-    	}
+            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        } else {
+            var exp = exp.toPrecision(3);
+        }
         eff7.textContent = ("Effect: " + Math.round(displaytotal) + "%");
         if (level > 1) {
             lasteff7.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
@@ -316,10 +316,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
         if(exp<1) {
-        	var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
-    	} else {
-    		var exp = exp.toPrecision(3);
-    	}
+            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        } else {
+            var exp = exp.toPrecision(3);
+        }
         eff8.textContent = ("Effect: " + Math.round(displaytotal) + "%");
         if (level > 1) {
             lasteff8.textContent = ("Last level's Effect: " + Math.round(displaylasttotal) + "%");
@@ -428,8 +428,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var coatofgoldpower = updatecoatofgold();
         var totalpower = baseattack * awakening1power * awakening2power * mithrilswordpower * mistilteinnpower * goldvesselspower * halberdpower * philostonepower * goldenglovespower * caduceuspower * coatofgoldpower;
         totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
-        if (!powermultinput.value == "") {
-            powermultoutput.textContent = (Math.round(Math.log(powermultinput.value) / Math.log(1.034)) + " - " + Math.round(Math.log(powermultinput.value) / Math.log(1.0322)));
+        if (!powerinput.value == "") {
+            var log = 1+(1.585+topfloorinput.value*0.001117)/100
+            console.log(log);
+            powermultoutput.textContent = (Math.round(Math.log(powerinput.value) / Math.log(log)));
         }
     }, 200);
 });
