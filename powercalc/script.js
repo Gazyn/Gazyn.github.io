@@ -192,8 +192,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -233,8 +233,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -274,8 +274,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -315,8 +315,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -428,11 +428,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var totalpower = baseattack * awakening1power * awakening2power * mithrilswordpower * mistilteinnpower * goldvesselspower * halberdpower * philostonepower * goldenglovespower * caduceuspower * coatofgoldpower;
         totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
         if (!powerinput.value == "") {
-            var log = 1+(1.585+topfloorinput.value*0.001117)/100
-			var lowestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*0.98/5)*5;
-			var highestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*1.02/5)*5;
+            var log = 1 + (1.585 + topfloorinput.value * 0.001117) / 100;
+            var lowestimate = Math.round(Math.log(powerinput.value) / Math.log(log) * 0.98 / 5) * 5;
+            var highestimate = Math.round(Math.log(powerinput.value) / Math.log(log) * 1.02 / 5) * 5;
             console.log(log);
-            console.log((lowestimate+highestimate)/2);
+            console.log((lowestimate + highestimate) / 2);
             floorestimateoutput.textContent = lowestimate + " - " + highestimate;
         }
     }, 200);
