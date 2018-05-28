@@ -414,8 +414,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     //////////
     setInterval(function() {
-        var baseattack = baseattackinput.value;
-        baseattack = baseattack / 100 + 1;
+        var baseattack = baseattackinput.value / 100 + 1;
         var awakening1power = updateawakening1();
         var awakening2power = updateawakening2();
         var mithrilswordpower = updatemithrilsword();
