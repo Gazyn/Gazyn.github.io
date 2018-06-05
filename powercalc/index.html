@@ -7,9 +7,9 @@
 	<link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 <body>
-<button id="tab1button">Power Calculation</button><button id="tab2button">Floor Estimation</button><br>
+<button id="tab1button">Power Calculation</button><button id="tab2button">Floor Estimation</button><button id="tab3button">Gold Box</button><br>
 <div id="tab1">
-Basic +Attack: <input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation."></input><br>
+<span id="baseattackinputtext">Basic +Attack: </span><input type="text" id="baseattackinput" title="Please use plain numbers or scientific notation."></input><br>
 <div id="allitems">
 <div id="awakening1">
 <b>Awakening Sword</b><br>
@@ -98,7 +98,11 @@ Level: <input type="number" min="0" id="input8"><br>
 Top Floor: <input type="number" min="0" step="1" id="topfloorinput"><br>
 Power: <input type="number" min="1" id="powerinput"><br>
 Estimated top floor: <span id="floorestimateoutput"></span><br>
-This is most accurate above floor 800.<br>
+This is most accurate between floors 800 and 1600.<br>
+</div>
+<div id="tab3">
+Gold Box Level: <input type="number" min="0" step="1" id="goldboxinput"><br>
+Effect: <span id="goldboxoutput"></span>
 </div>
 </body>
 </html>

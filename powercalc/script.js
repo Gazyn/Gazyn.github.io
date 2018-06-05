@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     //////////
+    var exponents = ["K", "M", "B", "T", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "aa", "ab", "ac", "ad", "ae", "af", "ag", "ah", "ai", "aj", "ak", "al", "am", "an", "ao", "ap", "aq", "ar", "as", "at", "au", "av", "aw", "ax", "ay", "az", "ba", "bb", "bc", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bk", "bl", "bm", "bn", "bo", "bp", "bq", "br", "bs", "bt", "bu", "bv", "bw", "bx", "by", "bz", "Legitamite? What does that mean? Is that like a chemical compound or something?"];
     tab1button.addEventListener("click", function() {
         tab1.style.visibility = "visible";
         tab2.style.visibility = "hidden";
+        tab3.style.visibility = "hidden";
     });
     tab2button.addEventListener("click", function() {
         tab1.style.visibility = "hidden";
         tab2.style.visibility = "visible";
+        tab3.style.visibility = "hidden";
+    });
+    tab3button.addEventListener("click", function() {
+        tab1.style.visibility = "hidden";
+        tab2.style.visibility = "hidden";
+        tab3.style.visibility = "visible";
     });
     //////////
     function updateawakening1() {
@@ -15,8 +23,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
         var level = input1.value;
         var ghostlevel = level;
-        var total = level*10+level*(level-1);
-        var lasttotal = total - (level+4)*2;
+        var total = level * 10 + level * (level - 1);
+        var lasttotal = total - (level + 4) * 2;
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = Math.floor((total / lasttotal - 1) * 10000) / 100;
@@ -38,8 +46,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var level = input2.value;
         var ghostlevel = level;
         var curr = 10;
-        var total = level*10+level*(level-1);
-        var lasttotal = total - (level+4)*2;
+        var total = level * 10 + level * (level - 1);
+        var lasttotal = total - (level + 4) * 2;
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = Math.floor((total / lasttotal - 1) * 10000) / 100;
@@ -181,8 +189,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -222,8 +230,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -263,8 +271,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -304,8 +312,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var displaytotal = Math.floor(total);
         var displaylasttotal = Math.floor(lasttotal);
         var exp = (total / lasttotal * 100 - 100);
-        if(exp<1) {
-            var exp = exp.toFixed(Math.abs(Math.log(exp)/Math.log(10))+3);
+        if (exp < 1) {
+            var exp = exp.toFixed(Math.abs(Math.log(exp) / Math.log(10)) + 3);
         } else {
             var exp = exp.toPrecision(3);
         }
@@ -417,12 +425,59 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var totalpower = baseattack * awakening1power * awakening2power * mithrilswordpower * mistilteinnpower * goldvesselspower * halberdpower * philostonepower * goldenglovespower * caduceuspower * coatofgoldpower;
         totalpowerdisplay.textContent = ("Total Power: " + totalpower.toPrecision(3));
         if (!powerinput.value == "") {
-            var log = 1+(1.585+topfloorinput.value*0.001117)/100
-			var lowestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*0.98/5)*5;
-			var highestimate = Math.round(Math.log(powerinput.value) / Math.log(log)*1.02/5)*5;
+            var log = 1 + (1.585 + topfloorinput.value * 0.001117) / 100
+            var lowestimate = Math.round(Math.log(powerinput.value) / Math.log(log) * 0.98 / 5) * 5;
+            var highestimate = Math.round(Math.log(powerinput.value) / Math.log(log) * 1.02 / 5) * 5;
             console.log(log);
-			console.log((lowestimate+highestimate)/2)
+            console.log((lowestimate + highestimate) / 2)
             floorestimateoutput.textContent = lowestimate + " - " + highestimate;
+        }
+        if (!goldboxinput.value == "") {
+            var level = goldboxinput.value;
+            var tiergoal = 10
+            var tier = 1;
+            var five = true;
+            while (level >= tiergoal) {
+                if (five) {
+                    tier += 1;
+                    tiergoal *= 5;
+                    five = false;
+                } else {
+                    tier += 1;
+                    tiergoal *= 2;
+                    five = true;
+                }
+            }
+            //Get gold amount
+            var result = Math.pow(4, tier - 1) * Math.pow(level, 2) + Math.pow(4, tier) * level;
+            if (result > 1e250) {
+                var exponent = exponents[82];
+            } else {
+                //Get appropriate exponent (K, M, B, etc)
+                var exponent = exponents[Math.floor((Math.floor(Math.log(result) / Math.log(10))) / 3) - 1];
+            };
+            //Get the amount of gold while considering exponents??
+            var resultnoexpo = (result / Math.pow(10, ((exponents.indexOf(exponent) + 1) * 3))).toFixed(3);
+            //Previous returns a float. Replace the decimal with an exponent
+            var decimalposition = resultnoexpo.toString().indexOf(".");
+            if (result >= 1e3) {
+                var finalresult = "";
+                for (var i = 0; i < resultnoexpo.toString().length; i++) {
+                    if (i == decimalposition) {
+                        finalresult = finalresult + exponent;
+                    } else {
+                        finalresult = finalresult + resultnoexpo[i];
+                    }
+                }
+                if (result >= 1e6) {
+                    finalresult = finalresult + exponents[exponents.indexOf(exponent) - 1];
+                }
+            //Ignore all this when theres no exponent
+            } else {
+                var finalresult = result;
+            }
+            //Find out how this is (probably) VERY broken in the morning.
+            goldboxoutput.textContent = finalresult + " gold on new dungeon";
         }
     }, 200);
 });
