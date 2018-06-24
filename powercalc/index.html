@@ -8,11 +8,14 @@
 </head>
 
 <body>
-	<button id="tab1button" onclick="switchtab(1)">Power Calculation</button>
-	<button id="tab2button" onclick="switchtab(2)">Floor Estimation</button><button id="tab3button" onclick="switchtab(3)">Gold Box</button>
-	<button id="tab4button" onclick="switchtab(4)">Basic Attack Items</button><br> Use in-game numbers: <input type="checkbox" id="numberscheck" onclick="toggleFormat()">
+	<button id="tab1button" onclick="switchTab(1)">Power Calculation</button>
+	<button id="tab2button" onclick="switchTab(2)">Floor Estimation</button>
+	<button id="tab3button" onclick="switchTab(3)">Gold Box</button>
+	<button id="tab4button" onclick="switchTab(4)">Basic Attack Items</button>
+	<button id="tab5button" onclick="switchTab(5)">Notation</button><br>
+	Use in-game numbers: <input type="checkbox" id="numbersCheck" onclick="toggleFormat()">
 	<div id="tab1">
-		<span id="baseattackinputtext">Basic +Attack: </span><input type="text" id="baseattackinput" onchange="updatePower()" title="Please use plain numbers or scientific notation."></input><br>
+		<span id="baseattackinputtext">Basic +Attack: </span><input type="text" id="baseAttackInput" onchange="updatePower()" title="Please use plain numbers or scientific notation."><br>
 		<div id="allitems">
 			<div id="awakening1">
 				<b>Awakening Sword</b><br> Level: <input type="number" min="0" max="70" id="input1" onchange="updatePower()"><br>
@@ -87,15 +90,12 @@
 		</div>
 		<span id="totalpowerdisplay"></span>
 	</div>
-
 	<div id="tab2">
-		Top Floor: <input type="number" min="0" step="1" id="topfloorinput" onchange="updateFloor()"><br> Power: <input type="number" min="1" id="powerinput" onchange="updateFloor()"><br> Estimated top floor: <span id="floorestimateoutput"></span><br> This is most accurate between floors 800 and 1600.<br>
+		Top Floor: <input type="number" min="0" step="1" id="topFloorInput" onchange="updateFloor()"><br> Power: <input type="number" min="1" id="powerInput" onchange="updateFloor()"><br> Estimated top floor: <span id="floorEstimateOutput"></span><br> This is most accurate between floors 800 and 1600.<br>
 	</div>
-
 	<div id="tab3">
-		Gold Box Level: <input type="number" min="0" step="1" id="goldboxinput" onchange="updateGoldBox()"><br> Effect: <span id="goldboxoutput"></span>
+		Gold Box Level: <input type="number" min="0" step="1" id="goldboxinput" onchange="updateGoldBox()"><br> Effect: <span id="goldBoxOutput"></span>
 	</div>
-
 	<div id="tab4">
 		<div id="claymore">
 			<b>Claymore</b><br> Level: <input type="number" min="0" id="claymoreInput" onchange="updateAttacks()"> + <input type="number" min="0" id="claymoreGainInput" onchange="updateAttacks()"> per run<br>
@@ -118,7 +118,11 @@
 		Total attack gained per run: <span id="totalAttackPerRun"></span><br>
 		<!-- wow what a good element id -->
 	</div>
-	<script src="script.min.js"></script>
+	<div id="tab5">
+		Letters: <input id="letterInput" onchange="updateNotation(1)"><br>
+		Scientific notation: <input id="scientificInput" onchange="updateNotation(2)"><br>
+	</div>
+	<script src="script.js"></script>
 	<!-- unminified script here: gazyn.github.io/powercalc/script.js -->
 </body>
 

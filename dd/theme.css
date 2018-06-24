@@ -1,19 +1,14 @@
 html * {
-  text-shadow:0.5px 0.5px 1px #d3d3d3;
+  text-shadow:1px 1px 1px #d3d3d3;
 }
 body {
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: silver;
 }
 #enemywrapper {
   width:100%;
   position:absolute;
   top:calc(50vh - 100px);
   text-align:center;
-}
-#enemycontainer {
-  var screenwidth = screen.width;
-  z-index: 11;
 }
 #buyeverythingbutton {
   position:absolute;
@@ -85,9 +80,8 @@ body {
   border: 1px solid black;
   background: #00ff00;
   text-align:left;
-  transition: width;
-  transition-duration: 0.05s;
-	font-family: Copperplate, Copperplate Gothic Light, fantasy;
+  transition: width 0.3s ease-out;
+  font-family: Copperplate, Copperplate Gothic Light, fantasy;
 	font-size: 24px;
 	font-style: normal;
 	font-variant: normal;
@@ -153,6 +147,7 @@ body {
   border: 1px solid black;
   background: #ff0000;
   text-align:left;
+  transition: width 0.2s ease;
 	font-family: Copperplate, Copperplate Gothic Light, fantasy;
 	font-size: 24px;
 	font-style: normal;
@@ -174,7 +169,7 @@ body {
   visibility: hidden;
   position:absolute;
 }
-#healup, #healcost, #maxmana, #healercritchance, #maxhp, #armor, #blockchance, #blockfactor, #dmg, #critchance, #critfactor, #manaregen, #attackspeed, #autohealspeed, #castspeed {
+#healup, #healcost, #maxmana, #healercritchance, #healhot, #maxHp, #armor, #blockchance, #blockfactor, #dmg, #critchance, #critfactor, #manaregen, #attackspeed, #autohealspeed, #castspeed {
   border-radius: 4px;
   font-family: arial;
   font-size:15px;

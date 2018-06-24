@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title id="tabname">Loading...</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<script src='HackTimer.min.js'></script>
+	<script src='HackTimerWorker.min.js'></script>
+	<script src="https://cdn.rawgit.com/erosson/swarm-numberformat/v0.4.0/dist/swarm-numberformat.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="theme.css">
+</head>
+<body>
+<span id="gold"></span><br>
+Pause: <input type="checkbox" id="pause"></input>
+<div id="barwrapper">
+<div id="mana"><span id="manatext"></span></div>
+<div id="herohp"><span id="herotext"></span></div>
+<div id="playerattackbar"></div>
+<div id="enemyhp"><span id="enemytext"></span></div>
+<div id="enemyattackbar"></div>
+<div id="castbar"><span id="casttext"></span></div>
+</div>
+<div id="levelselector">
+<button id="prevlevel"><</button><button id="level">Level: 100000</button><button id="nextlevel">></button>
+</div>
+<button id="buyeverythingbutton">Buy 0 of everything</button>
+<span id="autoprogresstext">Autoprogress</span><input type="checkbox" id="autoprogress">
+<button id="tab1button">Upgrades</button><button id="tab2button">Statistics</button><button id="tab3button">Ascension</button><button id="tab4button">Settings</button><br>
+<div id="tab1" class="tab">
+<div id="healerupgrades">
+  <p>Healer Upgrades</p>
+	<button id="healerupgradesbutton"></button>
+  <button id="healup"></button>
+  <button id="healcost"></button>
+  <button id="maxmana"></button>
+	<button id="healercritchance"></button>
+	<button id="healhot"></button>
+</div>
+<div id="heroupgrades">
+  <p>Hero Upgrades</p>
+	<button id="heroupgradesbutton"></button>
+  <button id="maxHp"></button>
+  <button id="armor"></button>
+  <button id="blockchance"></button>
+  <button id="blockfactor"></button>
+</div>
+<div id="archerupgrades">
+  <p>Archer Upgrades</p>
+	<button id="archerupgradesbutton"></button>
+  <button id="dmg"></button>
+  <button id="critchance"></button>
+  <button id="critfactor"></button>
+</div>
+<div id="generalupgrades">
+  <p>General Upgrades</p>
+	<button id="manaregen"></button>
+  <button id="attackspeed"></button>
+	<button id="autohealspeed"></button>
+	<button id="castspeed"></button>
+</div>
+</div>
+<div id="tab2" class="tab">
+	<div id="stats">Hero stats<br><br>
+	<span id="stats11"></span><br>
+	<span id="stats12"></span><br>
+	<span id="stats13"></span><br>
+	<span id="stats14"></span><br>
+	<span id="stats15"></span></div><br>
+	<div id="stats">Healer stats<br><br>
+	<span id="stats21"></span><br>
+	<span id="stats22"></span><br>
+	<span id="stats23"></span><br>
+	<span id="stats24"></span><br>
+	<span id="stats25"></span><br>
+	<span id="stats26"></span><br>
+	<span id="stats27"></span></div><br>
+	<div id="stats">Archer stats<br><br>
+	<span id="stats31"></span><br>
+	<span id="stats32"></span><br>
+	<span id="stats33"></span><br>
+	<span id="stats34"></span><br>
+	<span id="stats35"></span></div><br>
+	<div id="stats">Enemy stats<br><br>
+	<span id="stats41"></span><br>
+	<span id="stats42"></span><br>
+	<span id="stats43"></span><br>
+	<span id="stats44"></span><br>
+	<span id="stats45"></span></div><br>
+	<div id="stats">General stats<br><br>
+	<span id="stats51"></span><br>
+	<span id="stats52"></span><br>
+	<span id="stats91"></span><br>
+	<span id="stats95"></span><br>
+	<span id="stats96"></span><br>
+	<span id="stats97">Update 8</span><br>
+	<span id="stats98"></span><br>
+	<span id="stats99"></span></div><br>
+</div>
+<div id="tab3" class="tab">
+
+</div>
+<div id="tab4" class="tab">
+	<input id="slider" type="range" min="1" max="6"><span id="significantfigures"></span><br>
+	<button id="scientific">Scientific notation</button>
+	<button id="standard">Standard notation</button>
+	<button id="engineering">Engineering notation</button><br>
+	<button id="savebutton">Save</button>
+	<button id="loadbutton">Load</button><br>
+	<button id="deletesavebutton">DELETE SAVE</button><br>
+	<a target="_blank" href="changelog.html">Changelog</a>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
