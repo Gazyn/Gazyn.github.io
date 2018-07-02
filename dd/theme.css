@@ -70,7 +70,7 @@ body {
   top:0px;
   height:36px;
   border: 1px solid black;
-  background: #00ff00;
+  background-image: url("dat/HeroHp.png");
   text-align:left;
   transition: width 0.3s ease-out;
   font-family: Copperplate, Copperplate Gothic Light, fantasy;
@@ -83,8 +83,8 @@ body {
 #playerattackbar {
   position:absolute;
   white-space: nowrap;
-  top:30px;
-  height:6px;
+  top:32px;
+  height:4px;
   border: 1px solid black;
   background: #ffff00;
   z-index:1;
@@ -92,8 +92,8 @@ body {
 #enemyattackbar {
   position:absolute;
   white-space: nowrap;
-  top:138px;
-  height:6px;
+  top:140px;
+  height:4px;
   border: 1px solid black;
   background: #ffff00;
   z-index:1;
@@ -105,7 +105,7 @@ body {
   border: 1px solid black;
   top:36px;
   color: blue;
-  background: #4444ff;
+  background-image: url("dat/Mana.png");
   text-align:left;
   transition: width;
   transition-duration: 0.05s;
@@ -137,7 +137,7 @@ body {
   top:108px;
   height:36px;
   border: 1px solid black;
-  background: #ff0000;
+  background-image: url("dat/EnemyHp.png");
   text-align:left;
   transition: width 0.2s ease;
 	font-family: Copperplate, Copperplate Gothic Light, fantasy;
@@ -161,7 +161,7 @@ body {
   visibility: hidden;
   position:absolute;
 }
-#healup, #healcost, #maxmana, #healercritchance, #healhot, #maxHp, #armor, #blockchance, #blockfactor, #dmg, #critchance, #critfactor, #manaregen, #attackspeed, #autohealspeed, #castspeed {
+#healup, #healcost, #maxmana, #healercritchance, #healhot, #maxHp, #armor, #blockchance, #blockfactor, #dmg, #critchance, #critfactor, #manaregen, #attackspeed, #castspeed {
   border-radius: 4px;
   font-family: arial;
   font-size:15px;
@@ -189,33 +189,45 @@ body {
 }
 #healerupgrades {
   position:absolute;
-  top:20px;
-  left: 0px;
-  background: #50FF50;
+  top:25px;
+  left: 5px;
+  background: #96C832;
   width: 300px;
   height: 250px;
+  border-right:solid 1px black;
+  border-bottom:solid 1px black;
+  border-radius:15px 0px 0px 0px;
 }
 #heroupgrades {
   position:absolute;
-  top:20px;
-  left: 300px;
-  background: #7070FF;
+  top:25px;
+  left: 305px;
+  background: #6464FA;
   width: 300px;
   height: 250px;
+  border-left:solid 1px black;
+  border-bottom:solid 1px black;
+  border-radius:0px 15px 0px 0px;
 }
 #archerupgrades {
   position:absolute;
-  top:270px;
-  left: 0px;
-  background: red;
+  top:275px;
+  left: 5px;
+  background: #A0785A;
   width: 300px;
   height: 250px;
+  border-right:solid 1px black;
+  border-top:solid 1px black;
+  border-radius:0px 0px 0px 15px;
 }
 #generalupgrades {
   position:absolute;
-  top:270px;
-  left: 300px;
-  background-color:gray;
+  top:275px;
+  left: 305px;
+  background-color:#F5E6AA;
   width:300px;
   height:250px;
+  border-left:solid 1px black;
+  border-top:solid 1px black;
+  border-radius:0px 0px 15px 0px;
 }

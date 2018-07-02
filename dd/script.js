@@ -29,8 +29,10 @@ var healer = {
     manaregen: 0,
     castspeed: 0,
     castreq: 0,
-    autohealspeed: 0,
-    autohealreq: 0
+    autohealspeed: 50,
+    autohealreq: 0,
+	hottimer: 0,
+	hotamount: 0
 };
 var hero = {
     hp: 0,
@@ -40,7 +42,6 @@ var hero = {
     armor: 0,
     absorbs: 0
 };
-var pendinghp = 0;
 var archer = {
     dmg: 0,
     critchance: 0,
@@ -107,12 +108,8 @@ var upgrades = {
         label: "+10% attack speed",
         bought: 0
     },
-    autohealspeed: {
-        label: "+21.6% frequency to autoheal",
-        bought: 0
-    },
     castspeed: {
-        label: "+20% casting speed to healing",
+        label: "+2.7% heal casting speed",
         bought: 0
     },
 	healhot: {
@@ -190,7 +187,8 @@ function gotoLevel(dest) {
     healer.castreq = 0;
     healer.mana = healer.maxmana;
     hero.hp = hero.maxHp;
-    pendinghp = 0;
+    healer.hotamount = 0;
+	healer.hottimer = 0;
     enemy.hp = enemy.maxHp;
     player.attackreq = 0;
     enemy.attackreq = 0;
@@ -208,7 +206,6 @@ function updateCosts() {
     }
     upgrades.manaregen.cost = (250 + upgrades.manaregen.bought * 62.5) * Math.pow(3, upgrades.manaregen.bought);
     upgrades.attackspeed.cost = (750 + upgrades.attackspeed.bought * 150) * Math.pow(2.5, upgrades.attackspeed.bought);
-    upgrades.autohealspeed.cost = (1000 + upgrades.autohealspeed.bought * 150) * Math.pow(2, upgrades.autohealspeed.bought);
     upgrades.castspeed.cost = (2000 + upgrades.castspeed.bought * 200) * Math.pow(1.5, upgrades.castspeed.bought);
 	upgrades.healhot.cost = (5000 + upgrades.healhot.bought * 250) * Math.pow(1.275, upgrades.healhot.bought);
     healerupgradescost = upgrades.healup.cost + upgrades.healcost.cost + upgrades.maxmana.cost;
@@ -262,11 +259,6 @@ function updateMaxLevels() {
         upgrades.attackspeed.bought = 20;
         upgrades.attackspeed.cost = Infinity;
     }
-    if(healer.autohealspeed > 4.99 || upgrades.autohealspeed.bought>=20) {
-        $("#autohealspeed").css("display", "none");
-        upgrades.autohealspeed.bought = 20;
-        upgrades.autohealspeed.cost = Infinity;
-    }
     if(upgrades.castspeed.bought>=60) {
         $("#castspeed").css("display", "none");
         upgrades.castspeed.bought = 60;
@@ -275,7 +267,10 @@ function updateMaxLevels() {
 }
 
 function heal() {
-    if((hero.hp+healer.power*(0.9+(healer.critchance*0.01-0.01)))+(healer.power*upgrades.healhot.bought*0.1)+pendinghp<=hero.maxHp && healer.castreq === 0 && healer.mana > healer.cost) {
+	var healerpower=healer.power*(healer.critchance*0.01-0.01);
+	var gainedhot=healerpower*upgrades.healhot.bought*0.05;
+	var remaininghot=healer.hotamount*(healer.hottimer/10)*0.3;
+    if((hero.hp+(healerpower+gainedhot+remaininghot)*0.95<=hero.maxHp && healer.castreq === 0 && healer.mana > healer.cost)) {
         healer.castreq = 1;
     }
 }
@@ -329,8 +324,7 @@ function updateStats() {
     archer.critfactor = 2 * Math.pow(1.05, upgrades.critfactor.bought);
     //General upgrades
     player.attackspeed = Math.pow(1.1059947442197169, upgrades.attackspeed.bought);
-    healer.autohealspeed = Math.pow(1.2160417906586574, upgrades.autohealspeed.bought);
-    healer.castspeed = 2 + ((7 / 120) * upgrades.castspeed.bought/(3.5/1.2));
+    healer.castspeed = 0.8 + ((7 / 120) * upgrades.castspeed.bought/(3.5/2.4));
     //You determine base amount. Division factor for scaling = 3.5/(3.2-base)
     healer.castspeed *= Math.pow(1.00372598347047, upgrades.castspeed.bought);
     //healer.castspeed = Math.round(healer.castspeed*1000)/1000;
@@ -338,6 +332,9 @@ function updateStats() {
     if(upgrades.healup.bought<50) {
         healer.power *= 3-upgrades.healup.bought*0.04;
     }
+	if(upgrades.maxHp.bought<50) {
+		hero.maxHp *= 2-upgrades.maxHp.bought*0.02;
+	}
 }
 
 function updateStatistics() {
@@ -363,7 +360,6 @@ function updateStatistics() {
     $("#stats43").text("Damage: " + f.format(enemy.dmg));
     $("#stats44").text("Attack speed: " + f.format(enemy.attackspeed) + "/s");
     $("#stats45").text("Gold: " + f.format(enemy.gold));
-    $("#stats52").text("Autoheal frequency: " + f.format(healer.autohealspeed) + "/s");
     $("#stats91").text("healer.castspeed: " + healer.castspeed);
     $("#stats95").text("Enemy Kills: " + player.kills);
     $("#stats96").text("Hero Deaths: " + player.deaths);
@@ -420,10 +416,14 @@ function combat() {
                 hero.hp += hero.maxHp / 100;
                 if(Math.random() * 100 < healer.critchance) {
                     hero.hp += healer.power * 2;
-					pendinghp += healer.power * 2 * upgrades.healhot.bought * 0.1;
+					healer.hotamount = healer.hotamount*(healer.hottimer/10);
+					healer.hotamount += healer.power * 2 * upgrades.healhot.bought * 0.1;
+					healer.hottimer = 10;
                 } else {
                     hero.hp += healer.power;
-					pendinghp += healer.power * upgrades.healhot.bought * 0.1;
+					healer.hotamount = healer.hotamount*(healer.hottimer/10);
+					healer.hotamount += healer.power * upgrades.healhot.bought * 0.1;
+					healer.hottimer = 10;
                 }
                 healer.mana -= healer.cost;
                 healer.castreq = 0;
@@ -496,6 +496,7 @@ function registerUpgrade(name) {
         if(player.gold > upgrades[name].cost) {
             upgrades[name].bought += 1;
             player.gold -= upgrades[name].cost;
+			afterUpgrade();
         }
     });
 }
@@ -587,8 +588,6 @@ $("#buyeverythingbutton").on("click", function () {
                         upgrades.manaregen.cost = (50 + upgrades.manaregen.bought * 40) * Math.pow(3, upgrades.manaregen.bought);
                     } else if (y == "attackspeed") {
                         upgrades.attackspeed.cost = (100 + upgrades.attackspeed.bought * 30) * Math.pow(2.5, upgrades.attackspeed.bought);
-                    } else if (y == "autohealspeed") {
-                        upgrades.autohealspeed.cost = (150 + upgrades.autohealspeed.bought * 20) * Math.pow(2, upgrades.autohealspeed.bought);
                     } else if (y == "castspeed") {
                         upgrades.castspeed.cost = (200 + upgrades.castspeed.bought * 10) * Math.pow(1.5, upgrades.castspeed.bought);
                     } else {
@@ -598,6 +597,7 @@ $("#buyeverythingbutton").on("click", function () {
                 break
             }
         }
+		afterUpgrade();
     }
 });
 for(var name in upgrades) {
@@ -754,30 +754,35 @@ function simUpgrades(id, start) {
         console.table(results);
     }
 }
-//
-setInterval(function () {
-    document.getElementById('savebutton').click();
-}, 15000);
 ////////
 //LOOP//
 ////////
-var pendinghealspeed = 0.15;
+function afterUpgrade() {
+	updateStats();
+	updateCosts();
+	updateMaxLevels();
+}
 setInterval(function () {
-    if(pendinghp>healer.power/1000*(upgrades.healhot.bought*0.1)) {
-        hero.hp+=pendinghp*pendinghealspeed;
-        if(hero.hp>hero.maxHp) {
-            hero.hp=hero.maxHp;
-        }
-        pendinghp-=pendinghp*pendinghealspeed;
-    }
-    updateStats();
-    updateCosts();
-    updateMaxLevels();
     combat();
     checkOverflow();
     checkDeath();
     updateVisuals();
 }, 20);
+var totalhothealing = 0;
+var hottickspersec = 25;
+setInterval(function () {
+	if(document.getElementById("pause").checked === false) {
+		if(healer.hottimer>=(1/hottickspersec)) {
+			hero.hp+=healer.hotamount/(hottickspersec*10);
+			totalhothealing+=healer.hotamount/(hottickspersec*10);
+			healer.hottimer-=(1/hottickspersec);
+		} else {
+			healer.hottimer=0;
+			healer.hotamount=0;
+		}
+		console.log(Math.round(totalhothealing));
+	}
+}, (Math.round(1000/hottickspersec)));
 setInterval(function () {
     player.places = slider.value;
     f = new numberformat.Formatter({
@@ -789,4 +794,9 @@ setInterval(function () {
 }, 150);
 setInterval(function () {
     updateStatistics();
-}, 1000);
+	updateCosts();
+}, 500);
+afterUpgrade();
+setInterval(function () {
+    document.getElementById('savebutton').click();
+}, 10000);
