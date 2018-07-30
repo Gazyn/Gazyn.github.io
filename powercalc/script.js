@@ -1,9 +1,9 @@
 "use strict";
-var exponents = ["K", "M", "B", "T", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-for(var i = 0; i<26; i++) {
-	var letter = exponents[i+4];
-	for(var x = 0; x<26; x++) {
-		exponents.push(letter + exponents[x+4]);
+var exponents = "KMBTabcdefghijklmnopqrstuvwxyz".split("");
+for(var i = 0; i < 26; i++) {
+	var letter = exponents[i + 4];
+	for(var x = 0; x < 26; x++) {
+		exponents.push(letter + exponents[x + 4]);
 	}
 }
 var claymore = {
@@ -111,13 +111,14 @@ var tomahawk = {
 var inGameNumbers = false;
 //Most browsers save checkboxes and input boxes when a site is cached. See if this is the case.
 numbersCheck.checked ? inGameNumbers = true : inGameNumbers = false;
+
 function switchTab(selected) {
 	tab1.style.visibility = "hidden";
 	tab2.style.visibility = "hidden";
 	tab3.style.visibility = "hidden";
 	tab4.style.visibility = "hidden";
 	tab5.style.visibility = "hidden";
-	switch(selected) {
+	switch (selected) {
 		case 1:
 			tab1.style.visibility = "visible";
 			break;
@@ -438,38 +439,79 @@ function updateCoatOfGold() {
 }
 
 function formatNumber(input) {
-	input = parseInt(input);
+	input = Math.floor(input);
 	if(input >= 1e3) {
 		//Floor of log1000 input to get closest(lowest) factor of 1000. 1e6=2, 1e11=3, 1.78399e14=4 etc. Then subtract by 1 because arrays start at 0. variable "Exponent" is now the letter at that position on the exponents array.
 		var exponent = exponents[Math.floor(Math.log(input) / Math.log(1000)) - 1];
+		console.log("var exponent = " + exponent);
 		//1.78399e12 = 1.783, 1.78399e14 = 178.399
 		var noExpo = (input / Math.pow(1000, (exponents.indexOf(exponent) + 1))).toFixed(3);
+		console.log("var noExpo = " + noExpo);
 		//Replace decimal spot with exponent. 1.78399e14 gets turned into 178.399 by noExpo, then the e14 is turned into exponents[3]="T", so 178T399
 		var finalResult = noExpo.toString().replace(".", exponent);
+		console.log("var finalResult = " + finalResult);
 		//If it's above 1M, add the the previous exponent to the end.
 		if(input >= 1e6) {
 			//178T399=178T399B
 			finalResult = finalResult + exponents[exponents.indexOf(exponent) - 1];
+			console.log("finalResult = " + finalResult);
 		}
 	} else {
 		finalResult = input;
 	}
+	console.log("Done! Returning " + finalResult);
 	return finalResult;
 }
 
+function parseFormat(input) {
+	var letter;
+	input = input.toString();
+	//Find and define the highest letter(if it exists)
+	for(var i in exponents) {
+		if(input.toString().indexOf(exponents[i]) != -1) {
+			letter = exponents[i];
+		}
+	}
+	if(letter === undefined) {
+		//Return input if no letter is found
+		console.log("No letter. Returning input: " + input);
+		return input;
+	} else {
+		//123az234ay = 123.234 after the next two lines
+		input = input.replace(/[a-z]/i, ".");
+		input = input.replace(/[a-z]/gi, "");
+		//If it's something like 123.23 or 123.2, it's not 1.2323e167 or 1.232e167. In these cases, it's 1.23023e167 and 1.23002e167.
+		if(/(?!\.\d{3,})(\.\d+)/gi.test(input)) {
+			if(input.match(/(?!\.\d{3,})(\.\d+)/gi)[0].replace(".", "").length === 1) {
+				//Add a 00 in front
+				input = input.replace(/(?!\.\d{3,})(\.\d+)/gi, "!00$&").replace(".", "").replace("!", ".");
+			} else if(input.match(/(?!\.\d{3,})(\.\d+)/gi)[0].replace(".", "").length === 2) {
+				//Add a 0 in front
+				input = input.replace(/(?!\.\d{3,})(\.\d+)/gi, "!0$&").replace(".", "").replace("!", ".");
+			}
+		}
+		//Turn 123.234 into a float value instead of string, then use the previously defined letter to multiply that
+		//123az234ay = 1.23234e+167
+		return (parseFloat(input) * Math.pow(1000, exponents.indexOf(letter) + 1)).toPrecision(6);
+	}
+}
+
 function updatePower() {
-	totalpowerdisplay.textContent = ("Total Power: " + ((baseAttackInput.value / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(3));
+	//Wow. 680 character long line.
+	inGameNumbers === true ? totalpowerdisplay.textContent = ("Total Power Index: " + formatNumber(((parseFormat(baseAttackInput.value) / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(6))) : totalpowerdisplay.textContent = ("Total Power: " + ((baseAttackInput.value / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(4));
 }
 
 function updateFloor() {
-	//noinspection JSValidateTypes
-	if(!powerInput.value.toString() === "") {
-		//This is just statistics prediction.
-		var log = 1 + (1.585 + topFloorInput.value * 0.001117) / 100;
-		var lowEstimate = Math.round(Math.log(powerinput.value) / Math.log(log) * 0.98 / 5) * 5;
-		var highEstimate = Math.round(Math.log(powerinput.value) / Math.log(log) * 1.02 / 5) * 5;
-		floorEstimateOutput.textContent = lowEstimate + " - " + highEstimate;
+	//This is just statistics prediction.
+	if(inGameNumbers === true) {
+		var powerInput = parseFormat(floorPowerInput.value)
+	} else {
+		var powerInput = parseFloat(floorPowerInput.value);
 	}
+	var log = 1 + (1.73 + parseInt(topFloorInput.value) * 0.00101) / 100;
+	var lowEstimate = Math.round(Math.log(powerInput) / Math.log(log) * 0.98 / 5) * 5;
+	var highEstimate = Math.round(Math.log(powerInput) / Math.log(log) * 1.02 / 5) * 5;
+	floorEstimateOutput.textContent = lowEstimate + " - " + highEstimate;
 }
 
 function updateGoldBox() {
@@ -506,10 +548,10 @@ function calcAttack(type, level) {
 		level = parseInt(level);
 		//Use type as an id for the three basic attack items
 		var tier;
-		switch(type) {
+		switch (type) {
 			case 1:
 				if(level <= 18) {
-					switch(level) {
+					switch (level) {
 						case 0:
 							return 0;
 						case 1:
@@ -574,7 +616,7 @@ function calcAttack(type, level) {
 				if(level >= 16640) {
 					tier = "tier8";
 				}
-				return Math.round(Math.round(claymore[tier].bonus * level * (7 + level) + claymore[tier].base) / 5) * 5;
+				return Math.floor(Math.floor(claymore[tier].bonus * level * (7 + level) + claymore[tier].base) / 5) * 5;
 			case 2:
 				if(level <= 47) {
 					tier = "tier1";
@@ -600,7 +642,7 @@ function calcAttack(type, level) {
 				if(level >= 10892) {
 					tier = "tier8";
 				}
-				return Math.round(Math.round(flamberge[tier].bonus * level * (59 + level) + flamberge[tier].base) / 5) * 5;
+				return Math.floor(Math.floor(flamberge[tier].bonus * level * (59 + level) + flamberge[tier].base) / 5) * 5;
 			case 3:
 				if(level <= 13) {
 					tier = "tier1";
@@ -626,7 +668,7 @@ function calcAttack(type, level) {
 				if(level >= 10251) {
 					tier = "tier8";
 				}
-				return Math.round(Math.round(tomahawk[tier].bonus * level * (326.27272728 + level) + tomahawk[tier].base) / 5) * 5;
+				return Math.floor(Math.floor(tomahawk[tier].bonus * level * (326.27272728 + level) + tomahawk[tier].base) / 5) * 5;
 		}
 	} else {
 		return 0;
@@ -685,56 +727,56 @@ function updateAttacks() {
 		if(parseInt(claymoreInput.value) > 1) {
 			claymoreeff.textContent = "Effect: " + formatNumber(calcAttack(1, claymoreInput.value)) + "%";
 			claymorerel.textContent = "Relative increase from last level: " + (calcAttack(1, claymoreInput.value) / calcAttack(1, claymoreInput.value - 1) * 100 - 100).toPrecision(3) + "%";
-			claymoreinc.textContent = "Last levels effect: " + formatNumber(calcAttack(1, claymoreInput.value - 1)) + "%";
+			claymoreinc.textContent = "Last level's effect: " + formatNumber(calcAttack(1, claymoreInput.value - 1)) + "%";
 		} else if(parseInt(claymoreInput.value) === 1) {
 			claymoreeff.textContent = "Effect: 30%";
 			claymorerel.textContent = "Relative increase from last level: N/A";
-			claymoreinc.textContent = "Last levels effect: N/A";
+			claymoreinc.textContent = "Last level's effect: N/A";
 		} else {
 			claymoreeff.textContent = "Effect: 0%";
 			claymorerel.textContent = "Relative increase from last level: N/A";
-			claymoreinc.textContent = "Last levels effect: N/A";
+			claymoreinc.textContent = "Last level's effect: N/A";
 		}
 		if(parseInt(flambergeInput.value) > 1) {
 			flambergeeff.textContent = "Effect: " + formatNumber(calcAttack(2, flambergeInput.value)) + "%";
 			flambergerel.textContent = "Relative increase from last level: " + (calcAttack(2, flambergeInput.value) / calcAttack(2, flambergeInput.value - 1) * 100 - 100).toPrecision(3) + "%";
-			flambergeinc.textContent = "Last levels effect: " + formatNumber(calcAttack(2, flambergeInput.value - 1)) + "%";
+			flambergeinc.textContent = "Last level's effect: " + formatNumber(calcAttack(2, flambergeInput.value - 1)) + "%";
 		} else if(parseInt(flambergeInput.value) === 1) {
 			flambergeeff.textContent = "Effect: 300%";
 			flambergerel.textContent = "Relative increase from last level: N/A";
-			flambergeinc.textContent = "Last levels effect: N/A";
+			flambergeinc.textContent = "Last level's effect: N/A";
 		} else {
 			flambergeeff.textContent = "Effect: 0%";
 			flambergerel.textContent = "Relative increase from last level: N/A";
-			flambergeinc.textContent = "Last levels effect: N/A";
+			flambergeinc.textContent = "Last level's effect: N/A";
 		}
 
 		if(parseInt(tomahawkInput.value) > 1) {
 			tomahawkeff.textContent = "Effect: " + formatNumber(calcAttack(3, tomahawkInput.value)) + "%";
 			tomahawkrel.textContent = "Relative increase from last level: " + (calcAttack(3, tomahawkInput.value) / calcAttack(3, tomahawkInput.value - 1) * 100 - 100).toPrecision(3) + "%";
-			tomahawkinc.textContent = "Last levels effect: " + formatNumber(calcAttack(3, tomahawkInput.value - 1)) + "%";
+			tomahawkinc.textContent = "Last level's effect: " + formatNumber(calcAttack(3, tomahawkInput.value - 1)) + "%";
 		} else if(parseInt(tomahawkInput.value) === 1) {
 			tomahawkeff.textContent = "Effect: 1K800%";
 			tomahawkrel.textContent = "Relative increase from last level: N/A";
-			tomahawkinc.textContent = "Last levels effect: N/A";
+			tomahawkinc.textContent = "Last level's effect: N/A";
 		} else {
 			tomahawkeff.textContent = "Effect: 0%";
 			tomahawkrel.textContent = "Relative increase from last level: N/A";
-			tomahawkinc.textContent = "Last levels effect: N/A";
+			tomahawkinc.textContent = "Last level's effect: N/A";
 		}
 	} else {
 		if(parseInt(claymoreInput.value) > 1) {
 			claymoreeff.textContent = "Effect: " + (calcAttack(1, claymoreInput.value)) + "%";
 			claymorerel.textContent = "Relative increase from last level: " + (calcAttack(1, claymoreInput.value) / calcAttack(1, claymoreInput.value - 1) * 100 - 100).toPrecision(3) + "%";
-			claymoreinc.textContent = "Last levels effect: " + (calcAttack(1, claymoreInput.value - 1)) + "%";
+			claymoreinc.textContent = "Last level's effect: " + (calcAttack(1, claymoreInput.value - 1)) + "%";
 		} else if(parseInt(claymoreInput.value) === 1) {
 			claymoreeff.textContent = "Effect: 30%";
 			claymorerel.textContent = "Relative increase from last level: N/A";
-			claymoreinc.textContent = "Last levels effect: N/A";
+			claymoreinc.textContent = "Last level's effect: N/A";
 		} else {
 			claymoreeff.textContent = "Effect: 0%";
 			claymorerel.textContent = "Relative increase from last level: N/A";
-			claymoreinc.textContent = "Last levels effect: N/A";
+			claymoreinc.textContent = "Last level's effect: N/A";
 		}
 		if(parseInt(flambergeInput.value) > 1) {
 			flambergeeff.textContent = "Effect: " + (calcAttack(2, flambergeInput.value)) + "%";
@@ -743,11 +785,11 @@ function updateAttacks() {
 		} else if(parseInt(flambergeInput.value) === 1) {
 			flambergeeff.textContent = "Effect: 300%";
 			flambergerel.textContent = "Relative increase from last level: N/A";
-			flambergeinc.textContent = "Last levels effect: N/A";
+			flambergeinc.textContent = "Last level's effect: N/A";
 		} else {
 			flambergeeff.textContent = "Effect: 0%";
 			flambergerel.textContent = "Relative increase from last level: N/A";
-			flambergeinc.textContent = "Last levels effect: N/A";
+			flambergeinc.textContent = "Last level's effect: N/A";
 		}
 		if(parseInt(tomahawkInput.value) > 1) {
 			tomahawkeff.textContent = "Effect: " + (calcAttack(3, tomahawkInput.value)) + "%";
@@ -756,11 +798,11 @@ function updateAttacks() {
 		} else if(parseInt(tomahawkInput.value) === 1) {
 			tomahawkeff.textContent = "Effect: 1800%";
 			tomahawkrel.textContent = "Relative increase from last level: N/A";
-			tomahawkinc.textContent = "Last levels effect: N/A";
+			tomahawkinc.textContent = "Last level's effect: N/A";
 		} else {
 			tomahawkeff.textContent = "Effect: 0%";
 			tomahawkrel.textContent = "Relative increase from last level: N/A";
-			tomahawkinc.textContent = "Last levels effect: N/A";
+			tomahawkinc.textContent = "Last level's effect: N/A";
 		}
 	}
 	updateRunAttack();
@@ -774,26 +816,20 @@ function updateAll() {
 	updateNotation();
 }
 
-letterInput.value = "";
-scientificInput.value = "";
-
-function updateNotation(id) {
-	if(id === 1) {
-		var letterInputNoNum = (letterInput.value.toString().replace(/[0-9]/g, ""));
-		letterInputNoNum = letterInputNoNum.replace(".", "");
-		console.log(letterInputNoNum);
-		if(letterInput.value===letterInputNoNum) {
-			scientificInput.value = "e" + (exponents.indexOf(letterInput.value)*3+3).toString();
-		} else {
-			scientificInput.value = Math.round(parseFloat(letterInput.value) * Math.pow(1000, exponents.indexOf(letterInputNoNum) + 1)).toPrecision(3);
-		}
+function updateNotation() {
+	var input = notationInput.value;
+	//Reverse the input
+	input = input.split("").reverse().join("");
+	var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+	var sum = 4;
+	for(var i = 0; i < input.length; i += 1) {
+		sum += (alphabet.indexOf(input[i]) + 1) * Math.pow(26, i);
 	}
-	if(id === 2) {
-		letterInput.value = (scientificInput.value / Math.pow(1000, (Math.floor(Math.log(scientificInput.value) / Math.log(1000))))).toPrecision(3);
-		if(scientificInput.value>=1e3) {
-			letterInput.value += exponents[Math.floor(Math.log(scientificInput.value) / Math.log(1000)) - 1];
-		}
+	sum = (sum * 3).toPrecision(100).toString();
+	if(/\.\d*/gi.test(sum)) {
+		sum = sum.replace(/\.\d*/gi, "");
 	}
+	notationOutput.textContent = "e" + sum;
 }
 
 function toggleFormat() {

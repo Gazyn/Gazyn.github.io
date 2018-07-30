@@ -166,12 +166,64 @@ body {
   font-family: arial;
   font-size:15px;
   font-weight: bold;
+  width:275px;
+  height:40px;
+  text-shadow:lightgray 1px 1px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-#tab1button, #tab2button, #tab3button, #tab4button {
+#healuptooltip {
+  background-color:lightblue;
+  border-radius:3px;
+  border:black 1px solid;
+  width:200px;
+  height:150px;
+  z-index:1000;
+  position:absolute;
+  display:none;
+}
+#healup:hover ~ #healuptooltip {
+  display:inline-block;
+}
+.upgradeHeader {
+  font-size:20px;
+  text-shadow:lightgray 2px 1px;
+}
+#hpblessing, #healupblessing, #dmgblessing, #goldblessing, #bulkamountblessing {
+	border-radius:10px;
+	font-family: arial;
+	font-size:15px;
+	font-weight: bold;
+	height:40px;
+	width:280px;
+  margin-top:5px;
+  color:green;
+  text-shadow:lightgray 1px 1px;
+}
+#hpblessing {
+	background-color: #64C0FF;
+}
+#healupblessing {
+	background-color: #96FF32;
+}
+#dmgblessing {
+  background-color: #FF6432;
+}
+#goldblessing {
+  background-color: #FFFF64;
+}
+#bulkamountblessing {
+  background-color: #AAFF96;
+}
+#tab1button, #tab2button, #tab9button {
   border-radius:4px;
   background-color:lightblue;
 }
-#tab1button:hover, #tab2button:hover, #tab3button:hover, #tab4button:hover {
+#tab1button:hover, #tab2button:hover, #tab9button:hover {
   background-color:#9bc2cf;
 }
 #tab1 {
@@ -184,7 +236,7 @@ body {
   top:60px;
   height:800px;
 }
-#tab2, #tab3, #tab4 {
+#tab2, #tab9 {
   display:none;
 }
 #healerupgrades {

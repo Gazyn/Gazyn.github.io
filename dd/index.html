@@ -27,34 +27,40 @@
     </div>
     <button id="buyeverythingbutton">Buy 0 of everything</button>
     <span id="autoprogresstext">Autoprogress</span><input type="checkbox" id="autoprogress">
-    <button id="tab1button">Upgrades</button><button id="tab2button">Statistics</button><button id="tab3button">Ascension</button><button id="tab4button">Settings</button><br>
+    <button id="tab1button">Upgrades</button><button id="tab2button">Statistics</button><button id="tab9button">Settings</button><br>
     <div id="tab1" class="tab">
         <div id="healerupgrades">
-            <p>Healer Upgrades</p>
+            <span class="upgradeHeader">Healer Upgrades</span>
             <button id="healup"></button>
+			<span class="tooltip" id="healuptooltip">HERE'S A TOOLTIP</span>
             <button id="healcost"></button>
             <button id="maxmana"></button>
             <button id="healercritchance"></button>
             <button id="healhot"></button>
         </div>
         <div id="heroupgrades">
-            <p>Hero Upgrades</p>
+            <span class="upgradeHeader">Hero Upgrades</span>
             <button id="maxHp"></button>
             <button id="armor"></button>
             <button id="blockchance"></button>
             <button id="blockfactor"></button>
         </div>
         <div id="archerupgrades">
-            <p>Archer Upgrades</p>
+            <span class="upgradeHeader">Archer Upgrades</span>
             <button id="dmg"></button>
             <button id="critchance"></button>
             <button id="critfactor"></button>
         </div>
         <div id="generalupgrades">
-            <p>General Upgrades</p>
+            <span id="fourthcornertext" class="upgradeHeader"></span>
             <button id="manaregen"></button>
             <button id="attackspeed"></button>
             <button id="castspeed"></button>
+			<button id="hpblessing"></button><br>
+			<button id="healupblessing"></button><br>
+			<button id="dmgblessing"></button><br>
+			<button id="goldblessing"></button><br>
+			<button id="bulkamountblessing"></button><br>
         </div>
     </div>
     <div id="tab2" class="tab">
@@ -94,9 +100,6 @@
             <span id="stats98"></span><br>
             <span id="stats99"></span></div><br>
     </div>
-    <div id="tab3" class="tab">
-
-    </div>
     <div id="tab4" class="tab">
         <input id="slider" type="range" min="1" max="6"><span id="significantfigures"></span><br>
         <button id="scientific">Scientific notation</button>
@@ -105,7 +108,6 @@
         <button id="savebutton">Save</button>
         <button id="loadbutton">Load</button><br>
         <button id="deletesavebutton">DELETE SAVE</button><br>
-        <a target="_blank" href="changelog.html">Changelog</a>
     </div>
     <script src="script.js"></script>
 </body>
