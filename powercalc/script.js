@@ -498,7 +498,7 @@ function parseFormat(input) {
 
 function updatePower() {
 	//Wow. 680 character long line.
-	inGameNumbers === true ? totalpowerdisplay.textContent = ("Total Power Index: " + formatNumber(((parseFormat(baseAttackInput.value) / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(6))) : totalpowerdisplay.textContent = ("Total Power: " + ((baseAttackInput.value / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(4));
+	inGameNumbers === true ? totalpowerdisplay.textContent = ("Total Power Index: " + formatNumber(((parseFormat(baseAttackInput.value) / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(6))) : totalpowerdisplay.textContent = ("Total Power Index: " + ((baseAttackInput.value / 100 + 1) * updateAwakening1() * updateAwakening2() * updateMithrilSword() * updateMistilteinn() * updateHalberd() * updatePhilosophersStone() * updateGoldenGloves() * updateCaduceus() * updateGoldVessels() * updateCoatOfGold()).toPrecision(4).replace("+",""));
 }
 
 function updateFloor() {
