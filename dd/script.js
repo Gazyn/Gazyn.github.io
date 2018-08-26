@@ -4,6 +4,7 @@ var scaling = {
 	enemyPower: 1.24,
 	enemyGold: 1.24 ** (1 / goldPowerRatio),
 	enemyXp: 1.01**(1/3),
+	xp: 1.01,
 	xpReq: 1.01,
 	power: 1.24 ** (1/3),
 	//24% enemy power each level, 3 upgrades each level to compensate
@@ -12,9 +13,11 @@ var scaling = {
 	manaCostInc: 1.07,
 	manaCostDec: 0.97,
 	mana: 1.0379,
+	healHot: 8,
 	hp: 1.0445,
 	dmgIgnore: 1.0201,
-	crit: 0.99,
+	crit: 0.980375,
+	//Reaches 99.995%(rounded to 100%) at 500 upgrades bought.
 	archerDmg:  1.0657467378823113,
 	//1.24**1/3 = perfect scaling
 	attackSpeed: 1.0837983867343681,
@@ -46,7 +49,7 @@ var player = {
 	fps: 30,
 	visualFps: 30,
 	xp: 0,
-	xpReq: 1e308,
+	xpReq: 1e100,
 	xpLevel: 1
 };
 var f = new numberformat.Formatter({
@@ -85,7 +88,7 @@ var enemy = {
 	basehp: 77,
 	basedmg: 56,
 	basegold: 50,
-	basexp: 5,
+	basexp: 10,
 	armor: 1,
 	attackSpeed: 1,
 	attackreq: 0
@@ -143,21 +146,21 @@ var upgrades = {
 	critChance: {
 		bought: 0,
 		tooltip: "Increases the chance to crit, multiplying damage.",
-		maxLevel: 986,
+		maxLevel: 50000,
 		minEnemyLevel: 35,
 		baseCostInc: 105
 	},
 	blockChance: {
 		bought: 0,
-		tooltip: "Chance to block, dividing incoming damage.",
-		maxLevel: 986,
+		tooltip: "Increases the chance to block, dividing incoming damage.",
+		maxLevel: 50000,
 		minEnemyLevel: 40,
 		baseCostInc: 120
 	},
 	healerCritChance: {
 		bought: 0,
 		tooltip: "Increases the chance for healing to be doubled.",
-		maxLevel: 986,
+		maxLevel: 50000,
 		minEnemyLevel: 45,
 		baseCostInc: 135
 	},
@@ -236,7 +239,7 @@ function gotoLevel(dest) {
 	player.level = dest;
 	try {
 		clearTimeout(deathDelay);
-		document.getElementById("pause").checked = false;
+		pause.checked = false;
 	} catch (e) {
 		console.log("No player death delay to clear!; " + e);
 	}
@@ -245,38 +248,37 @@ function gotoLevel(dest) {
 		enemy.basehp = 77 * (1 + (dest - 20) * 0.075);
 		enemy.basedmg = 56 * (1 + (dest - 20) * 0.075);
 	}
-	//TODO: Change Number.isInteger to modulus %. Maybe use switch instead of the ifelses?
-	if(Number.isInteger(player.level / 1000)) {
+	if(player.level%1000===0) {
 		enemy.maxHp = enemy.basehp * 6;
 		enemy.dmg = enemy.basedmg * 3;
-		enemy.gold = enemy.basegold * 5;
+		enemy.xp = (enemy.basexp + 1 * (player.level - 10))*4;
 	} else
-	if(Number.isInteger(player.level / 100)) {
+	if(player.level%100===0) {
 		enemy.maxHp = enemy.basehp * 4;
 		enemy.dmg = enemy.basedmg * 2;
-		enemy.gold = enemy.basegold * 3;
+		enemy.xp = (enemy.basexp + 1 * (player.level - 10))*2;
 	} else
-	if(Number.isInteger(player.level / 10)) {
+	if(player.level%10===0) {
 		enemy.maxHp = enemy.basehp * 2;
 		enemy.dmg = enemy.basedmg * 1.5;
-		enemy.gold = enemy.basegold * 2;
-	} else if(Number.isInteger((player.level + 1) / 10)) { //If level=9, 19, 29 etc
+		enemy.xp = (enemy.basexp + 1 * (player.level - 10));
+	} else if((player.level+1)%10===0) { //If level=9, 19, 29 etc
 		enemy.maxHp = enemy.basehp * 1.1;
 		enemy.dmg = enemy.basedmg * 1.1;
 		enemy.gold = enemy.basegold * 1.15;
-	} else if(Number.isInteger((player.level + 2) / 10)) { //level=8
+	} else if((player.level+2)%10===0) { //level=8
 		enemy.maxHp = enemy.basehp * 1.08;
 		enemy.dmg = enemy.basedmg * 1.08;
 		enemy.gold = enemy.basegold * 1.12;
-	} else if(Number.isInteger((player.level + 3) / 10)) { //level=7
+	} else if((player.level+3)%10===0) { //level=7
 		enemy.maxHp = enemy.basehp * 1.06;
 		enemy.dmg = enemy.basedmg * 1.06;
 		enemy.gold = enemy.basegold * 1.09;
-	} else if(Number.isInteger((player.level + 4) / 10)) { //level=6
+	} else if((player.level+4)%10===0) { //level=6
 		enemy.maxHp = enemy.basehp * 1.04;
 		enemy.dmg = enemy.basedmg * 1.04;
 		enemy.gold = enemy.basegold * 1.06;
-	} else if(Number.isInteger((player.level + 5) / 10)) { //level=5
+	} else if((player.level+5)%10===0) { //level=5
 		enemy.maxHp = enemy.basehp * 1.02;
 		enemy.dmg = enemy.basedmg * 1.02;
 		enemy.gold = enemy.basegold * 1.03;
@@ -289,8 +291,13 @@ function gotoLevel(dest) {
 	enemy.dmg *= scaling.enemyPower ** (player.level - 1);
 	enemy.gold *= scaling.enemyGold ** (player.level - 1);
 	enemy.gold *= blessScaling.gold ** (blessings.gold.bought);
-	enemy.xp = enemy.basexp + 0.5 * (player.level - 1);
-	enemy.xp *= scaling.enemyXp ** (player.level - 1);
+	enemy.xp *= scaling.enemyXp ** (player.level - 10);
+	if(player.level%10!==0) {
+		enemy.xp /= 10;
+	}
+	if(player.level<10) {
+		enemy.xp = 0;
+	}
 	if(upgrades.attackSpeed.bought === upgrades.attackSpeed.maxLevel) {
 		enemy.attackSpeed = 3;
 	} else {
@@ -326,7 +333,7 @@ function updateCosts() {
 	upgrades.attackSpeed.cost = (1e6 + upgrades.attackSpeed.bought * 3e5) * Math.pow(1.3, upgrades.attackSpeed.bought);
 	upgrades.castSpeed.cost = (5e7 + upgrades.castSpeed.bought * 1e6) * Math.pow(1.15, upgrades.castSpeed.bought);
 	upgrades.manaRegen.cost = (2.5e7 + upgrades.manaRegen.bought * 5e6) * Math.pow(1.45, upgrades.manaRegen.bought);
-	upgrades.healHot.cost = (5000 + upgrades.healHot.bought * 250) * Math.pow(1.11042, upgrades.healHot.bought);
+	upgrades.healHot.cost = (5000 + upgrades.healHot.bought * 250) * (1.124687 ** upgrades.healHot.bought);
 	blessings.bulkAmount.cost = 1e9 * Math.pow(1000, blessings.bulkAmount.bought);
 	//Update the prices
 	for(var i in upgrades) {
@@ -342,7 +349,7 @@ function updateCosts() {
 				}
 				break;
 			case "maxHp":
-				$("#maxHp").text($("#maxHp").text().replace("XYZ", "+" + (f.format(calc(2, upgrades.maxHp.bought + 1) * blessScaling.hp ** blessings.hp.bought  * 1.01 ** player.xpLevel - hero.maxHp)) + " max hp"));
+				$("#maxHp").text($("#maxHp").text().replace("XYZ", "+" + (f.format(calc(2,upgrades.maxHp.bought+1,-1,blessings.hp.bought,player.xpLevel) - hero.maxHp)) + " max hp"));
 				break;
 			case "armor":
 				if(10 ** player.places > hero.armor * (scaling.dmgIgnore - 1)) {
@@ -362,10 +369,10 @@ function updateCosts() {
 				$("#blockChance").text($("#blockChance").text().replace("XYZ", "+" + out.toFixed(zeroes + 1) + "% block chance"));
 				break;
 			case "healUp":
-				if(healer.power * (scaling.hp - 1) < Math.pow(10, player.places)) {
-					$("#healUp").text($("#healUp").text().replace("XYZ", "+" + (calc(1, upgrades.healUp.bought + 1) * blessScaling.hp ** blessings.healUp.bought - healer.power * 1.01 ** player.xpLevel).toPrecision(player.places) + " heal power, +" + (calc(3, upgrades.healUp.bought + 1, upgrades.healCost.bought) - healer.cost).toPrecision(player.places) + " cost"));
+				if(calc(1,upgrades.healUp.bought+1,-1,blessings.healUp.bought,player.xpLevel) * (scaling.hp-1) / 0.8 < 10**player.places) {
+					$("#healUp").text($("#healUp").text().replace("XYZ", "+" +  (calc(1,upgrades.healUp.bought+1,-1,blessings.healUp.bought,player.xpLevel) - healer.power).toPrecision(3) + " heal power, +" + (calc(3, upgrades.healUp.bought + 1, upgrades.healCost.bought) - healer.cost).toPrecision(player.places) + " cost"));
 				} else {
-					$("#healUp").text($("#healUp").text().replace("XYZ", "+" + f.format(calc(1, upgrades.healUp.bought + 1) * blessScaling.hp ** blessings.healUp.bought * 1.01 ** player.xpLevel - healer.power) + " heal power, +" + f.format(calc(3, upgrades.healUp.bought + 1, upgrades.healCost.bought) - healer.cost) + " cost"));
+					$("#healUp").text($("#healUp").text().replace("XYZ", "+" + f.format(calc(1,upgrades.healUp.bought+1,-1,blessings.healUp.bought,player.xpLevel) - healer.power) + " heal power, +" + f.format(calc(3, upgrades.healUp.bought + 1, upgrades.healCost.bought) - healer.cost) + " cost"));
 				}
 				break;
 			case "healCost":
@@ -396,7 +403,7 @@ function updateCosts() {
 				$("#healerCritChance").text($("#healerCritChance").text().replace("XYZ", "+" + out.toFixed(zeroes + 1) + "% crit chance"));
 				break;
 			case "healHot":
-				$("#healHot").text($("#healHot").text().replace("XYZ", "+10% healing as HoT"));
+				$("#healHot").text($("#healHot").text().replace("XYZ", "+8% healing as HoT"));
 				break;
 			case "castSpeed":
 				var nextCastSpeed = 0.8 + ((7 / 120) * (upgrades.castSpeed.bought + 1) / (3.5 / 2.4));
@@ -412,21 +419,21 @@ function updateCosts() {
 	earlyHideElements();
 	updateMaxLevels();
 }
-function updateMaxLevels() { //TODO: find out why maxing crit crashes. infinite loop perhaps?
+function updateMaxLevels() {
 	for(var i in upgrades) {
 		if(upgrades[i].maxLevel !== -1 && upgrades[i].bought >= upgrades[i].maxLevel) {
-			$("#" + i).css("display", "none");
 			upgrades[i].bought = upgrades[i].maxLevel;
 			upgrades[i].cost = Infinity;
 		}
 	}
 }
 function heal() {
-	if(player.maxLevel >= 30) {
-		var healerpower = healer.power * (healer.critChance * 0.01 - 0.01);
-		var gainedhot = healerpower * upgrades.healHot.bought * 0.05;
-		var remaininghot = healer.hotamount * (healer.hottimer / 10) * 0.3;
-		if((hero.hp + (healerpower + gainedhot + remaininghot) * 0.95 <= hero.maxHp && healer.castreq === 0 && healer.mana > healer.cost)) {
+	if(player.maxLevel >= 15) {
+		var healerpower = healer.power * (1 + healer.critChance * 0.01) * (blessScaling.hp ** blessings.hp.bought) * (scaling.xp ** player.xpLevel);
+		var gainedhot = healerpower * upgrades.healHot.bought * scaling.healHot/200;
+		var remaininghot = healer.hotamount * (healer.hottimer / 10) * 0.2;
+		console.log(f.format(remaininghot));
+		if(hero.hp+remaininghot < hero.maxHp && healer.castreq === 0 && healer.mana > healer.cost) {
 			healer.castreq = 1;
 		}
 	}
@@ -465,10 +472,10 @@ function updateStats() {
 	healer.cost = 15 + upgrades.healUp.bought * 0.075;
 	healer.cost -= upgrades.healCost.bought * 0.075;
 	healer.maxMana = 400 + (player.maxLevel-30) * 0.9375;
-	hero.maxHp = 600 + upgrades.maxHp.bought * 15;
+	hero.maxHp = 3000 + upgrades.maxHp.bought * 25;
 	//% based scalings
 	//Regular upgrades
-	healer.power = 3600 * Math.pow(scaling.hp, upgrades.healUp.bought);
+	healer.power = 1000 * Math.pow(scaling.hp, upgrades.healUp.bought);
 	healer.cost *= Math.pow(scaling.manaCostInc, upgrades.healUp.bought);
 	healer.cost *= Math.pow(scaling.manaCostDec, upgrades.healCost.bought);
 	healer.maxMana *= Math.pow(scaling.mana, upgrades.maxMana.bought);
@@ -504,12 +511,9 @@ function updateStats() {
 	healer.castSpeed *= Math.pow(1.007465849893762215665362, upgrades.castSpeed.bought);
 	healer.castSpeed = Math.round(healer.castSpeed * 1000) / 1000;
 	healer.manaRegen = upgrades.manaRegen.bought * 0.004;
-	//Up to 3x heal power at start, up to 2.5x hero hp at start. fades away over 500 upgrades, after which regular scaling will be in full effect.
-	if(upgrades.healUp.bought < 500) {
-		healer.power *= 3 - upgrades.healUp.bought * 0.004;
-	}
-	if(upgrades.maxHp.bought < 500) {
-		hero.maxHp *= 2.5 - upgrades.maxHp.bought * 0.003;
+	//0.8x heal cost and 2x hero hp at start. fades away over 100 upgrades, after which regular scaling will be in full effect.
+	if(upgrades.healUp.bought < 100) {
+		healer.cost *= 0.75 + upgrades.healUp.bought * 0.0025;
 	}
 	var xpMult = 1.01**(player.xpLevel-1);
 	archer.dmg *= xpMult;
@@ -519,7 +523,6 @@ function updateStats() {
 		archer.dmg=1.79e308;
 	}
 }
-
 function updateStatistics() {
 	$("#stats11").text("HP: " + f.format(hero.hp) + "/" + f.format(hero.maxHp));
 	$("#stats12").text("Damage Reduction: " + "100 / " + f.format(hero.armor * 100));
@@ -532,17 +535,17 @@ function updateStatistics() {
 	$("#stats24").text("Heal Cost: " + f.format(healer.cost) + " Mana");
 	$("#stats25").text("Healing crit chance: " + (healer.critChance.toFixed(2)) + "%");
 	$("#stats26").text("Heal Speed: " + (Math.round(100 / healer.castSpeed) / 100) + " Seconds");
-	$("#stats27").text("Bonus HoT Healing: " + Math.round(upgrades.healHot.bought * 10) + "%");
+	$("#stats27").text("Bonus HoT Healing: " + Math.round(upgrades.healHot.bought * 8) + "%");
 	$("#stats31").text("Damage per attack: " + f.format(archer.dmg));
 	$("#stats32").text("Attack speed: " + Math.floor(player.attackSpeed * 100) / 100 + "/s");
 	$("#stats33").text("Crit Chance: " + (archer.critChance.toFixed(2)) + "%");
 	$("#stats34").text("Crit Multiplier: " + f.format(archer.critFactor * 100) + "%");
-	if((archer.dmg * (1 - (archer.critChance * 0.01 - 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01 - 0.01)) * player.attackSpeed) > 100) {
-		$("#stats35").text("Damage per second: " + f.format(archer.dmg * (1 - (archer.critChance * 0.01 - 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01 - 0.01)) * player.attackSpeed));
+	if((archer.dmg * (1 - (archer.critChance * 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01)) * player.attackSpeed) > 100) {
+		$("#stats35").text("Damage per second: " + f.format(archer.dmg * (1 - (archer.critChance * 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01)) * player.attackSpeed));
 	} else {
-		$("#stats35").text("Damage per second: " + Math.round((archer.dmg * (1 - (archer.critChance * 0.01 - 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01 - 0.01)) * player.attackSpeed) * 100) / 100);
+		$("#stats35").text("Damage per second: " + Math.round((archer.dmg * (1 - (archer.critChance * 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01)) * player.attackSpeed) * 100) / 100);
 	}
-	$("#stats36").text("Estimated hits: " + (enemy.maxHp / (archer.dmg * (1 - (archer.critChance * 0.01 - 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01 - 0.01)))).toPrecision(2));
+	$("#stats36").text("Estimated hits: " + (enemy.maxHp / (archer.dmg * (1 - (archer.critChance * 0.01)) + ((archer.dmg * archer.critFactor) * (archer.critChance * 0.01)))).toPrecision(2));
 	$("#stats41").text("Level: " + player.level);
 	$("#stats42").text("HP: " + f.format(enemy.hp) + "/" + f.format(enemy.maxHp));
 	$("#stats43").text("Damage: " + f.format(enemy.dmg));
@@ -559,7 +562,7 @@ function updateStatistics() {
 		$("#" + i + "Tooltip").text(upgrades[i].tooltip + "\n\nnumbervalues: " + "\n\nBought: " + upgrades[i].bought);
 		switch (i) {
 			case "healUp":
-				$("#healUpTooltip").text($("#healUpTooltip").text().replace("numbervalues: ", "Heal Power: " + f.format(healer.power) + "->" + f.format(calc(1, upgrades.healUp.bought + 1) * blessScaling.hp ** blessings.healUp.bought * 1.01 ** player.xpLevel) + "\nMana Cost: " + f.format(healer.cost) + "->" + f.format(calc(3, upgrades.healUp.bought + 1, upgrades.healCost.bought))));
+				$("#healUpTooltip").text($("#healUpTooltip").text().replace("numbervalues: ", "Heal Power: " + f.format(healer.power) + "->" + f.format(calc(1,upgrades.healUp.bought+1,-1,blessings.healUp.bought,player.xpLevel)) + "\nMana Cost: " + f.format(healer.cost) + "->" + f.format(calc(3, upgrades.healUp.bought + 1, upgrades.healCost.bought))));
 				break;
 			case "healCost":
 				$("#healCostTooltip").text($("#healCostTooltip").text().replace("numbervalues: ", "Mana Cost: " + f.format(healer.cost) + "->" + f.format(calc(3, upgrades.healUp.bought, upgrades.healCost.bought + 1))));
@@ -571,10 +574,10 @@ function updateStatistics() {
 				$("#healerCritChanceTooltip").text($("#healerCritChanceTooltip").text().replace("numbervalues: ", "Crit Chance: " + (healer.critChance).toPrecision(4) + "->" + (100 - (100 - healer.critChance) * scaling.crit).toPrecision(4) + "%"));
 				break;
 			case "healHot":
-				$("#healHotTooltip").text($("#healHotTooltip").text().replace("numbervalues: ", "Factor: " + (upgrades.healHot.bought * 10) + "%->" + (upgrades.healHot.bought * 10 + 10) + "%"));
+				$("#healHotTooltip").text($("#healHotTooltip").text().replace("numbervalues: ", "Factor: " + (upgrades.healHot.bought * scaling.healHot) + "%->" + ((upgrades.healHot.bought+1) * scaling.healHot) + "%"));
 				break;
 			case "maxHp":
-				$("#maxHpTooltip").text($("#maxHpTooltip").text().replace("numbervalues: ", "Maximum Health: " + f.format(hero.maxHp) + "->" + f.format(calc(2, upgrades.maxHp.bought + 1) * blessScaling.hp ** blessings.hp.bought * 1.01 ** player.xpLevel)));
+				$("#maxHpTooltip").text($("#maxHpTooltip").text().replace("numbervalues: ", "Maximum Health: " + f.format(hero.maxHp) + "->" + f.format(calc(2, upgrades.maxHp.bought+1, -1, blessings.hp.bought, player.xpLevel))));
 				break;
 			case "armor":
 				if(hero.armor < Math.pow(10, player.places)) {
@@ -664,7 +667,7 @@ function updateVisuals() {
 	} else {
 		$("#herohp, #enemyattackbar").css("display", "none");
 	}
-	if(player.maxLevel >= 30) {
+	if(player.maxLevel >= 15) {
 		$("#mana").text(f.format(healer.mana) + "/" + f.format(healer.maxMana));
 		$("#mana").css({
 			"width": ((healer.mana / healer.maxMana) * 450),
@@ -697,12 +700,12 @@ function combat() {
 				if(Math.random() * 100 < healer.critChance) {
 					hero.hp += healer.power * 2;
 					healer.hotamount = healer.hotamount * (healer.hottimer / 10);
-					healer.hotamount += healer.power * 2 * upgrades.healHot.bought * 0.1;
+					healer.hotamount += healer.power * 2 * upgrades.healHot.bought * scaling.healHot/100;
 					healer.hottimer = 10;
 				} else {
 					hero.hp += healer.power;
 					healer.hotamount = healer.hotamount * (healer.hottimer / 10);
-					healer.hotamount += healer.power * upgrades.healHot.bought * 0.1;
+					healer.hotamount += healer.power * upgrades.healHot.bought * scaling.healHot/100;
 					healer.hottimer = 10;
 				}
 				healer.mana -= healer.cost;
@@ -732,7 +735,6 @@ function combat() {
 }
 updateCosts();
 var deathDelay;
-
 function checkDeath() {
 	if(hero.hp <= 1) {
 		player.deaths += 1;
@@ -745,7 +747,7 @@ function checkDeath() {
 		}, 400);
 		document.getElementById("pause").checked = true;
 	}
-	if(enemy.hp <= 1) {
+	if(enemy.hp <= 1 && hero.hp>1) {
 		player.kills += 1;
 		player.gold += enemy.gold;
 		player.totalgold += enemy.gold;
@@ -760,7 +762,6 @@ function checkDeath() {
 		}
 	}
 }
-
 function checkOverflow() {
 	if(healer.mana > healer.maxMana) {
 		healer.mana = healer.maxMana;
@@ -780,16 +781,21 @@ function checkOverflow() {
 	if(enemy.hp < 0) {
 		enemy.hp = 0;
 	}
-	player.xpReq = 100+25*(player.xpLevel-1);
-	if(player.xpLevel>20) {
-		player.xpReq *= scaling.xpReq ** (player.xpLevel - 21);
-	}
-	if(player.xp >= player.xpReq) {
-		player.xp -= player.xpReq;
-		player.xpLevel += 1;
+	if(player.maxLevel>10) {
+		player.xpReq = 100+25*(player.xpLevel-1);
+		if(player.xpLevel>20) {
+			player.xpReq *= scaling.xpReq ** (player.xpLevel - 21);
+		}
+		if(player.xp >= player.xpReq) {
+			player.xp -= player.xpReq;
+			player.xpLevel += 1;
+		}
+	} else {
+		player.xp=0;
+		player.xpLevel=1;
+		player.xpReq = 1e100;
 	}
 }
-
 function registerUpgrade(name) {
 	$("#" + name).on("click", function() {
 		updateCosts();
@@ -800,7 +806,6 @@ function registerUpgrade(name) {
 		}
 	});
 }
-
 function registerBlessing(name) {
 	$("#" + name + "Blessing").on("click", function() {
 		updateCosts();
@@ -993,6 +998,7 @@ $("#deletesavebutton").on('click', function() {
 		location.reload();
 	}
 });
+//Keybindings
 $(document).keydown(function(e) {
     switch(e.key) {
         case "a":
@@ -1004,34 +1010,31 @@ $(document).keydown(function(e) {
 		case "ArrowRight":
 			nextlevel.click();
 			break;
-		case "ArrowUp":
-			player.xp+=25;
-			player.xp*=1.1;
+		case "b":
+			buyeverythingbutton.click();
 			break;
     }
 });
 document.getElementById('loadbutton').click();
 gotoLevel(player.level);
-function calc(id, level, level2) {
+function calc(id, level, level2, blesslevel, xplevel) {
 	var result = 0;
+	xplevel -= 1;
 	switch (id) {
 		case 1: //Heal power
-			result = 3600 * Math.pow(scaling.hp, level);
-			if(level < 500) {
-				result *= 3 - (level * 0.004);
-			}
+			result = 1000 * (scaling.hp**level) * (blessScaling.hp**blesslevel) * (scaling.xp**xplevel);
 			break;
 		case 2: //Max hp
-			result = 600 + level * 15;
-			result *= Math.pow(scaling.hp, level);
-			if(level < 500) {
-				result *= 2.5 - (level * 0.003);
-			}
+			result = 3000 + (level * 25);
+			result *= (scaling.hp**level) * (blessScaling.hp**blesslevel) * (scaling.xp**xplevel);
 			break;
 		case 3: //Heal cost
 			//level = healup bought, level2 = healcost bought
 			result = 15 + (level * 0.075);
 			result -= level2 * 0.075;
+			if(level < 100) {
+				result *= 0.75 + (level * 0.0025);
+			}
 			result *= scaling.manaCostInc ** level;
 			result *= scaling.manaCostDec ** level2;
 			if(result < 1) {
@@ -1094,8 +1097,8 @@ function simUpgrades(id, start) {
 		case 3: //How much higher hp is from healing
 			var step = 50;
 			for(i = start; i < start + (step * 100); i += step) {
-				previous = calc(2, i - step) / calc(1, i - step);
-				x = calc(2, i) / calc(1, i) / ((1 + (i * 0.1)) / 2.1);
+				previous = calc(2, i+30 - step, -1, 1, 1) / calc(1, i - step, -1, 1, 1);
+				x = calc(2, i+30, -1, 1, 1) / calc(1, i, -1, 1, 1) / ((1 + (i * 0.1)) / 2.1);
 				results.push({
 					"Level": i,
 					"Effect": x.toFixed(2),
@@ -1107,7 +1110,7 @@ function simUpgrades(id, start) {
 	}
 }
 function earlyHideElements() {
-	for(var i in upgrades) { //TODO: Maybe make upgrades unlock with group level instead of enemy level?
+	for(var i in upgrades) {
 		if(upgrades[i].minEnemyLevel > player.maxLevel) {
 			upgrades[i].cost = Infinity;
 			$("#" + i).css("display", "none");
@@ -1122,7 +1125,14 @@ function earlyHideElements() {
 		$("#heroupgrades").css("display", "inline");
 		$("#buyeverythingbutton").css("display", "inline");
 	};
-	if(player.maxLevel < 30) {
+	if(player.maxLevel <= 10) {
+		$("#xp").css("display", "none");
+		$("#xpLevel").css("display", "none");
+	} else {
+		$("#xp").css("display", "inline");
+		$("#xpLevel").css("display", "inline");
+	}
+	if(player.maxLevel < 15) {
 		$("#healerupgrades").css("display", "none");
 	} else {
 		$("#healerupgrades").css("display", "inline");
@@ -1155,6 +1165,7 @@ function loop() {
 }
 
 function visualLoop() {
+	checkOverflow();
 	updateVisuals();
 	window.setTimeout(visualLoop, 1000 / player.visualFps);
 }
@@ -1194,6 +1205,11 @@ afterUpgrade();
 
 function visibilityChecks() {
 	//If all general upgrades are maxed
+	for(var i in upgrades) {
+		if(upgrades[i].cost===Infinity) {
+			$("#"+i).css("display", "none");
+		}
+	}
 	if(upgrades.attackSpeed.bought >= upgrades.attackSpeed.maxLevel && upgrades.castSpeed.bought >= upgrades.castSpeed.maxLevel && upgrades.manaRegen.bought >= upgrades.manaRegen.maxLevel) {
 		$("#hpBlessing").css("display", "inline");
 		$("#healUpBlessing").css("display", "inline");
