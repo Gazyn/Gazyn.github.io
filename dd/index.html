@@ -7,13 +7,13 @@
     <meta content="utf-8" http-equiv="encoding">
     <script src='HackTimer.min.js'></script>
     <script src='HackTimerWorker.min.js'></script>
-    <script src="https://cdn.rawgit.com/erosson/swarm-numberformat/v0.4.0/dist/swarm-numberformat.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="swarm-numberformat.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 
 <body>
-    <span id="gold"></span><br> Pause: <input type="checkbox" id="pause"></input>
+    <span id="gold"></span><br><br><input type="checkbox" id="pause">
     <div id="barwrapper">
         <div id="mana"><span id="manatext"></span></div>
         <div id="herohp"><span id="herotext"></span></div>
@@ -27,7 +27,7 @@
     </div>
     <button id="buyeverythingbutton">Buy 0 of everything</button>
     <span id="autoprogresstext">Autoprogress</span><input type="checkbox" id="autoprogress">
-    <button id="tab1button">Upgrades</button><button id="tab2button">Statistics</button><button id="tab9button">Settings</button><br>
+    <button id="tab1button" class="tabbutton">Upgrades</button><button id="tab2button" class="tabbutton">Statistics</button><button id="tab9button" class="tabbutton">Settings</button><br>
     <div id="tab1" class="tab">
         <div id="healerupgrades">
             <span class="upgradeHeader">Healer Upgrades</span>
@@ -64,12 +64,12 @@
         </div>
         <div id="generalupgrades">
             <span id="fourthCornerText" class="upgradeHeader"></span>
-            <button id="manaRegen"></button>
-            <span class="tooltip" id="manaRegenTooltip">Mana regen tooltip</span>
             <button id="attackSpeed"></button>
             <span class="tooltip" id="attackSpeedTooltip">Attack speed tooltip</span>
             <button id="castSpeed"></button>
             <span class="tooltip" id="castSpeedTooltip">Cast speed tooltip</span>
+			<button id="manaRegen"></button>
+            <span class="tooltip" id="manaRegenTooltip">Mana regen tooltip</span>
 			<button id="hpBlessing"></button><br>
             <span class="tooltip" id="hpBlessingTooltip">Hp blessing tooltip</span>
 			<button id="healUpBlessing"></button><br>
@@ -102,32 +102,39 @@
             <span id="stats32"></span><br>
             <span id="stats33"></span><br>
             <span id="stats34"></span><br>
-            <span id="stats35"></span></div><br>
+            <span id="stats35"></span><br>
+            <span id="stats36"></span></div><br>
         <div id="stats">Enemy stats<br><br>
             <span id="stats41"></span><br>
             <span id="stats42"></span><br>
             <span id="stats43"></span><br>
             <span id="stats44"></span><br>
-            <span id="stats45"></span></div><br>
+			<span id="stats45"></span><br>
+            <span id="stats46"></span></div><br>
         <div id="stats">General stats<br><br>
-            <span id="stats51"></span><br>
-            <span id="stats52"></span><br>
-            <span id="stats91"></span><br>
             <span id="stats95"></span><br>
             <span id="stats96"></span><br>
-            <span id="stats97">Update 8</span><br>
+            <span id="stats97">Update 9</span><br>
             <span id="stats98"></span><br>
             <span id="stats99"></span></div><br>
     </div>
     <div id="tab4" class="tab">
-        <input id="slider" type="range" min="1" max="6"><span id="significantfigures"></span><br>
-        <button id="scientific">Scientific notation</button>
-        <button id="standard">Standard notation</button>
-        <button id="engineering">Engineering notation</button><br>
+        <input id="notationslider" type="range" min="3" max="6"><span id="significantfigures"></span><br>
+		<input id="fpsslider" type="range" min="10" max="60"><span id="fpscount"></span><br>
+		<input id="visualfpsslider" type="range" min="1" max="60"><span id="visualfpscount"></span><br>
+        Notation: <form><select id="notationid"><option>Standard</option><option>Scientific</option><option>Engineering</option></select></form>
+		Show enemy gold: <input id="showEnemyGold" type="checkbox"><br>
         <button id="savebutton">Save</button>
         <button id="loadbutton">Load</button><br>
         <button id="deletesavebutton">DELETE SAVE</button><br>
     </div>
+	<div id="xp">
+		<div id="xpbar">
+		</div>
+		<div id="xptext">
+		</div>
+	</div>
+	<span id="xpLevel" title="Each level gives 1% damage, health and heal power.">Level: 1</span>
     <script src="script.js"></script>
 </body>
 
