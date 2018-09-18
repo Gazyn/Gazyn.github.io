@@ -93,7 +93,7 @@ var enemy = {
 	attackSpeed: 1,
 	attackreq: 0
 };
-var upgrades = {
+var upgrades = { //TODO: Find out why maxing crit crashes the game while maxing general upgrades doesn't.
 	dmg: {
 		bought: 0,
 		tooltip: "Increases damage.",
@@ -146,21 +146,21 @@ var upgrades = {
 	critChance: {
 		bought: 0,
 		tooltip: "Increases the chance to crit, multiplying damage.",
-		maxLevel: 50000,
+		maxLevel: 500,
 		minEnemyLevel: 35,
 		baseCostInc: 105
 	},
 	blockChance: {
 		bought: 0,
 		tooltip: "Increases the chance to block, dividing incoming damage.",
-		maxLevel: 50000,
+		maxLevel: 500,
 		minEnemyLevel: 40,
 		baseCostInc: 120
 	},
 	healerCritChance: {
 		bought: 0,
 		tooltip: "Increases the chance for healing to be doubled.",
-		maxLevel: 50000,
+		maxLevel: 500,
 		minEnemyLevel: 45,
 		baseCostInc: 135
 	},
@@ -244,6 +244,7 @@ function gotoLevel(dest) {
 		console.log("No player death delay to clear!; " + e);
 	}
 	updateStats();
+	enemy.xp = enemy.basexp
 	if(dest > 20) {
 		enemy.basehp = 77 * (1 + (dest - 20) * 0.075);
 		enemy.basedmg = 56 * (1 + (dest - 20) * 0.075);
@@ -251,17 +252,17 @@ function gotoLevel(dest) {
 	if(player.level%1000===0) {
 		enemy.maxHp = enemy.basehp * 6;
 		enemy.dmg = enemy.basedmg * 3;
-		enemy.xp = (enemy.basexp + 1 * (player.level - 10))*4;
+		enemy.xp *= 4;
 	} else
 	if(player.level%100===0) {
 		enemy.maxHp = enemy.basehp * 4;
 		enemy.dmg = enemy.basedmg * 2;
-		enemy.xp = (enemy.basexp + 1 * (player.level - 10))*2;
+		enemy.xp *=  2;
 	} else
 	if(player.level%10===0) {
 		enemy.maxHp = enemy.basehp * 2;
 		enemy.dmg = enemy.basedmg * 1.5;
-		enemy.xp = (enemy.basexp + 1 * (player.level - 10));
+		enemy.xp = enemy.basexp;
 	} else if((player.level+1)%10===0) { //If level=9, 19, 29 etc
 		enemy.maxHp = enemy.basehp * 1.1;
 		enemy.dmg = enemy.basedmg * 1.1;
@@ -325,6 +326,7 @@ function getZeroes(input) {
 }
 function updateCosts() {
 	for(var name in upgrades) {
+		if(upgrades[name].bought<upgrades[name].maxLevel || upgrades[name].maxLevel===-1)
 		upgrades[name].cost = upgrades[name].bought + 15 * Math.pow(scaling.upgradeCost, upgrades[name].bought + (upgrades[name].baseCostInc));
 	}
 	for(var name in blessings) {
@@ -432,7 +434,6 @@ function heal() {
 		var healerpower = healer.power * (1 + healer.critChance * 0.01) * (blessScaling.hp ** blessings.hp.bought) * (scaling.xp ** player.xpLevel);
 		var gainedhot = healerpower * upgrades.healHot.bought * scaling.healHot/200;
 		var remaininghot = healer.hotamount * (healer.hottimer / 10) * 0.2;
-		console.log(f.format(remaininghot));
 		if(hero.hp+remaininghot < hero.maxHp && healer.castreq === 0 && healer.mana > healer.cost) {
 			healer.castreq = 1;
 		}
@@ -799,7 +800,7 @@ function checkOverflow() {
 function registerUpgrade(name) {
 	$("#" + name).on("click", function() {
 		updateCosts();
-		if(player.gold > upgrades[name].cost) {
+		if(player.gold > upgrades[name].cost && ((upgrades[name].maxLevel>upgrades[name].bought) || (upgrades[name].maxLevel===-1))) {
 			upgrades[name].bought += 1;
 			player.gold -= upgrades[name].cost;
 			afterUpgrade();
@@ -854,71 +855,18 @@ $("#tab9button").on("click", function() {
 });
 $("#tab1button").click();
 $("#buyeverythingbutton").on("click", function() {
-	var spitout = true;
-	for(var i = 0; i < player.bulkAmount; i++) {
-		var upgradelist = [];
-		var blessinglist = [];
-		for(var x in upgrades) {
-			upgradelist.push(upgrades[x].cost);
-		}
-		for(var z in blessings) {
-			upgradelist.push(blessings[z].cost);
-		}
-		var mincost = Math.min.apply(null, upgradelist);
-		if(mincost === Infinity) {
-			document.getElementById("buyeverythingbutton").click();
-			break;
-		}
-		var found = false;
-		for(var y in upgrades) {
-			if((upgrades[y].maxLevel!==-1 && upgrades[y].maxLevel>upgrades[y].bought) || upgrades[y].maxLevel===-1)
-			if(upgrades[y].cost === mincost) {
-				found = true;
-				if(player.gold > upgrades[y].cost) {
-					player.gold -= upgrades[y].cost;
-					upgrades[y].bought += 1;
-					switch (y) {
-						case "healHot":
-							upgrades.healHot.cost = (5000 + upgrades.healHot.bought * 250) * Math.pow(1.11042, upgrades.healHot.bought);
-							break;
-						case "manaRegen":
-							upgrades.manaRegen.cost = (2.5e7 + upgrades.manaRegen.bought * 5e6) * Math.pow(1.45, upgrades.manaRegen.bought);
-							break;
-						case "attackSpeed":
-							upgrades.attackSpeed.cost = (1e6 + upgrades.attackSpeed.bought * 3e5) * Math.pow(1.3, upgrades.attackSpeed.bought);
-							break;
-						case "castSpeed":
-							upgrades.castSpeed.cost = (5e7 + upgrades.castSpeed.bought * 1e6) * Math.pow(1.15, upgrades.castSpeed.bought);
-							break;
-						default:
-							upgrades[y].cost = 15 * Math.pow(scaling.upgradeCost, upgrades[y].bought);
-							break;
-					}
-				}
-				break;
-			}
-		}
-		if(found===false) {
-			for(var i in blessings) {
-				if(blessings[i].cost === mincost) {
-					if(player.gold > blessings[i].cost) {
-						player.gold -= blessings[i].cost;
-						blessings[i].bought += 1;
-						switch (i) {
-							case "bulkAmount":
-								blessings.bulkAmount.cost = (1e9*(1000**blessings.bulkAmount.bought));
-								break;
-							default:
-								blessings[i].cost = 1e10*(blessScaling.cost**blessings[i].bought);
-								break;
-						}
-					}
-					afterBlessing();
-					break;
-				}
-			}
-		}
+	for(var n = 0; n<player.bulkAmount; n+=1) {
+	var upgradeslist = [];
+	for(var i in upgrades) {
+		upgradeslist.push(upgrades[i].cost);
+	}
+	var targetUpgrade = Object.keys(upgrades)[upgradeslist.indexOf(Math.min.apply(Math, upgradeslist))];
+	console.log(targetUpgrade);
+	if(((upgrades[targetUpgrade].maxLevel===-1) || (upgrades[targetUpgrade].maxLevel > upgrades[targetUpgrade].bought)) && player.gold>upgrades[targetUpgrade].cost) {
+		upgrades[targetUpgrade].bought+=1;
+		player.gold-=upgrades[targetUpgrade].cost;
 		afterUpgrade();
+	}
 	}
 });
 function save() {
@@ -968,26 +916,6 @@ $("#loadbutton").on('click', function() {
 });
 $("#deletesavebutton").on('click', function() {
 	var deletionprompt = prompt("You will not gain ANYTHING and you will lose EVERYTHING! Are you sure? Type 'DELETE' into the prompt to confirm.");
-	if(deletionprompt == "boyohboyone") {
-		player.maxLevel = 100;
-		player.gold = 1e16;
-		player.bulkAmount = 50;
-	}
-	if(deletionprompt == "manohmantwo") {
-		player.maxLevel = 200;
-		player.gold = 1e32;
-		player.bulkAmount = 100;
-	}
-	if(deletionprompt == "heyhothree") {
-		player.maxLevel = 300;
-		player.gold = 1e48;
-		player.bulkAmount = 150;
-	}
-	if(deletionprompt == "thetesting") {
-		player.maxLevel = 30;
-		player.gold = 6e5;
-		player.bulkAmount = 10;
-	}
 	if(deletionprompt == "DELETE") {
 		localStorage.removeItem("playersave");
 		localStorage.removeItem("healersave");
@@ -1137,7 +1065,7 @@ function earlyHideElements() {
 	} else {
 		$("#healerupgrades").css("display", "inline");
 	};
-	if(player.maxLevel < 50) {
+	if(player.maxLevel < 30) {
 		$("#generalupgrades").css("display", "none");
 	} else {
 		$("#generalupgrades").css("display", "inline");
