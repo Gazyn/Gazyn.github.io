@@ -1,5 +1,6 @@
 html * {
   text-shadow:1px 1px 1px #d3d3d3;
+  font-family: "cantarellregular";
 }
 body {
   background-color: silver;
@@ -52,7 +53,7 @@ body {
   border:none;
   top:0px;
   width:208px;
-  height:24px;
+  height:28px;
   font-size:20px;
 }
 #prevLevel {
@@ -86,7 +87,7 @@ body {
 #autoProgressText {
   position:absolute;
   left:850px;
-  top:25px;
+  top:24px;
   font-size:20px;
   display:none;
 }
@@ -211,11 +212,13 @@ body {
   z-index:100;
   display:none;
   white-space:pre-line;
+  margin-left:2px;
+  margin-top:-2px;
 }
 .upgradeHeader {
   font-family: "cantarellregular";
   font-size:20px;
-  text-shadow:#999999 1px 1px;
+  text-shadow:#888888 1px 1px;
 }
 .tabButton {
   border-radius:4px;
@@ -234,8 +237,8 @@ body {
 	font-weight: bold;
   background-color:#EEEEEE; /* Looks like a button, feels like a button, isn't a button. */
   white-space:pre-wrap; /* Originally to allow new lines, now it will just break everything if removed*/
-  margin:4px;
-  height:34px; /* Fit the icon */
+  margin:-2.2px;
+  height:35px; /* Fit the icon */
   width:280px;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -243,11 +246,11 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-  animation: 0.1s ease-in infinite;
+  animation: 0.2s ease-in infinite;
 }
 @keyframes blink {
   0% {
-    background-color: #AAAAAA;
+    background-color: #999999;
   }
   100% {
     background-color: #EEEEEE;
@@ -255,7 +258,7 @@ body {
 }
 .upgradeText2 {
   color:rgba(245, 225, 5);
-  text-shadow:#777777 2px 1px; /* Ooh la la! Lucky sevens! */
+  text-shadow: #000000 1px 1px;
 }
 .upgradeButtonImage {
   position:absolute;
@@ -263,6 +266,7 @@ body {
   margin-top:-18px;
   z-index:1;
   border-right: black solid 1px;
+  padding-bottom:1px;
   padding-right:1px;
 }
 #tab1 {
