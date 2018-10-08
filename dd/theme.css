@@ -152,7 +152,7 @@ body {
   border: 1px solid black;
   top:36px;
   color: blue;
-  background-image: url("dat/Mana.png");
+  background-image: url("dat/mana.png");
   text-align:left;
   transition: width;
   transition-duration: 0.1s;
