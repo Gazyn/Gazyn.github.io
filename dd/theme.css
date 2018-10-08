@@ -54,7 +54,6 @@ body {
 }
 
 #buyEverythingButton {
-	font-family: "cantarellregular";
 	position: absolute;
 	top: 39px;
 	left: 305px;
@@ -163,7 +162,6 @@ body {
 }
 
 #mana {
-<<<<<<< HEAD
 	position: absolute;
 	white-space: nowrap;
 	height: 36px;
@@ -174,18 +172,16 @@ body {
 	text-align: left;
 	transition: width;
 	transition-duration: 0.1s;
-=======
-  position:absolute;
-  white-space: nowrap;
-  height:36px;
-  border: 1px solid black;
-  top:36px;
-  color: blue;
-  background-image: url("dat/mana.png");
-  text-align:left;
-  transition: width;
-  transition-duration: 0.1s;
->>>>>>> 315315fe2c6082899800139674f8f75e762b753b
+	position: absolute;
+	white-space: nowrap;
+	height: 36px;
+	border: 1px solid black;
+	top: 36px;
+	color: blue;
+	background-image: url("dat/mana.png");
+	text-align: left;
+	transition: width;
+	transition-duration: 0.1s;
 	font-family: Copperplate, Copperplate Gothic Light, fantasy;
 	font-size: 24px;
 	font-style: normal;
@@ -489,14 +485,7 @@ body {
 }
 
 #enemyStatistics {
-<<<<<<< HEAD
 	position: absolute;
 	top: 300px;
 	left: 175px;
 }
-=======
-  position:absolute;
-  top:300px;
-  left:175px;
-}
->>>>>>> 315315fe2c6082899800139674f8f75e762b753b
