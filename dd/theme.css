@@ -1,102 +1,149 @@
 html * {
   text-shadow:1px 1px 1px #d3d3d3;
+  font-family: "cantarellregular";
 }
 body {
   background-color: silver;
+  overflow:hidden;
 }
-#buyeverythingbutton {
+#enemyPower {
   position:absolute;
-  top:35px;
+  top:-5px;
+  left:361px;
+}
+#enemyDefense {
+  position:absolute;
+  top:10px;
+  left:360px;
+}
+#offlineProgressWrapper {
+  position:absolute;
+  width:110%;
+  height:110%;
+  top:-10px;
+  left:-10px;
+  opacity:0.4;
+  background-color:black;
+  display:none;
+  z-index:1000;
+}
+#offlineProgressText {
+  position:absolute;
+  left:780px;
+  top:300px;
+  width:300px;
+  height:200px;
+  text-align:center;
+  background-color:lightblue;
+  z-index:1001;
+}
+#offlineProgressButton {
+  position:absolute;
+  left:855px;
+  top:435px;
+  font-size:30px;
+  width:150px;
+  border-radius:12px;
+  z-index:1002;
+}
+#buyEverythingButton {
+  font-family:"cantarellregular";
+  position:absolute;
+  top:39px;
   left:305px;
   border-radius: 4px;
-  height:50px;
+  height:47px;
   font-size:20px;
+  display:none;
 }
 #level {
   position:absolute;
-  left:820px;
+  left:819px;
   background-color:lightgreen;
   border:none;
   top:0px;
   width:208px;
+  height:28px;
   font-size:20px;
 }
-#prevlevel {
+#prevLevel {
   z-index:10;
   position:absolute;
   left:820px;
   background-color:lightgreen;
   border:none;
   top:0px;
+  outline: 1px solid black;
   font-size:20px;
-  width:20px;
+  width:28px;
 }
-#nextlevel {
+#nextLevel {
   z-index:10;
   position:absolute;
   left:998px;
   background-color:lightgreen;
   border:none;
   top:0px;
+  outline: 1px solid black;
   font-size:20px;
-  width:20px;
+  width:28px;
 }
-#autoprogress {
+#autoProgress {
   position:absolute;
   left:985px;
   top:30px;
+  display:none;
 }
-#autoprogresstext {
+#autoProgressText {
   position:absolute;
+  cursor:default;
   left:850px;
-  top:25px;
+  top:24px;
   font-size:20px;
+  display:none;
 }
-#stats {
-  width:250px;
-  font-size:13px;
-  text-shadow:2px 2px #d3d3d3;
-  background-color:lightyellow;
-  white-space: nowrap;
-}
-#barwrapper {
+#barWrapper {
   position:absolute;
+  cursor:default;
   left:700px;
   text-align:center;
 }
-#herohp {
+#knightHp {
   position:absolute;
   white-space: nowrap;
   top:0px;
-  height:36px;
+  height:35px;
   border: 1px solid black;
-  background-image: url("dat/HeroHp.png");
+  background-image: url("dat/knightHp.png");
   text-align:left;
-  transition: width 0.3s ease-out;
+  transition: width 0.2s linear;
   font-family: Copperplate, Copperplate Gothic Light, fantasy;
 	font-size: 24px;
 	font-style: normal;
 	font-variant: normal;
-	font-weight: 500;
 	line-height: 25px;
+  text-shadow:1px 1px #999999;
+  display:none;
 }
-#playerattackbar {
+#archerAttackBar {
   position:absolute;
   white-space: nowrap;
-  top:140px;
-  height:4px;
+  top:141px;
+  height:3px;
   border: 1px solid black;
   background: #ffff00;
   z-index:1;
+  display:none;
 }
-#enemyattackbar {
+#enemyAttackBar {
   position:absolute;
   white-space: nowrap;
-  top:32px;
-  height:4px;
+  top:33px;
+  height:3px;
   border: 1px solid black;
   background: #ffff00;
   z-index:1;
+  display:none;
 }
 #mana {
   position:absolute;
@@ -108,15 +155,17 @@ body {
   background-image: url("dat/Mana.png");
   text-align:left;
   transition: width;
-  transition-duration: 0.05s;
+  transition-duration: 0.1s;
 	font-family: Copperplate, Copperplate Gothic Light, fantasy;
 	font-size: 24px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 25px;
+  text-shadow:1px 1px #999999;
+  display:none;
 }
-#castbar {
+#castBar {
   position:absolute;
   white-space: nowrap;
   height:36px;
@@ -130,121 +179,140 @@ body {
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 25px;
+  text-shadow:1px 1px #999999;
 }
-#enemyhp {
+#enemyHp {
   position:absolute;
   white-space: nowrap;
   top:108px;
   height:36px;
   border: 1px solid black;
-  background-image: url("dat/EnemyHp.png");
+  background-image: url("dat/enemyHp.png");
   text-align:left;
-  transition: width 0.2s ease;
+  transition: width 0.2s linear;
 	font-family: Copperplate, Copperplate Gothic Light, fantasy;
 	font-size: 24px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 25px;
+  text-shadow:1px 1px #999999;
 }
 #gold {
   background: gold;
-  cursor:pointer;
+  border-radius:15px;
+  cursor:default;
 	font-family: Copperplate, Copperplate Gothic Light, fantasy;
-	font-size: 24px;
+	font-size: 31.5px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 25px;
-}
-#healerupgradesbutton, #heroupgradesbutton, #archerupgradesbutton {
-  visibility: hidden;
-  position:absolute;
-}
-#healUp, #healCost, #maxMana, #healerCritChance, #healHot, #maxHp, #armor, #blockChance, #blockFactor, #dmg, #critChance, #critFactor, #manaRegen, #attackSpeed, #castSpeed {
-  border-radius: 4px;
-  font-family: arial;
-  font-size:15px;
-  font-weight: bold;
-  width:275px;
-  height:40px;
+  margin-left:12px;
+  padding-left:20px;
+  padding-right:5px;
   display:none;
-  text-shadow:lightgray 1px 1px;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+}
+#goldimg {
+  background: gold;
+  border-radius:3px;
+  position:absolute;
+  left:px;
+  top:4px;
+  display: none;
 }
 .tooltip {
+  font-family: "cantarellregular";
+  font-size: 13px;
   background-color:lightblue;
   border-radius:3px;
   border:black 1px solid;
   width:200px;
   height:150px;
   position:absolute;
-  z-index:1000;
+  z-index:100;
   display:none;
   white-space:pre-line;
+  margin-left:2px;
+  margin-top:-2px;
 }
-/* #upgrade:hover ~ #upgradetooltip{display:inline-block} start */
-#healUp:hover ~ #healUpTooltip{display:inline-block}#healCost:hover ~ #healCostTooltip{display:inline-block}#maxMana:hover ~ #maxManaTooltip{display:inline-block}#healerCritChance:hover ~ #healerCritChanceTooltip{display:inline-block}#healHot:hover ~ #healHotTooltip{display:inline-block}#maxHp:hover ~ #maxHpTooltip{display:inline-block}#armor:hover ~ #armorTooltip{display:inline-block}#blockChance:hover ~ #blockChanceTooltip{display:inline-block}#blockFactor:hover ~ #blockFactorTooltip{display:inline-block}#dmg:hover ~ #dmgTooltip{display:inline-block}#critChance:hover ~ #critChanceTooltip{display:inline-block}#critFactor:hover ~ #critFactorTooltip{display:inline-block}#manaRegen:hover ~ #manaRegenTooltip{display:inline-block}#attackSpeed:hover ~ #attackSpeedTooltip{display:inline-block}#castSpeed:hover ~ #castSpeedTooltip{display:inline-block}#hpBlessing:hover ~ #hpBlessingTooltip{display:inline-block}#healUpBlessing:hover ~ #healUpBlessingTooltip{display:inline-block}#dmgBlessing:hover ~ #dmgBlessingTooltip{display:inline-block}#goldBlessing:hover ~ #goldBlessingTooltip{display:inline-block}#bulkAmountBlessing:hover ~ #bulkAmountBlessingTooltip{display:inline-block}
-/* #upgrade:hover ~ #upgradeTooltip{display:inline-block} end */
-#attackSpeedTooltip {width:250px}
-#healUpTooltip {height:160px}
 .upgradeHeader {
+  font-family: "cantarellregular";
+  cursor:default;
   font-size:20px;
-  text-shadow:lightgray 2px 1px;
+  text-shadow:#888888 1px 1px;
 }
-#hpBlessing, #healUpBlessing, #dmgBlessing, #goldBlessing, #bulkAmountBlessing {
-	border-radius:10px;
-	font-family: arial;
-	font-size:15px;
-	font-weight: bold;
-	height:40px;
-	width:280px;
-  margin-top:5px;
-  color:green;
-  text-shadow:lightgray 1px 1px;
-}
-#hpBlessing {
-	background-color: #64C0FF;
-}
-#healUpBlessing {
-	background-color: #96FF32;
-}
-#dmgBlessing {
-  background-color: #FF6432;
-}
-#goldBlessing {
-  background-color: #FFFF64;
-}
-#bulkAmountBlessing {
-  background-color: #AAFF96;
-}
-.tabbutton {
+.tabButton {
   border-radius:4px;
   background-color:lightblue;
+  display:none;
 }
-.tabbutton:hover {
+#tab2Button {
+  display:none;
+}
+.tabButton:hover {
   background-color:#9bc2cf;
   transition-duration:0.15s;
 }
+.upgradeButton {
+	font-family: "cantarellregular";
+	font-size:13px;
+	font-weight: bold;
+  white-space:pre-wrap; /* Originally to allow new lines, now it will just break everything if removed*/
+  margin:-2.2px;
+  height:35px; /* Fit the icon */
+  width:280px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+  animation: 0.2s ease-in infinite;
+}
+@keyframes blink {
+  0% {
+    background-color: #999999;
+  }
+  100% {
+    background-color: #EEEEEE;
+  }
+}
+.upgradeText2 {
+  color:rgba(245, 225, 5);
+  text-shadow: #000000 1px 1px;
+}
+.upgradeButtonImage {
+  position:absolute;
+  left:11px;
+  margin-top:-18px;
+  z-index:1;
+  border-right: black solid 1px;
+  padding-bottom:1px;
+  padding-right:1px;
+}
+.statistic {
+  display: inline-block;
+}
 #tab1 {
   position:absolute;
-  display:none;
-  font-size: 20;
   text-align: center;
   position:absolute;
   left:0px;
   top:60px;
   height:800px;
 }
-#tab2, #tab9 {
+#tab2 {
+  display: none;
+  width:250px;
+  font-size:13px;
+  text-shadow:2px 2px #d3d3d3;
+  white-space: nowrap;
+}
+#tab3 {
   display:none;
 }
-#archerupgrades {
+#archerUpgrades {
   position:absolute;
   top:25px;
   left: 5px;
@@ -254,8 +322,9 @@ body {
   border-right:solid 1px black;
   border-bottom:solid 1px black;
   border-radius:15px 0px 0px 0px;
+  display:none;
 }
-#heroupgrades {
+#knightUpgrades {
   position:absolute;
   top:25px;
   left: 305px;
@@ -265,8 +334,9 @@ body {
   border-left:solid 1px black;
   border-bottom:solid 1px black;
   border-radius:0px 15px 0px 0px;
+  display:none;
 }
-#healerupgrades {
+#priestUpgrades {
   position:absolute;
   top:275px;
   left: 5px;
@@ -276,8 +346,9 @@ body {
   border-right:solid 1px black;
   border-top:solid 1px black;
   border-radius:0px 0px 0px 15px;
+  display:none;
 }
-#generalupgrades {
+#playerUpgrades {
   position:absolute;
   top:275px;
   left: 305px;
@@ -287,6 +358,7 @@ body {
   border-left:solid 1px black;
   border-top:solid 1px black;
   border-radius:0px 0px 15px 0px;
+  display:none;
 }
 #pause {display:none}
 #xp {
@@ -298,15 +370,16 @@ body {
   left:1.25%;
   bottom:8px;
   z-index:0;
+  cursor:default;
 }
-#xpbar {
+#xpBar {
   height:inherit;
   background-color:#A000A0;
   border-radius:inherit;
   transition-duration:0.1s;
   z-index:1;
 }
-#xptext {
+#xpText {
   position:relative;
   bottom:18px;
   text-align:center;
@@ -323,4 +396,28 @@ body {
   transform:translateX(-50%);
   font-family: Copperplate, Copperplate Gothic Light, fantasy;
   text-shadow:1px 1px silver;
+  cursor:default;
+}
+#archerStatistics {
+  position:absolute;
+  top:85px;
+}
+#knightStatistics {
+  position:absolute;
+  top:85px;
+  left:175px;
+}
+#priestStatistics {
+  position:absolute;
+  top:85px;
+  left:350px;
+}
+#playerStatistics {
+  position:absolute;
+  top:300px;
+}
+#enemyStatistics {
+  position:absolute;
+  top:300px;
+  left:175px;
 }

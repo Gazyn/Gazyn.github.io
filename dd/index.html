@@ -5,134 +5,75 @@
     <title id="tabname">Loading...</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
-    <script src='HackTimer.min.js'></script>
-    <script src='HackTimerWorker.min.js'></script>
-    <script src="swarm-numberformat.min.js"></script>
+	<script src="decimal.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="font.css" charset="utf-8">
     <link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 
 <body>
-    <span id="gold"></span><br><br><input type="checkbox" id="pause">
-    <div id="barwrapper">
+    <img src="dat/gold.png" id="goldimg"><span id="gold"></span><br><br><input type="checkbox" id="pause">
+	<span id="enemyPower"></span>
+	<span id="enemyDefense"></span>
+    <div id="barWrapper">
         <div id="mana"><span id="manatext"></span></div>
-        <div id="herohp"><span id="herotext"></span></div>
-        <div id="playerattackbar"></div>
-        <div id="enemyhp"><span id="enemytext"></span></div>
-        <div id="enemyattackbar"></div>
-        <div id="castbar"><span id="casttext"></span></div>
+        <div id="knightHp"><span id="knighttext"></span></div>
+        <div id="archerAttackBar"></div>
+        <div id="enemyHp"><span id="enemytext"></span></div>
+        <div id="enemyAttackBar"></div>
+        <div id="castBar"><span id="casttext"></span></div>
     </div>
-    <div id="levelselector">
-        <button id="prevlevel"><</button><button id="level">Level: 100000</button><button id="nextlevel">></button>
+    <div id="levelSelector">
+        <button id="prevLevel"><</button><button id="level">Level: 1/1</button><button id="nextLevel">></button>
     </div>
-    <button id="buyeverythingbutton">Buy 0 of everything</button>
-    <span id="autoprogresstext">Autoprogress</span><input type="checkbox" id="autoprogress">
-    <button id="tab1button" class="tabbutton">Upgrades</button><button id="tab2button" class="tabbutton">Statistics</button><button id="tab9button" class="tabbutton">Settings</button><br>
+    <button id="buyEverythingButton">Buy cheapest upgrade</button>
+    <span id="autoProgressText">Autoprogress:</span><input type="checkbox" id="autoProgress">
+    <button class="tabButton" onclick="switchTab(1)">Upgrades</button><button class="tabButton" id="tab2Button" onclick="switchTab(2)">Debug</button><button class="tabButton" onclick="switchTab(3)">Settings</button><br>
     <div id="tab1" class="tab">
-        <div id="healerupgrades">
-            <span class="upgradeHeader">Healer Upgrades</span>
-            <button id="healUp"></button>
-			<span class="tooltip" id="healUpTooltip">Heal up tooltip</span>
-            <button id="healCost"></button>
-			<span class="tooltip" id="healCostTooltip">Heal cost tooltip</span>
-            <button id="maxMana"></button>
-			<span class="tooltip" id="maxManaTooltip">Max mana tooltip</span>
-            <button id="healerCritChance"></button>
-			<span class="tooltip" id="healerCritChanceTooltip">Healer crit chance tooltip</span>
-            <button id="healHot"></button>
-			<span class="tooltip" id="healHotTooltip">Heal HoT tooltip</span>
+        <div id="priestUpgrades">
+            <span class="upgradeHeader">Priest Upgrades</span><br>
         </div>
-        <div id="heroupgrades">
-            <span class="upgradeHeader">Hero Upgrades</span>
-            <button id="maxHp"></button>
-			<span class="tooltip" id="maxHpTooltip">Max hp tooltip</span>
-            <button id="armor"></button>
-			<span class="tooltip" id="armorTooltip">Armor tooltip</span>
-            <button id="blockChance"></button>
-			<span class="tooltip" id="blockChanceTooltip">Block chance tooltip</span>
-            <button id="blockFactor"></button>
-			<span class="tooltip" id="blockFactorTooltip">Block factor tooltip</span>
+        <div id="knightUpgrades">
+            <span class="upgradeHeader">Knight Upgrades</span><br>
         </div>
-        <div id="archerupgrades">
-            <span class="upgradeHeader">Archer Upgrades</span>
-            <button id="dmg"></button>
-			<span class="tooltip" id="dmgTooltip">Dmg tooltip</span>
-            <button id="critChance"></button>
-			<span class="tooltip" id="critChanceTooltip">Crit chance tooltip</span>
-            <button id="critFactor"></button>
-			<span class="tooltip" id="critFactorTooltip">Crit factor tooltip</span>
+        <div id="archerUpgrades">
+            <span class="upgradeHeader">Archer Upgrades</span><br>
         </div>
-        <div id="generalupgrades">
-            <span id="fourthCornerText" class="upgradeHeader"></span>
-            <button id="attackSpeed"></button>
-            <span class="tooltip" id="attackSpeedTooltip">Attack speed tooltip</span>
-            <button id="castSpeed"></button>
-            <span class="tooltip" id="castSpeedTooltip">Cast speed tooltip</span>
-			<button id="manaRegen"></button>
-            <span class="tooltip" id="manaRegenTooltip">Mana regen tooltip</span>
-			<button id="hpBlessing"></button><br>
-            <span class="tooltip" id="hpBlessingTooltip">Hp blessing tooltip</span>
-			<button id="healUpBlessing"></button><br>
-            <span class="tooltip" id="healUpBlessingTooltip">Heal up blessing tooltip</span>
-			<button id="dmgBlessing"></button><br>
-            <span class="tooltip" id="dmgBlessingTooltip">Dmg blessing tooltip</span>
-			<button id="goldBlessing"></button><br>
-            <span class="tooltip" id="goldBlessingTooltip">Gold blessing tooltip</span>
-			<button id="bulkAmountBlessing"></button><br>
-            <span class="tooltip" id="bulkAmountBlessingTooltip">Bulk amount blessing tooltip</span>
+        <div id="playerUpgrades">
+            <span id="fourthCornerText" class="upgradeHeader">Milestone Upgrades</span><br>
         </div>
     </div>
     <div id="tab2" class="tab">
-        <div id="stats">Hero stats<br><br>
-            <span id="stats11"></span><br>
-            <span id="stats12"></span><br>
-            <span id="stats13"></span><br>
-            <span id="stats14"></span><br>
-            <span id="stats15"></span></div><br>
-        <div id="stats">Healer stats<br><br>
-            <span id="stats21"></span><br>
-            <span id="stats22"></span><br>
-            <span id="stats23"></span><br>
-            <span id="stats24"></span><br>
-            <span id="stats25"></span><br>
-            <span id="stats26"></span><br>
-            <span id="stats27"></span></div><br>
-        <div id="stats">Archer stats<br><br>
-            <span id="stats31"></span><br>
-            <span id="stats32"></span><br>
-            <span id="stats33"></span><br>
-            <span id="stats34"></span><br>
-            <span id="stats35"></span><br>
-            <span id="stats36"></span></div><br>
-        <div id="stats">Enemy stats<br><br>
-            <span id="stats41"></span><br>
-            <span id="stats42"></span><br>
-            <span id="stats43"></span><br>
-            <span id="stats44"></span><br>
-			<span id="stats45"></span><br>
-            <span id="stats46"></span></div><br>
-        <div id="stats">General stats<br><br>
-            <span id="stats95"></span><br>
-            <span id="stats96"></span><br>
-            <span id="stats97">Update 10</span><br>
-            <span id="stats98"></span><br>
-            <span id="stats99"></span></div><br>
+		<div id="playerStatistics">
+		</div>
+		<div id="archerStatistics">
+		</div>
+		<div id="knightStatistics">
+		</div>
+		<div id="priestStatistics">
+		</div>
+		<div id="enemyStatistics">
+		</div>
     </div>
-    <div id="tab4" class="tab">
-        <input id="notationslider" type="range" min="2" max="5"><span id="significantfigures"></span><br>
-		<input id="fpsslider" type="range" min="10" max="60"><span id="fpscount"></span><br>
-		<input id="visualfpsslider" type="range" min="1" max="60"><span id="visualfpscount"></span><br>
-        Notation: <form><select id="notationid"><option>Standard</option><option>Scientific</option><option>Engineering</option></select></form>
+    <div id="tab3" class="tab">
+		<input id="fpsSlider" type="range" min="10" max="60"><span id="fpsCount"></span><br>
+		<input id="visualFpsSlider" type="range" min="1" max="60"><span id="visualFpsCount"></span><br>
 		Show enemy gold: <input id="showEnemyGold" type="checkbox"><br>
-        <button id="savebutton">Save</button>
-        <button id="loadbutton">Load</button><br>
-        <button id="deletesavebutton">DELETE SAVE</button><br>
+		Use scientific notation: <input id="scientific" type="checkbox"><br>
+        <button onclick="save()">Save</button>
+        <button onclick="load()">Load</button><br>
+        <button onclick="deleteSave()">DELETE SAVE</button><br>
     </div>
 	<div id="xp">
-		<div id="xpbar">
+		<div id="xpBar">
 		</div>
-		<div id="xptext">
+		<div id="xpText">
 		</div>
+	</div>
+	<div id="offlineProgressWrapper">
+		<div id="offlineProgressText"><br><br>
+		</div>
+		<button id="offlineProgressButton">Claim</button>
 	</div>
 	<span id="xpLevel" title="Each level gives 1% damage, health and heal power.">Level: 1</span>
     <script src="script.js"></script>
