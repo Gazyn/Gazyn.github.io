@@ -1,0 +1,24 @@
+* {
+  text-shadow: 1px 1px rgba(AA AA AA); 
+  font-family: Cantarell, sans-serif;
+}
+#tab1Button {
+  display:none;
+}
+.sisu {
+  position:absolute;
+  left:10%;
+  right:10%;
+  font-size:24px;
+  text-align: center;
+  line-height:150%;
+}
+.innerTabButton {
+  cursor:pointer;
+}
+#indexText {
+  position:absolute;
+  font-size:2.5em;
+  top:150px;
+  left:10%;
+}
