@@ -1,0 +1,56 @@
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Cantarell" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<link rel="bootstraptheme.css">
+<link rel="stylesheet" href="style.css">
+<title>Kirjandus</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<a class="navbar-brand" href="index.html">J&uuml;rgeni kirjanduse leht</a>
+		<button class="navbar-toggler" type="button" data-target="#navbarColor01" aria-controls="navbarColor01">
+		</button>
+		<div id="navbarColor01">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="reigiopetaja.html">Reigi &otilde;petaja</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="minaolinsiin.html">Mina olin siin</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="err.html">ERR'i artiklid</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active innerTabButton" data-toggle="tab" id="tab1Button" onclick="switchTab(1)">Home</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link innerTabButton" data-toggle="tab" id="tab2Button" onclick="switchTab(2)">Lumekoristus Tallinnas</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link innerTabButton" data-toggle="tab" id="tab3Button" onclick="switchTab(3)">Suusatamise MK Otep&auml;&auml;l</a>
+		</li>
+	</ul>
+	<div id="myTabContent" class="tab-content sisu">
+		<div class="tab-pane fade active show" id="tab1" style="display: inline;">
+			<p>Siin on k&otilde;ik asjad ERR'i artiklite kohta.</p>
+		</div>
+		<div class="tab-pane fade" id="tab2" style="display: none;">
+			<p>Kuigi kogemused n&auml;itavad, et Eesti talvega kaasneb igal aastal ka ohtralt lund, on pealinna t&auml;navate lumest puhastamine osutunud problemaatiliseks. Linna kommunaalameti juhtaja aset&auml;itja Tarmo Sulg teatab ettev&otilde;etud t&ouml;&ouml;dest ja palub autoomanikke oma masinad parkida hoovidesse ja mitte j&auml;tta k&otilde;nnitee &auml;&auml;rtesse, mis takistab lume koristust&ouml;id.<br></p><a href="https://www.err.ee/902154/tallinna-korvaltanavailt-pole-suudetud-lund-pohjalikult-ara-koristada">Originaal artikkel</a>
+		</div>
+		<div class="tab-pane fade" id="tab3" style="display: none;">
+			<p class="custom1">Otep&auml;&auml;l toimuval murdmaasuusatamise MK-etapil n&auml;itas meeste 15 km eraldistardist klassikatehnikas&otilde;idus suurep&auml;rast hoogu meie p&otilde;hjanaaber Iivo Niskanen, kes juhtis v&otilde;istlust avameetritest fini&scaron;ini. Eesti spordis&otilde;pru r&otilde;&otilde;mustas Karel Tammj&auml;rv, kes teist p&auml;eva j&auml;rjest j&otilde;udis 20  parema hulka.<br></p><a href="https://sport.err.ee/900625/niskanen-viis-voidu-soome-tammjarv-18">Originaal artikkel</a>
+		</div>
+		</div>
+	</div>
+	<script>var tabCount = 3</script>
+	<script src="tabswitching.js"></script>
+
+
+</body></html>
