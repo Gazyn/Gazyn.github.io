@@ -8,6 +8,7 @@
 	<script src="decimal.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="font.css" charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Anonymous+Pro|Cousine|Inconsolata|Overpass+Mono|Oxygen+Mono|PT+Mono|Roboto+Mono" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 
@@ -16,19 +17,22 @@
 	<span id="enemyPower"></span>
 	<span id="enemyDefense"></span>
     <div id="barWrapper">
-        <div id="mana"><span id="manatext"></span></div>
-        <div id="knightHp"><span id="knighttext"></span></div>
-        <div id="archerAttackBar"></div>
-        <div id="enemyHp"><span id="enemytext"></span></div>
-        <div id="enemyAttackBar"></div>
-        <div id="castBar"><span id="casttext"></span></div>
+        <div id="mana" class="primaryBar"><span id="manatext"></span></div>
+        <div id="knightHp" class="primaryBar"><span id="knighttext"></span></div>
+        <div id="archerAttackBar" class="smallBar"></div>
+        <div id="enemyHp" class="primaryBar"><span id="enemytext"></span></div>
+        <div id="enemyAttackBar" class="smallBar"></div>
+        <div id="castBar" class="smallBar"><span id="casttext"></span></div>
     </div>
     <div id="levelSelector">
         <button id="prevLevel"><</button><button id="level">Level: 1/1</button><button id="nextLevel">></button>
     </div>
-    <button id="buyEverythingButton">Buy cheapest upgrade</button>
+    <button id="buyCheapestButton" onclick="buyCheapest()">Buy cheapest upgrade</button>
     <span id="autoProgressText">Autoprogress:</span><input type="checkbox" id="autoProgress">
-    <button class="tabButton" onclick="switchTab(1)">Upgrades</button><button class="tabButton" id="tab2Button" onclick="switchTab(2)">Debug</button><button class="tabButton" onclick="switchTab(3)">Settings</button><br>
+    <button class="tabButton" onclick="switchTab(1)">Upgrades</button>
+	<button class="tabButton" id="tab2Button" onclick="switchTab(2)">Skills</button>
+	<button class="tabButton" id="tab8Button" onclick="switchTab(8)">Debug</button>
+	<button class="tabButton" onclick="switchTab(9)">Settings</button><br>
     <div id="tab1" class="tab">
         <div id="priestUpgrades">
             <span class="upgradeHeader">Priest Upgrades</span><br>
@@ -40,10 +44,17 @@
             <span class="upgradeHeader">Archer Upgrades</span><br>
         </div>
         <div id="playerUpgrades">
-            <span id="fourthCornerText" class="upgradeHeader">Milestone Upgrades</span><br>
+            <span id="fourthCornerText" class="upgradeHeader">General Upgrades</span><br>
+			<span id="buyBulkWrapper">Bulk: <input id="buyBulk" oninput="updateBuyBulk()" onchange="if(document.getElementById('buyBulk').value==='') {document.getElementById('buyBulk').value='1'}" size="5"></span>
         </div>
     </div>
-    <div id="tab2" class="tab">
+	<div id="tab2" class="tab">
+		<div id="skillWrapper">
+			<div id="skillPoints">Skill points: 0/0</div>
+			<div id="autoUpgradeSkill"></div>
+		</div>
+	</div>
+    <div id="tab8" class="tab">
 		<div id="playerStatistics">
 		</div>
 		<div id="archerStatistics">
@@ -55,27 +66,26 @@
 		<div id="enemyStatistics">
 		</div>
     </div>
-    <div id="tab3" class="tab">
-		<input id="fpsSlider" type="range" min="10" max="60"><span id="fpsCount"></span><br>
-		<input id="visualFpsSlider" type="range" min="1" max="60"><span id="visualFpsCount"></span><br>
+    <div id="tab9" class="tab">
+		<input id="fpsSlider" type="range" min="15" max="60"><span id="fpsCount"></span><br>
+		Don't update visuals: <input id="slowVisuals" type="checkbox"><br>
 		Show enemy gold: <input id="showEnemyGold" type="checkbox"><br>
 		Use scientific notation: <input id="scientific" type="checkbox"><br>
         <button onclick="save()">Save</button>
         <button onclick="load()">Load</button><br>
         <button onclick="deleteSave()">DELETE SAVE</button><br>
     </div>
-	<div id="xp">
-		<div id="xpBar">
-		</div>
-		<div id="xpText">
-		</div>
+	<div id="exp" onmouseover='$("#expTooltip").css("display","inline-block");' onmouseout='$("#expTooltip").css("display","none");'>
+		<div id="expBar"></div>
+		<div id="expText"></div>
+		<div id="expTooltip" class="tooltip"display="none"></div>
 	</div>
 	<div id="offlineProgressWrapper">
-		<div id="offlineProgressText"><br><br>
-		</div>
-		<button id="offlineProgressButton">Claim</button>
+		<div id="offlineProgressText"><br>
+		Autobuy: </div><input id="offlineProgressAutoBuy" title="Enable autobuy" type="checkbox"><br>
+		<button id="offlineProgressButton" onclick="claimOfflineProgress()">Claim</button>
 	</div>
-	<span id="xpLevel" title="Each level gives 1% damage, health and heal power.">Level: 1</span>
+	<span id="expLevel" onmouseover='$("#expTooltip").css("display","inline-block");' onmouseout='$("#expTooltip").css("display","none");'>Group Level: 1</span>
     <script src="script.js"></script>
 </body>
 
