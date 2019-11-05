@@ -67,9 +67,9 @@ var scaling = { //Scalings must be decimals so effect=effect.times(scaling.toPow
 	healUpMana: new Decimal(1.02035), //  <:
 	enemyMaxHp: new Decimal(1.09175),
 	enemyDmg: new Decimal(1.1105),
-	enemyGoldBase: new Decimal(1.2), //This gets raised to a power of X, where X=1+(log(zone)/log(enemyGoldZoneLog))/enemyGoldScaling
-	enemyGoldZoneLog: 2.5, //These names are ridiculous. Acts as the base of the logarithm set on your zone when determining enemy gold scaling.
-	enemyGoldScaling: new Decimal(125), //This acts as a division factor to the result of the logarithm set on zone with the above value as base.
+	enemyGoldBase: new Decimal(1.2125), //This gets raised to a power of X, where X=1+(log(zone)/log(enemyGoldZoneLog))/enemyGoldScaling
+	enemyGoldZoneLog: 4, //These names are ridiculous. Acts as the base of the logarithm set on your zone when determining enemy gold scaling.
+	enemyGoldScaling: new Decimal(100), //This acts as a division factor to the result of the logarithm set on zone with the above value as base.
 	enemyExp: new Decimal(1.025),
 	expPow: new Decimal(1.02),
 	expReq: new Decimal(1.12)
@@ -184,7 +184,8 @@ var upgrades = {
 		maxLevel: 10000,
 		tooltip: "Increases the knight's maximum health.",
 		tooltipStatName: "Max Health",
-		buttonText: "+X max health"
+		buttonText: "+X max health",
+		minEnemyLevel: 5
 	}),
 	armor1: new Upgrade({
 		user: "knight",
@@ -476,7 +477,7 @@ var upgrades = {
 		flatScaling: new Decimal(1),
 		scaling: new Decimal(5**(1/200)),
 		maxLevel: 200, //1000%
-		minEnemyLevel: 75,
+		minEnemyLevel: 100,
 		costScaling: new Decimal(1e7**(1/200)), //Maxed shortly before zone 300
 		baseCost: new Decimal(5e6),
 		tooltip: "Passively gain exp based on your current enemy.",
@@ -1661,7 +1662,7 @@ var paused = false;
 setInterval(function() {
 	newTime = Decimal(Date.parse(Date())/1000).minus(1);
 	timePassed = newTime-player.lastTime;
-	offlineKills = getDPS().div(enemy.maxHp).times(timeDecay(timePassed)).floor();
+	offlineKills = getDPS().div(enemy.maxHp).times(timeDecay(timePassed));
 	offlineGain = [offlineKills.times(enemy.gold), offlineKills.times(enemy.exp).times(player.passiveExp.div(100))];
 	timeArray.push(timePassed);
 	if(timeArray.length>10) {
