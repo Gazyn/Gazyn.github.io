@@ -452,7 +452,7 @@ var upgrades = {
 		flatScaling: new Decimal(0.025),
 		maxLevel: 200,
 		minEnemyLevel: 2500,
-		baseCost: new Decimal(1e1000),
+		baseCost: new Decimal("1e500"),
 		costScaling: new Decimal(1.125),
 		tooltip: "Increases the archer's attack speed.",
 		tooltipStatName: "Attacks per second",
@@ -464,7 +464,7 @@ var upgrades = {
 		flatScaling: new Decimal(0.075),
 		maxLevel: 200,
 		minEnemyLevel: 3000,
-		baseCost: new Decimal(1e1000),
+		baseCost: new Decimal("1e1000"),
 		costScaling: new Decimal(1.15),
 		tooltip: "Increases the archer's attack speed.",
 		tooltipStatName: "Attacks per second",
@@ -1447,9 +1447,9 @@ function updateVisuals() {
 			"display": "none"
 		})
 	}
+	}
 	$("#expText").text(format(player.exp)+" / "+format(player.expReq));
 	$("#expBar").css("width", (player.exp.div(player.expReq)*100)+"%");
-	}
 }
 function checkOverflow() {
 	if(knight.hp.gt(knight.maxHp)) {knight.hp=knight.maxHp};
@@ -1525,7 +1525,7 @@ function getCheapest() {
 	}
 	return index;
 }
-$(window).keydown(function(e) {
+$(window).keydown(function(e) { //Key bindings
 	switch(e.key) {
 		case "a":
 		case "A":
@@ -1545,6 +1545,16 @@ $(window).keydown(function(e) {
 			break;
 		case "ArrowRight":
 			$("#nextLevel").click();
+			break;
+		case "p":
+		case "P":
+			var lostLvl = Number(prompt("Mis levelil olid? Vasta ausalt pls"));
+			if(lostLvl>0) {
+				player.maxLevel=Decimal(lostLvl);
+				gotoLevel(lostLvl);
+				player.gold=enemy.gold.times(50);
+				player.exp=enemy.exp.times(100);
+			}
 			break;
 	}
 });
