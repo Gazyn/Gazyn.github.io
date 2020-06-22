@@ -1,3 +1,5 @@
+//Selle lehekülje, koodi ja disaini on loonud Jürgen Sepp
+
 var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 var exponents = [];
 for(var a=0; a<26; a+=1) {
