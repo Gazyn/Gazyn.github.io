@@ -1,32 +1,38 @@
 var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 var exponents = [];
-for(var a=0; a<26; a+=1) {
-	var letter = letters[a];
-	for(var b=0; b<26; b+=1) {
+const globalDifficulty = 0.96;
+const autoPlayTest = true;
+const gameTickSpeed = 250; //gotta reduce fps to compensate. bad idea to go below 250ms / 15fps
+const defaultFps = "60";
+const defaultAutoPlayTestFps = "15";
+for(let a=0; a<26; a+=1) {
+	let letter = letters[a];
+	for(let b=0; b<26; b+=1) {
 		exponents.push(letter+letters[b]);
 	}
 }
-for(var a=0; a<26; a+=1) {
-	var letter = letters[a];
-	for(var b=0; b<26; b+=1) {
-		var letter2 = letters[b];
-		for(var c=0; c<26; c+=1) {
+for(let a=0; a<26; a+=1) {
+	let letter = letters[a];
+	for(let b=0; b<26; b+=1) {
+		let letter2 = letters[b];
+		for(let c=0; c<26; c+=1) {
 			exponents.push(letter+letter2+letters[c]);
 		}
 	}
 }
-for(var a=0; a<26; a+=1) {
-	var letter = letters[a];
-	for(var b=0; b<26; b+=1) {
-		var letter2 = letters[b];
-		for(var c=0; c<26; c+=1) {
-			var letter3 = letters[c];
-			for(var d=0; d<26; d+=1) {
+for(let a=0; a<26; a+=1) {
+	let letter = letters[a];
+	for(let b=0; b<26; b+=1) {
+		let letter2 = letters[b];
+		for(let c=0; c<26; c+=1) {
+			let letter3 = letters[c];
+			for(let d=0; d<26; d+=1) {
 				exponents.push(letter+letter2+letter3+letters[d]);
 			}
 		}
 	}
 }
+
 function Random(min, max) {
 	return Math.random() * (max - min) + min;
 } //Random with a range!
@@ -47,41 +53,36 @@ function getStatUpgradesBought(nametemp, provLvl) { //nametemp will either be na
 	}
 	return result;
 }
-var DecInfinity = new Decimal("1e"+Decimal.maxE);
-var scaling = { //Scalings must be decimals so effect=effect.times(scaling.toPower(n)) isn't undefined.
-	upCost: new Decimal(1.0405),
-	dmg1: new Decimal(1.0169),
-	dmg2: new Decimal(1.0167),
-	dmg3: new Decimal(1.01725),
-	dmg4: new Decimal(1.0178025),
-	dmg5: new Decimal(1.019), //every new dmg upgrade gets ~2x damage for every 2000 upgrades bought
-	dmg6: new Decimal(1.02),
-	maxHp1: new Decimal(1.0112),
-	maxHp2: new Decimal(1.0115),
-	armor1: new Decimal(1.0075),
-	armor2: new Decimal(1.0085),
-	healUp1: new Decimal(1.01095),
-	healUp2: new Decimal(1.0115),
-	healCost: new Decimal(0.99), 
-	maxMana: new Decimal(1.0098), //1.0098/0.99 = effectively 1.02 times more mana per upgrade
-	healUpMana: new Decimal(1.02035), //  <:
-	enemyMaxHp: new Decimal(1.09175),
-	enemyDmg: new Decimal(1.1105),
-	enemyGoldBase: new Decimal(1.2125), //This gets raised to a power of X, where X=1+(log(zone)/log(enemyGoldZoneLog))/enemyGoldScaling
-	enemyGoldZoneLog: 4, //These names are ridiculous. Acts as the base of the logarithm set on your zone when determining enemy gold scaling.
-	enemyGoldScaling: new Decimal(100), //This acts as a division factor to the result of the logarithm set on zone with the above value as base.
-	enemyExp: new Decimal(1.025),
-	expPow: new Decimal(1.02),
-	expReq: new Decimal(1.12)
+const DecInfinity = new Decimal("1e"+Decimal.maxE);
+const scaling = { //Scalings must be decimals so effect=effect.times(scaling.toPower(n)) isn't undefined.
+	upCost: new Decimal(1.175),
+	dmg1: new Decimal((1.1625**0.8)**globalDifficulty), //the **0.8 is to offset the enemygold **1.25.
+	dmg2: new Decimal((1.165**0.8)**globalDifficulty),
+	dmg3: new Decimal((1.1675**0.8)**globalDifficulty),
+	dmg4: new Decimal((1.17**0.8)**globalDifficulty),
+	dmg5: new Decimal((1.1725**0.8)**globalDifficulty),
+	dmg6: new Decimal((1.175**0.8)**globalDifficulty),
+	maxHp1: new Decimal(((1.15/1.03)**0.8)**globalDifficulty),
+	maxHp2: new Decimal(((1.15/1.04)**0.8)**globalDifficulty),
+	armor1: new Decimal((1.03**0.8)**globalDifficulty),
+	armor2: new Decimal((1.04**0.8)**globalDifficulty),
+	healUp1: new Decimal(((1.15/1.03)**0.8)**globalDifficulty),
+	healUp2: new Decimal(((1.15/1.04)**0.8)**globalDifficulty),
+	healCost: new Decimal(0.97),
+	maxMana: new Decimal(1.04275), //1.04275/0.97 = effectively 1.075 times more mana per upgrade
+	healUpMana: new Decimal(1.075),
+	enemyMaxHp: new Decimal(1.175),
+	enemyDmg: new Decimal(1.15),
+	enemyGold: new Decimal(1.175**1.25), //1.25 upgrades per enemy level
+	enemyExp: new Decimal(1.04),
+	expPow: new Decimal(1.01),
+	expReqLevels: 3 //The amount of enemy levels needed to gain one group level.
+};
+scaling.expReq = scaling.enemyExp.toPower(scaling.expReqLevels);
+scaling.skillPointCost = scaling.enemyExp.toPower(500);
+const unlockLevels = {
+	buyCheapest: 50
 }
-scaling.enemyGold=scaling.enemyGoldBase;
-var enemybalancefactor = 1.23; //0.01 = ~2x at zone 560
-var levelscalebackfactor = 0.85;
-scaling.enemyMaxHp=scaling.enemyMaxHp.toPower(enemybalancefactor);
-scaling.enemyDmg=scaling.enemyDmg.toPower(enemybalancefactor);
-scaling.enemyMaxHp=scaling.enemyMaxHp.toPower(levelscalebackfactor);
-scaling.enemyDmg=scaling.enemyDmg.toPower(levelscalebackfactor);
-scaling.enemyGoldBase=scaling.enemyGoldBase.toPower(levelscalebackfactor);
 var player = {
 	gold: new Decimal(0),
 	totalGold: new Decimal(0),
@@ -89,8 +90,8 @@ var player = {
 	maxLevel: new Decimal(1),
 	kills: new Decimal(0),
 	deaths: new Decimal(0),
-	fps: new Decimal(30),
-	visualFps: new Decimal(30),
+	fps: new Decimal(60),
+	visualFps: new Decimal(60),
 	bulkAmount: 1,
 	exp: new Decimal(0),
 	expReq: new Decimal(100),
@@ -98,9 +99,13 @@ var player = {
 	freePLvls: new Decimal(0),
 	lastTime: new Decimal(Date.parse(Date())/1000),
 	skillPoints: new Decimal(0),
-	skillPointsUsed: new Decimal(0)
+	skillPointCost: new Decimal(1e13),
+	totalSkillPoints: new Decimal(0),
+	skillPointsUsed: new Decimal(0),
+	cheated: false
 }
-var prefs = ["30", "30", false, false];
+var prefs = [defaultFps, false, false, true, true, false, false];
+autoPlayTest ? prefs[0] = defaultAutoPlayTestFps : prefs[0] = defaultFps;
 var archer = {
 	attackReq: new Decimal(0),
 	baseAttackSpeed: new Decimal(1)
@@ -111,17 +116,17 @@ var priest = {
 	baseCastSpeed: new Decimal(0.8)
 };
 var enemy = {
-	baseDmg: new Decimal(75),
-	baseMaxHp: new Decimal(250),
+	baseDmg: new Decimal(73.4077),
+	baseMaxHp: new Decimal(200),
 	baseGold: new Decimal(10),
 	armor: new Decimal(1),
 	exp: new Decimal(2),
 	attackReq: new Decimal(0),
 	attackSpeed: new Decimal(1)
-}
+};
 class Upgrade {
-	constructor(all) {
-		for(var i in all) {
+	constructor(all, name) {
+		for(let i in all) {
 			this[i]=all[i];
 		}
 		this.bought === undefined ? this.bought = 0 : this.bought = all.bought; //as if this is ever gonna be predefined lol
@@ -132,14 +137,7 @@ class Upgrade {
 		this.displayPercentage === undefined ? this.displayPercentage = false : this.displayPercentage = all.displayPercentage;
 		this.upgradeUnlocker === undefined ? this.upgradeUnlocker = false : this.upgradeUnlocker = all.upgradeUnlocker;
 		this.requiredUpgrade === undefined ? this.requiredUpgrade = "none" : this.requiredUpgrade = all.requiredUpgrade;
-		this.flatGain = function(lvl) {
-		if(lvl===undefined) {lvl=this.bought};
-			return this.flatScaling.times(lvl);
-		}
-		this.expoGain = function(lvl) {
-			if(lvl===undefined) {lvl=this.bought};
-			return this.scaling.toPower(lvl);
-		}
+		this.unlocked === undefined ? this.unlocked = false : this.unlocked = all.unlocked;
 		this.tooltipCalc = "if(upgrades[i].maxLevel-upgrades[i].bought<buyBulk && upgrades[i].maxLevel!==-1) {calc(i, getStatUpgradesBought(i, upgrades[i].maxLevel-upgrades[i].bought))} else {calc(i, getStatUpgradesBought(i, buyBulk))}"
 		this.buttonCalc = function(i) {
 			var result;
@@ -153,22 +151,26 @@ class Upgrade {
 		}
 	}
 }
-function thing(text, i) {
+function thing() {
 	thing = new Array();
-	for(var i = 1; i<2**21; i*=2) {
+	for(let i = 16; i<65; i+=1) {
 		thing.push({
 			level: i,
-			scaling: scaling.enemyGoldBase.toPower(Decimal(1).plus(Decimal(i).log(scaling.enemyGoldZoneLog).div(scaling.enemyGoldScaling))).toPrecision(4)
+			base: format(scaling.enemyGold.toPower(i-1).times(10)),
+			extra: format((i-12)**2.5),
+			relative: Decimal((i-12)**2.5).div(scaling.enemyGold.toPower(i-1).times(10)).toPrecision(3)
 		});
-	};
+	}
 	console.table(thing);
 }
+const numberAboveOne = RegExp(/\d{2,}|[2-9]/g);
 var upgrades = {
 	dmg1: new Upgrade({
 		user: "archer",
 		stat: "dmg",
 		base: new Decimal(15),
-		flatScaling: new Decimal(0.855),
+		baseCost: new Decimal(10),
+		flatScaling: new Decimal(1),
 		maxLevel: 2500,
 		tooltip: "Increases the archer's damage.",
 		tooltipStatName: "Damage",
@@ -180,7 +182,7 @@ var upgrades = {
 		stat: "maxHp",
 		base: new Decimal(2500),
 		baseCost: new Decimal(15),
-		flatScaling: new Decimal(125),
+		flatScaling: new Decimal(175),
 		maxLevel: 10000,
 		tooltip: "Increases the knight's maximum health.",
 		tooltipStatName: "Max Health",
@@ -191,21 +193,19 @@ var upgrades = {
 		user: "knight",
 		stat: "armor",
 		base: new Decimal(1),
-		baseCost: new Decimal(25),
-		flatScaling: new Decimal(0.003),
-		costScaling: scaling.upCost.toPower(0.99),
+		baseCost: new Decimal(75),
+		flatScaling: new Decimal(0.005),
 		maxLevel: 2000,
-		tooltip: "Increases armor, reducing all incoming damage.",
+		tooltip: "Increases armor, dividing all incoming damage.",
 		tooltipStatName: "Armor",
 		buttonText: "+X armor"
 	}),
 	healUp1: new Upgrade({
 		user: "priest",
 		stat: "power",
-		base: new Decimal(600),
-		baseCost: new Decimal(75),
-		flatScaling: new Decimal(35),
-		maxLevel: 9954,
+		base: new Decimal(750),
+		flatScaling: new Decimal(250),
+		maxLevel: 10000,
 		tooltip: "Increases the power of healing at the cost of increased mana usage.",
 		tooltipStatName: "Heal Power",
 		buttonText: "+X heal power"
@@ -214,8 +214,7 @@ var upgrades = {
 		user: "priest",
 		stat: "maxMana",
 		base: new Decimal(200),
-		flatScaling: new Decimal(9),
-		baseCost: new Decimal(100),
+		flatScaling: new Decimal(35),
 		tooltip: "Increases maximum mana.",
 		tooltipStatName: "Max Mana",
 		buttonText: "+X max mana"
@@ -224,8 +223,7 @@ var upgrades = {
 		user: "priest",
 		stat: "healCost",
 		base: new Decimal(29.999),
-		flatScaling: new Decimal(0.2),
-		baseCost: new Decimal(1000),
+		flatScaling: new Decimal(0.02),
 		tooltip: "Makes healing cost less mana.",
 		tooltipStatName: "Heal Cost",
 		buttonText: "X heal cost",
@@ -236,8 +234,6 @@ var upgrades = {
 		base: archer.baseAttackSpeed,
 		flatScaling: new Decimal(0.015),
 		scaling: new Decimal(1.006955550056719),
-		baseCost: new Decimal(400),
-		costScaling: new Decimal(1.1),
 		maxLevel: 100, //Caps at 5x attack speed
 		tooltip: "Increases the archer's attack speed.",
 		tooltipStatName: "Attacks per second",
@@ -248,8 +244,6 @@ var upgrades = {
 		stat: "critChance",
 		base: new Decimal(0),
 		flatScaling: new Decimal(1),
-		baseCost: new Decimal(5000),
-		costScaling: new Decimal(1.07),
 		maxLevel: 100,
 		tooltip: "Gives a chance to crit, multiplying damage.\n(base factor: 2x)",
 		tooltipStatName: "Crit Chance",
@@ -261,10 +255,8 @@ var upgrades = {
 		stat: "blockChance",
 		base: new Decimal(0),
 		flatScaling: new Decimal(1),
-		baseCost: Decimal(25000),
-		costScaling: new Decimal(1.07),
 		maxLevel: 100,
-		tooltip: "Gives a chance to block, dividing incoming damage.\n(base factor: 2)",
+		tooltip: "Gives a chance to block, dividing incoming damage.\n(base factor: 2x)",
 		tooltipStatName: "Block Chance",
 		buttonText: "+X% block chance",
 		displayPercentage: true
@@ -275,8 +267,6 @@ var upgrades = {
 		base: priest.baseCastSpeed,
 		flatScaling: new Decimal(0.2/40),
 		scaling: new Decimal(2**(1/40)),
-		baseCost: new Decimal(500000),
-		costScaling: new Decimal(1.09),
 		maxLevel: 40, //0.8 -> 2; 1.25s to 0.5s
 		tooltip: "Decreases the amount of time spent casting, increasing healing speed.",
 		tooltipStatName: "Casts per second",
@@ -285,11 +275,9 @@ var upgrades = {
 	priestCritChance: new Upgrade({
 		user: "priest",
 		stat: "critChance",
-		base: new Decimal(0),
+		base: new Decimal(1),
 		flatScaling: new Decimal(1),
-		baseCost: Decimal(7.5e6),
-		costScaling: new Decimal(1.03),
-		scaling: new Decimal(0.5**(1/200)),
+		scaling: new Decimal(0.9921160049), //it ends up at 100.00000074617164%
 		maxLevel: 200,
 		tooltip: "Gives a chance to crit, doubling healing.",
 		tooltipStatName: "Crit Chance",
@@ -301,8 +289,6 @@ var upgrades = {
 		stat: "manaRegen",
 		base: Decimal(0),
 		flatScaling: Decimal(0.04),
-		baseCost: Decimal(1e8),
-		costScaling: new Decimal(1.08),
 		maxLevel: 50,
 		tooltip: "Regenerates a portion of maximum mana each second.",
 		tooltipStatName: "Mana Regen",
@@ -313,8 +299,6 @@ var upgrades = {
 		user: "archer",
 		stat: "critChance",
 		flatScaling: new Decimal(0.8),
-		baseCost: new Decimal(1e10),
-		costScaling: new Decimal(1.085),
 		maxLevel: 125,
 		tooltip: "Increases the chance to crit. Exceeding 100% will give a chance to crit twice.",
 		tooltipStatName: "Crit Chance",
@@ -325,7 +309,6 @@ var upgrades = {
 		user: "knight",
 		stat: "blockChance",
 		flatScaling: new Decimal(0.8),
-		costScaling: new Decimal(1.085),
 		maxLevel: 125,
 		tooltip: "Increases the chance to crit. Exceeding 100% will give a chance to block twice.",
 		tooltipStatName: "Block Chance",
@@ -337,8 +320,6 @@ var upgrades = {
 		stat: "corrosion",
 		base: new Decimal(0),
 		flatScaling: new Decimal(0.09),
-		baseCost: new Decimal(1e12),
-		costScaling: new Decimal(1.4),
 		maxLevel: 25,
 		tooltip: "Reduces the enemy's damage each second spent in combat.",
 		tooltipStatName: "Corrosion Factor",
@@ -351,8 +332,6 @@ var upgrades = {
 		base: new Decimal(0),
 		flatScaling: new Decimal(0.075),
 		scaling: new Decimal(1.25**(1/20)),
-		baseCost: new Decimal(1e12*(1.4**8)),
-		costScaling: new Decimal(1.4),
 		maxLevel: 20,
 		tooltip: "Learn the monsters' weaknesses, increasing the archer's damage each second spent in combat.",
 		tooltipStatName: "Damage Growth",
@@ -363,8 +342,6 @@ var upgrades = {
 		user: "archer",
 		stat: "critChance",
 		flatScaling: new Decimal(0.5),
-		costScaling: new Decimal(1.075),
-		baseCost: new Decimal(1e15),
 		maxLevel: 200,
 		tooltip: "Increases the chance to crit. Exceeding 200% will give a chance to crit thrice.",
 		tooltipStatName: "Crit Chance",
@@ -376,8 +353,6 @@ var upgrades = {
 		stat: "fireMagic",
 		base: new Decimal(0),
 		flatScaling: new Decimal(3),
-		baseCost: new Decimal(2e16),
-		costScaling: new Decimal(1.175),
 		maxLevel: 100,
 		tooltip: "Melts enemies, increasing gold income but also increasing mana usage.",
 		tooltipStatName: "Bonus Gold",
@@ -389,9 +364,7 @@ var upgrades = {
 		stat: "castSpeed",
 		flatScaling: new Decimal(0.008), //+1
 		scaling: new Decimal((5/3)**(1/125)), //1.66x, 3 -> 5
-		costScaling: new Decimal(1.075),
 		maxLevel: 125, //2 -> 5; 0.5s to 0.2s
-		baseCost: new Decimal(5e17),
 		tooltip: "Decreases the amount of time spent casting, increasing healing speed.",
 		tooltipStatName: "Casts per second",
 		buttonText: "+X casts/s"
@@ -404,7 +377,6 @@ var upgrades = {
 		scaling: new Decimal((10/22)**(1/1000)),
 		costScaling: new Decimal(10),
 		maxLevel: 1000,
-		baseCost: new Decimal(2.5e19),
 		tooltip: "Increase the multiplication factor of crits. Stacks with multiple simultaneous crits.",
 		tooltipStatName: "Crit Factor",
 		buttonText: "+X crit factor",
@@ -417,7 +389,6 @@ var upgrades = {
 		scaling: new Decimal((10/22)**(1/1000)),
 		costScaling: new Decimal(9.5),
 		maxLevel: 1000,
-		baseCost: new Decimal(2.5e19),
 		tooltip: "Increase the division factor of blocks. Stacks with multiple simultaneous blocks.",
 		tooltipStatName: "Block Factor",
 		buttonText: "+X block factor"
@@ -426,10 +397,8 @@ var upgrades = {
 		user: "priest",
 		stat: "manaPotionStrength",
 		base: new Decimal(0),
-		flatScaling: new Decimal(2),
-		costScaling: new Decimal(1.5),
-		maxLevel: 25,
-		baseCost: new Decimal(1e26),
+		flatScaling: new Decimal(1),
+		maxLevel: 50,
 		tooltip: "When falling below 25% mana for the first time, restore a portion of your max mana.",
 		tooltipStatName: "Mana Potion Potency",
 		buttonText: "+X% mana restored",
@@ -440,8 +409,6 @@ var upgrades = {
 		stat: "dmg",
 		flatScaling: new Decimal(1e19),
 		maxLevel: 5000,
-		minEnemyLevel: 580,
-		baseCost: new Decimal(1e46),
 		tooltip: "Increases the archer's damage.",
 		tooltipStatName: "Damage",
 		buttonText: "+X damage"
@@ -452,8 +419,6 @@ var upgrades = {
 		flatScaling: new Decimal(0.025),
 		maxLevel: 200,
 		minEnemyLevel: 2500,
-		baseCost: new Decimal("1e500"),
-		costScaling: new Decimal(1.125),
 		tooltip: "Increases the archer's attack speed.",
 		tooltipStatName: "Attacks per second",
 		buttonText: "+X attacks/s"
@@ -464,8 +429,6 @@ var upgrades = {
 		flatScaling: new Decimal(0.075),
 		maxLevel: 200,
 		minEnemyLevel: 3000,
-		baseCost: new Decimal("1e1000"),
-		costScaling: new Decimal(1.15),
 		tooltip: "Increases the archer's attack speed.",
 		tooltipStatName: "Attacks per second",
 		buttonText: "+X attacks/s"
@@ -478,8 +441,6 @@ var upgrades = {
 		scaling: new Decimal(5**(1/200)),
 		maxLevel: 200, //1000%
 		minEnemyLevel: 100,
-		costScaling: new Decimal(1e7**(1/200)), //Maxed shortly before zone 300
-		baseCost: new Decimal(5e6),
 		tooltip: "Passively gain exp based on your current enemy.",
 		tooltipStatName: "Passive EXP",
 		buttonText: "+X% exp/s",
@@ -489,12 +450,11 @@ var upgrades = {
 		user: "player",
 		stat: "goldBonus",
 		base: new Decimal(100),
-		flatScaling: new Decimal(6.6), //goes up to 1e4% base
-		scaling: new Decimal(9.99e10**(1/1500)), //multiplies that 1e4 by 1e10, going up to 100T%
-		costScaling: new Decimal(2**(1/3)), //6e225 total cost increase
+		flatScaling: new Decimal(6.6), //goes up to 9.9e3% base
+		scaling: new Decimal(9.99e10**(1/1500)), //multiplies that 9.9e3 by 9.99e10, going up to 100T%
+		costScaling: new Decimal(2**0.5), //6e225 total cost increase
 		minEnemyLevel: 125,
 		maxLevel: 1500, //This upgrade won't be maxed for a loooong time.
-		baseCost: new Decimal(2.5e10),
 		tooltip: "Increase gold dropped by all enemies.",
 		tooltipStatName: "Gold",
 		buttonText: "+X% gold",
@@ -507,7 +467,6 @@ var upgrades = {
 		flatScaling: new Decimal(1),
 		minEnemyLevel: 500,
 		maxLevel: 1,
-		baseCost: new Decimal(1e45),
 		tooltip: "Unlocks the skill tree. You get a skill point every 500 zones.",
 		buttonText: "Unlock skills",
 		upgradeUnlocker: true
@@ -517,7 +476,6 @@ var upgrades = {
 		stat: "autoBuyUnlocked",
 		base: new Decimal(0),
 		flatScaling: new Decimal(1),
-		baseCost: new Decimal(1e42),
 		minEnemyLevel: 500,
 		maxLevel: 1,
 		tooltip: "Unlocks autobuying, which will buy the cheapest upgrade every 10 seconds.",
@@ -529,8 +487,7 @@ var upgrades = {
 		stat: "autoBuyFrequency",
 		base: new Decimal(5),
 		scaling: new Decimal(0.04**(1/100)),
-		baseCost: new Decimal(1e43),
-		costScaling: new Decimal(10**0.5),
+		costScaling: new Decimal(10),
 		requiredUpgrade: "autoBuyUnlock",
 		minEnemyLevel: 0,
 		maxLevel: 100,
@@ -542,8 +499,6 @@ var upgrades = {
 		user: "knight",
 		stat: "blockChance",
 		flatScaling: new Decimal(0.5),
-		costScaling: new Decimal(1.075),
-		baseCost: new Decimal(1e15),
 		minEnemyLevel: 185,
 		maxLevel: 200,
 		tooltip: "Increases the chance to crit. Exceeding 200% will give a chance to block thrice.",
@@ -557,7 +512,6 @@ var upgrades = {
 		scaling: new Decimal(3),
 		maxLevel: 1,
 		minEnemyLevel: 250,
-		baseCost: new Decimal(1e22),
 		costScaling: new Decimal(1e15),
 		tooltip: "Receive a blessing, tripling the knight's maximum health, the priest's heal power and max mana.",
 		tooltipStatName: "Max Health",
@@ -567,11 +521,9 @@ var upgrades = {
 		user: "archer",
 		stat: "cripple",
 		base: new Decimal(100),
-		baseCost: new Decimal(5e25),
 		scaling: new Decimal(0.25**(1/250)),
 		maxLevel: 250,
 		minEnemyLevel: 300,
-		costScaling: new Decimal(1.095),
 		tooltip: "Cripple bosses, lowering their stats.",
 		tooltipStatName: "Boss Power",
 		buttonText: "X% boss power",
@@ -581,7 +533,6 @@ var upgrades = {
 		user: "knight",
 		stat: "armor",
 		flatScaling: new Decimal(3.07e5),
-		baseCost: new Decimal(5e37),
 		minEnemyLevel: 460,
 		tooltip: "Increases armor, reducing all incoming damage.",
 		tooltipStatName: "Armor",
@@ -592,10 +543,8 @@ var upgrades = {
 		stat: "curse",
 		base: new Decimal(100),
 		scaling: new Decimal(0.00001**(1/1000)), //~1.11% per upgrade. at cap, enemies have a 99.999% reduction
-		costScaling: new Decimal(1.25), //1e130 total cost
 		minEnemyLevel: 400,
 		maxLevel: 1000,
-		baseCost: new Decimal(1e33),
 		tooltip: "Permanently curse all enemies, reducing their damage and defense.",
 		tooltipStatName: "Enemy Power",
 		buttonText: "X% enemy power",
@@ -606,10 +555,8 @@ var upgrades = {
 		stat: "slow",
 		base: new Decimal(100),
 		scaling: new Decimal(0.35**(1/150)), //~0.7% per upgrade. at cap, enemies have 75% reduction in attack speed
-		costScaling: new Decimal(1.3),
 		minEnemyLevel: 1000,
 		maxLevel: 150, //roughly 240 zones.
-		baseCost: new Decimal(1.5e80),
 		tooltip: "Chill enemies, reducing their attack speed.",
 		tooltipStatName: "Enemy attack speed",
 		buttonText: "X% enemy attack speed",
@@ -620,9 +567,7 @@ var upgrades = {
 		stat: "dmg",
 		costScaling: new Decimal(1.042),
 		flatScaling: new Decimal(7.5e52),
-		baseCost: new Decimal(1e125),
-		minEnemyLevel: 1500,
-		maxLevel: 2000,
+		maxLevel: 7500,
 		tooltip: "Increases the archer's damage.",
 		tooltipStatName: "Damage",
 		buttonText: "+X damage"
@@ -632,10 +577,8 @@ var upgrades = {
 		stat: "passiveExp",
 		flatScaling: new Decimal(50),
 		scaling: new Decimal(10**(1/180)),
-		baseCost: new Decimal(1e144),
 		maxLevel: 180, //100000%
 		minEnemyLevel: 1750,
-		costScaling: new Decimal(1.11), //Maxed shortly before zone 1920
 		tooltip: "Passively gain exp based on your current enemy.",
 		tooltipStatName: "Passive EXP",
 		buttonText: "+X% exp/s",
@@ -645,7 +588,6 @@ var upgrades = {
 		user: "archer",
 		stat: "dmg",
 		flatScaling: new Decimal(1e70),
-		baseCost: new Decimal(1.5e162),
 		minEnemyLevel: 2000,
 		tooltip: "Increases the archer's damage.",
 		tooltipStatName: "Damage",
@@ -655,7 +597,6 @@ var upgrades = {
 		user: "knight",
 		stat: "maxHp",
 		flatScaling: new Decimal(1.5e52),
-		baseCost: new Decimal(1e176),
 		minEnemyLevel: 2160,
 		tooltip: "Increases the knight's maximum health.",
 		tooltipStatName: "Max Health",
@@ -665,7 +606,6 @@ var upgrades = {
 		user: "priest",
 		stat: "power",
 		flatScaling: new Decimal(7e50),
-		baseCost: new Decimal(1e176),
 		minEnemyLevel: 2160,
 		tooltip: "Increases the power of healing at the cost of increased mana usage.",
 		tooltipStatName: "Heal Power",
@@ -676,10 +616,8 @@ var upgrades = {
 		stat: "passiveExp",
 		flatScaling: new Decimal(1e4), //base is 1e5
 		scaling: new Decimal(4000**(1/240)),
-		baseCost: new Decimal(1e181),
-		costScaling: new Decimal(1.125),
 		minEnemyLevel: 2222,
-		maxLevel: 240,
+		maxLevel: 160,
 		tooltip: "Passively gain exp based on your current enemy.",
 		tooltipStatName: "Passive EXP",
 		buttonText: "+X% exp/s",
@@ -690,10 +628,9 @@ var upgrades = {
 		stat: "freePLvls",
 		base: new Decimal(0),
 		flatScaling: new Decimal(5),
-		baseCost: new Decimal(1e10),
 		maxLevel: 1,
 		minEnemyLevel: 100,
-		tooltip: "Gain 5 group levels, increasing max hp, heal power and dmg by 10.4%.",
+		tooltip: "Gain 5 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+5 group levels"
 	}),
@@ -701,10 +638,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(10),
-		baseCost: new Decimal(2.5e17),
 		maxLevel: 1,
 		minEnemyLevel: 200,
-		tooltip: "Gain 10 group levels, increasing primary stats by 21.9%.",
+		tooltip: "Gain 10 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+10 group levels"
 	}),
@@ -712,10 +648,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(15),
-		baseCost: new Decimal(2e26),
 		maxLevel: 1,
 		minEnemyLevel: 300,
-		tooltip: "Gain 15 group levels, increasing primary stats by 34.6%.",
+		tooltip: "Gain 15 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+15 group levels"
 	}),
@@ -723,10 +658,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(20),
-		baseCost: new Decimal(2.5e34),
 		maxLevel: 1,
 		minEnemyLevel: 400,
-		tooltip: "Gain 20 group levels, increasing primary stats by 48.6%.",
+		tooltip: "Gain 20 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+20 group levels"
 	}),
@@ -734,10 +668,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(25),
-		baseCost: new Decimal(1e43),
 		maxLevel: 1,
 		minEnemyLevel: 500,
-		tooltip: "Gain 25 group levels, increasing primary stats by 64.1%.",
+		tooltip: "Gain 25 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+25 group levels"
 	}),
@@ -745,10 +678,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(30),
-		baseCost: new Decimal(1e62),
 		minEnemyLevel: 750,
 		maxLevel: 1,
-		tooltip: "Gain 30 group levels - +81.1% primary stats.",
+		tooltip: "Gain 30 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+30 group levels"
 	}),
@@ -756,10 +688,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(35),
-		baseCost: new Decimal(1e82),
 		minEnemyLevel: 1000,
 		maxLevel: 1,
-		tooltip: "Gain 35 group levels - +100% primary stats.",
+		tooltip: "Gain 35 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+35 group levels"
 	}),
@@ -767,10 +698,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(40),
-		baseCost: new Decimal(1e123),
 		minEnemyLevel: 1500,
 		maxLevel: 1,
-		tooltip: "Gain 40 group levels - +121% primary stats.",
+		tooltip: "Gain 40 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+40 group levels"
 	}),
@@ -778,10 +708,9 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(45),
-		baseCost: new Decimal(5e163),
 		minEnemyLevel: 2000,
 		maxLevel: 1,
-		tooltip: "Gain 45 group levels - +144% primary stats.",
+		tooltip: "Gain 45 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+45 group levels"
 	}),
@@ -789,50 +718,59 @@ var upgrades = {
 		user: "player",
 		stat: "freePLvls",
 		flatScaling: new Decimal(50),
-		baseCost: new Decimal(2e230),
 		minEnemyLevel: 3000,
 		maxLevel: 1,
-		tooltip: "Gain 50 group levels - +169% primary stats.",
+		tooltip: "Gain 50 group levels without affecting xp required.",
 		tooltipStatName: "Extra Group Levels",
 		buttonText: "+50 group levels"
 	})
-}
-var upgradesKeys = Object.keys(upgrades);
-for(var i in upgrades) {
-	if(upgrades[i].minEnemyLevel === undefined) {
+};
+let upgradesKeys = Object.keys(upgrades);
+for(let i in upgrades) {
+	let target = upgrades[i];
+	if(target.minEnemyLevel === undefined) {
 		if(upgradesKeys.indexOf(i)<6) {
-			upgrades[i].minEnemyLevel = (upgradesKeys.indexOf(i)+1)*5
+			target.minEnemyLevel = (upgradesKeys.indexOf(i)+1)*5
 		} else if(upgradesKeys.indexOf(i)<20) {
-			upgrades[i].minEnemyLevel = Math.ceil((upgradesKeys.indexOf(i)+3)**1.77);
+			target.minEnemyLevel = Math.ceil((upgradesKeys.indexOf(i)+3)**1.75);
 		} else {
-			upgrades[i].minEnemyLevel = Math.ceil((upgradesKeys.indexOf(i)+4)**(1.77+upgradesKeys.indexOf(i)*0.01-0.2));
+			target.minEnemyLevel = Math.ceil((upgradesKeys.indexOf(i)+4)**(1.75+upgradesKeys.indexOf(i)*0.01-0.2));
 		}
-		upgrades[i].minEnemyLevel=Math.round(upgrades[i].minEnemyLevel/5)*5;
+		target.minEnemyLevel=Math.round(upgrades[i].minEnemyLevel/5)*5;
 	}
-	if(upgrades[i].baseCost === undefined) {
-		upgrades[i].baseCost=scaling.upCost.toPower(upgrades[i].minEnemyLevel*4);
+	if(target.baseCost === undefined) {
+		target.baseCost=scaling.upCost.toPower(upgrades[i].minEnemyLevel).times(4);
 	} else {
-		upgrades[i].baseCost=Decimal(upgrades[i].baseCost).div(10);
+		target.baseCost=Decimal(upgrades[i].baseCost).div(10);
 	}
-	if(upgrades[i].scaling === undefined) {
-		if(scaling[i]===undefined) {
-			upgrades[i].scaling=new Decimal(1);
+	if(target.scaling === undefined) {
+		if(scaling[i] === undefined) {
+			target.scaling=new Decimal(1);
 		} else {
-			upgrades[i].scaling = scaling[i];
+			target.scaling = scaling[i];
+		}
+	}
+	if(numberAboveOne.test(i)) {
+		target.requiredUpgrade = i.replace(numberAboveOne, Number(i.match(numberAboveOne)[0])-1); //Sets the required upgrade as the upgrade below it i.e dmg5 requires dmg4
+		let tRU = upgrades[target.requiredUpgrade]; // target required upgrade
+		let tRUCost = tRU.baseCost.times(tRU.costScaling.toPower(tRU.maxLevel))
+		if(tRUCost.gt(target.baseCost)) {
+			target.baseCost = tRUCost.times(2);
 		}
 	}
 }
-prev = 0;
-for(var i = 0; i<upgradesKeys.length; i+=1) {
-	var curr = upgrades[upgradesKeys[i]].minEnemyLevel;
-	if(i<20) {
-		console.log("Index "+i+" "+upgradesKeys[i]+": "+curr+", increase of "+(curr-prev)+", exponent is 1.77");
-	} else {
-		console.log("Index "+i+" "+upgradesKeys[i]+": "+curr+", increase of "+(curr-prev)+", exponent is "+Math.round((1.77+(i-20)*0.01)*100)/100);
-	}
-	var prev = curr;
+const upgradeUnlockLevels = [];
+for(let i in upgrades) {
+	upgradeUnlockLevels.push(upgrades[i].minEnemyLevel)
 }
-var skills = {
+upgradeUnlockLevels.sort(function(a,b){return a-b});
+for(let i in upgrades) {
+	let target = upgrades[i];
+	if(target.costScaling === scaling.upCost && (target.maxLevel<=200 && !(target.maxLevel===-1 || target.maxLevel===1))) { //Makes stuff with low max levels and an undefined costScaling scale fast.
+		target.costScaling = scaling.upCost.toPower(((200 / upgrades[i].maxLevel) ** 1.75) + 0.5);
+	}
+}
+let skills = {
 	autoBuyUnlock: {
 		path: 1,
 		position: 1,
@@ -851,21 +789,21 @@ var skills = {
 		skillPointsUsed: new Decimal(0),
 		tooltip: "Sacrifice half of your gold income to double max mana and the power of curse."
 	},
-	gun: {
+	goldMining: {
 		path: 3,
 		position: 1,
 		baseCost: new Decimal(1e30),
 		level: 0,
 		maxLevel: 1,
 		skillPointsUsed: new Decimal(0),
-		tooltip: "The priest can no longer heal, but the knight is invulnerable for the first 4 seconds of each fight(doubled for bosses)."
+		tooltip: "Unlock gold miners, who passively produce gold based on your highest zone reached."
 	}
 }
-for(var i in skills) {
+for(let i in skills) {
 	skills[i].cost = skills[i].baseCost;
 }
 statUpgrades = {player: {}, archer: {}, knight: {}, priest: {}};
-for(var i in upgrades) {
+for(let i in upgrades) {
 	var user = upgrades[i].user;
 	if(!statUpgrades[user].hasOwnProperty(upgrades[i].stat)) {
 		statUpgrades[user][upgrades[i].stat] = new Array(i);
@@ -875,32 +813,23 @@ for(var i in upgrades) {
 }
 statUpgrades.scalesWithExp = ["archer.dmg", "knight.maxHp", "priest.power"];
 //START
-var manaPotionUsed = false;
-var pendingManaRegen = new Decimal(0);
-var pendingHpRegen = new Decimal(0);
-var pendingKnightDmg = new Decimal(0);
-var pendingEnemyDmg = new Decimal(0);
+let manaPotionUsed = false;
+let pendingManaRegen = new Decimal(0);
+let pendingHpRegen = new Decimal(0);
+let pendingKnightDmg = new Decimal(0);
+let pendingEnemyDmg = new Decimal(0);
 function gotoLevel(i) {
 	i = Decimal(i);
 	player.level = i;
 	clearInterval(deathDelay);
 	document.getElementById("pause").checked = false;
-	if(i.gt(50)) { //General slowdown, and counter to crit/block factor upgrades giving a linearly increasing multiplier to damage and survivability.
-		enemy.maxHp = enemy.baseMaxHp.times(1 + (i.minus(50)) * 0.05);
-		enemy.dmg = enemy.baseDmg.times(1 + (i.minus(50)) * 0.025);
-		enemy.attackSpeed = Decimal(1).plus(i.times(2/175).minus(50*2/175)).times(priest.slow.div(100)); //+4 attacks/s per 400 levels
-	} else {
-		enemy.maxHp = enemy.baseMaxHp;
-		enemy.dmg = enemy.baseDmg;
-		enemy.attackSpeed = Decimal(1).times(priest.slow.div(100));
-	}
-	scaling.enemyGold = scaling.enemyGoldBase.toPower(Decimal(1).plus(player.level.log(scaling.enemyGoldZoneLog).div(scaling.enemyGoldScaling)));
-	enemy.gold = (enemy.baseGold.times(scaling.enemyGold.toPower(i.minus(1))).times(1+priest.fireMagic.dividedBy(100).toNumber())).times(player.goldBonus.div(100)).div(0.5).round().times(0.5);
-	enemy.maxHp = enemy.maxHp.times(scaling.enemyMaxHp.toPower(i.minus(1))).div(5).round().times(5);
-	enemy.dmg = enemy.dmg.times(scaling.enemyDmg.toPower(i.minus(1)));
+	enemy.attackSpeed = Decimal(1).plus(i.times(2/175).minus(50*2/175)).times(priest.slow.div(100)); //+4 attacks/s per 400 levels
+	enemy.gold = (enemy.baseGold.times(scaling.enemyGold.toPower(i.minus(1))).times(Decimal(1).plus(priest.fireMagic.dividedBy(100)))).times(player.goldBonus.div(100));
+	enemy.maxHp = enemy.baseMaxHp.times(scaling.enemyMaxHp.toPower(i.minus(1))).div(5).round().times(5);
+	enemy.dmg = enemy.baseDmg.times(scaling.enemyDmg.toPower(i.minus(1)));
 	enemy.power = (priest.curse).div(100);
 	enemy.exp = (Decimal(2).plus((i.minus(1)).times(0.5))).times(scaling.enemyExp.toPower(i.minus(1))); //2+0.5*i, then scaling
-	crippleFactor = archer.cripple.toNumber()/100;
+	let crippleFactor = archer.cripple.toNumber()/100;
 	if(i.toNumber() % 10 === 0) { //comments are for no cripple/max cripple.
 		enemy.maxHp = enemy.maxHp.times(1+(1.5*crippleFactor)); //2.5x, 1.375x
 		enemy.dmg = enemy.dmg.times(1+(1*crippleFactor)); //2x, 1.25x
@@ -925,6 +854,10 @@ function gotoLevel(i) {
 		enemy.maxHp = Decimal(1000);
 		enemy.dmg = Decimal(250);
 	}
+	sub100Helper = 0.67 + i * 0.0033 // 70% power at lvl 0, 100% power at lvl 100, linearly scaling
+	if(i.lt(100)) {enemy.maxHp=enemy.maxHp.times(sub100Helper);enemy.dmg=enemy.dmg.times(sub100Helper);enemy.gold=enemy.gold.dividedBy(sub100Helper)}
+	enemy.gold = enemy.gold.times(1+i.toNumber()/100);
+	enemy.gold = enemy.gold.div(0.5).round().times(0.5);
 	enemy.hp = enemy.maxHp;
 	enemy.armor = (priest.curse).div(100);
 	knight.hp = knight.maxHp;
@@ -952,34 +885,58 @@ function switchTab(tar) {
 	$("#tab9").css("display", "none");
 	$("#tab"+tar).css("display", "inline");
 }
-function calc(up, lvl) {
-	var result;
-	if(lvl===undefined) {lvl = getStatUpgradesBought(up)};
-	var target = upgrades[up];
-	switch (up) {
-		case "healCost":
-			result=target.base.plus(target.flatGain(lvl[0])).times(target.expoGain(lvl[0])).times(scaling.healUpMana.toPower(upgrades.healUp1.bought+upgrades.healUp2.bought)).times(1+upgrades.fireMagic.bought*0.01);
-			break;
-		default:
-			var targetStatUpgrades = statUpgrades[target.user][target.stat];
-			for(var i in targetStatUpgrades) {
-				var tar = upgrades[targetStatUpgrades[i]];
-				var providedLevel = lvl[i];
-				if(!tar.base.eq(-1)) {
-					result = tar.base.plus(tar.flatGain(providedLevel)).times(tar.expoGain(providedLevel));
-				} else {
-					result = result.plus(tar.flatGain(providedLevel)).times(tar.expoGain(providedLevel));
-				}
-			}
-			break;
+
+function getValue(a,b,c,n) {	//a - base; b - additive gain; c - multiplicative gain; n - level
+	//The additive gain is applied before the multiplicative gain.
+	if(c.eq(1)) {
+		return a.plus(b.times(n));
+	} else {
+		return c.toPower(n-1).times(a).plus(b.times(c).times(c.toPower(n-1).minus(1)).dividedBy(c.minus(1)));
 	}
-	if(statUpgrades.scalesWithExp.indexOf(target.user+"."+target.stat)!==-1) {result = result.times(scaling.expPow.toPower(player.pLvl.minus(1).plus(player.freePLvls)))}
+}
+function getValueTest(a,b,c,n) {	//a - base; b - additive gain; c - multiplicative gain; n - level
+	//The additive gain is applied before the multiplicative gain.
+	a=Decimal(a);
+	b=Decimal(b);
+	c=Decimal(c);
+	if(c.eq(1)) {
+		return a.plus(b.times(n)).toNumber();
+	} else {
+		return c.toPower(n-1).times(a).plus(b.times(c).times(c.toPower(n-1).minus(1)).dividedBy(c.minus(1))).toNumber();
+	}
+}
+exclusionsHmm = ["freePLvls", "manaPotionStrength", "blockChance", "critChance", "fireMagic", "manaRegen", "skillsUnlocked", "autoBuyUnlocked"];
+function calc(up, lvl) { //up is upgrade name as string, lvl is array of targetStatUpgrades
+	let result = Decimal(0);
+	const target = upgrades[up];
+	const targetStatUpgrades = statUpgrades[target.user][target.stat];
+	if(lvl === undefined) {lvl = getStatUpgradesBought(up)};
+	if (up === "healCost") {
+		result = target.base.times(scaling.healUpMana.toPower(upgrades.healUp1.bought+upgrades.healUp2.bought)).times(1+upgrades.fireMagic.bought*0.01);
+		result = result.plus(target.flatScaling.times(lvl[0])).times(target.scaling.toPower(lvl[0]));
+	} else {
+		for(let upIndex = 0; upIndex<targetStatUpgrades.length; upIndex++) {
+			let tar = upgrades[targetStatUpgrades[upIndex]];
+			let providedLevel = lvl[upIndex];
+			if(!tar.base.eq(-1)) {
+				result = tar.base;
+			}
+			if(exclusionsHmm.includes(tar.stat)) {
+				result = getValue(result, tar.flatScaling, tar.scaling, providedLevel);
+			} else {
+				result = getValue(result, tar.flatScaling, tar.scaling, providedLevel+1)
+			}
+		}
+	}
+	if(statUpgrades.scalesWithExp.indexOf(target.user+"."+target.stat)!==-1) {
+		result = result.times(scaling.expPow.toPower(player.pLvl.minus(1).plus(player.freePLvls)))
+	}
 	if((target.user+"."+target.stat==="priest.power" || target.user+"."+target.stat==="priest.maxMana") && upgrades.blessing.bought===1) {result=result.times(3)}
 	return result;
 }
 function getStep(num) { //Kinda shit quality.
 	num = Decimal(num);
-	var result = 0;
+	let result = 0;
 	while(num.gte(1e3)) {
 		num = num.dividedBy(1e3);
 		result += 1;
@@ -1000,15 +957,11 @@ function hasUpgradeRequirement(tar) { //the upgrade must be passed as an object
 	if(tar.requiredUpgrade==="none") {
 		return true;
 	}
-	if(upgrades[tar.requiredUpgrade].bought===1) {
-		return true;
-	} else {
-		return false;
-	}
+	return upgrades[tar.requiredUpgrade].bought === upgrades[tar.requiredUpgrade].maxLevel;
 }
 function format(num, places, lowplaces, fixedplaces) {
-	var num = new Decimal(num);
-	var negative = false;
+	num = new Decimal(num);
+	let negative = false;
 	if(num.lt(0)) {
 		negative=true;
 		num=num.neg();
@@ -1016,19 +969,19 @@ function format(num, places, lowplaces, fixedplaces) {
 	if(places===undefined) {places=3}
 	if(lowplaces===undefined) {lowplaces=2}
 	if(fixedplaces===undefined) {fixedplaces=-1}
-	var result;
-	var thing = [-1, 0];
+	let result;
+	let thing = [-1, 0];
 	if(num.lt(1)) {
 		result = num.toNumber().toPrecision(lowplaces);
 	} else if(num.lt(1e3)) {
 		if(num.gt(999)) {
-			result = Decimal.floor(num).toNumber().toPrecision(places);
+			result = num.floor().toNumber().toPrecision(places);
 		} else {
 			result = num.toNumber().toPrecision(places);
 		}
 	} else {
-		if(num.lt(1e15)) { //Nothing works other than setting an upper limit. So I set it to 1e9e15
-			var thing = getStep(Decimal(num));
+		if(num.lt(1e15)) {
+			thing = getStep(num);
 		switch (thing[0]) {
 			case 0:
 				result = num.trunc();
@@ -1067,7 +1020,7 @@ function buyUpgrade(tar) {
 	}
 	actualBuyBulk = buyBulk;
 	if(upgrades[tar].maxLevel-upgrades[tar].bought<buyBulk && upgrades[tar].maxLevel!==-1) {actualBuyBulk=upgrades[tar].maxLevel-upgrades[tar].bought}
-	if(player.gold.gte(upgrades[tar].cost.times(actualBuyBulk)) && player.maxLevel.gt(upgrades[tar].minEnemyLevel) && hasUpgradeRequirement(upgrades[tar])) {
+	if(player.gold.gte(upgrades[tar].cost.times(actualBuyBulk)) && upgrades[tar].unlocked && hasUpgradeRequirement(upgrades[tar])) {
 		upgrades[tar].bought += actualBuyBulk;
 		player.gold = player.gold.minus(upgrades[tar].cost.times(calcBuyBulk(upgrades[tar].costScaling.minus(1), actualBuyBulk)));
 		updateStats();
@@ -1077,8 +1030,19 @@ function buyUpgrade(tar) {
 		},200);
 	}
 }
+
+function buySkillPoint() {
+	if(player.exp.gt(player.skillPointCost)) {
+		player.skillPoints=player.skillPoints.plus(1);
+		player.totalSkillPoints=player.totalSkillPoints.plus(1);
+		player.exp=player.exp.minus(player.skillPointCost);
+		player.skillPointCost=player.skillPointCost.times(scaling.skillPointCost);
+		document.getElementById("buySkillPointButton").textContent = "Buy skill point - "+format(player.skillPointCost)+" XP";
+	}
+}
+
 function createUpgradeButton(tar) {
-	var elem = document.createElement("div");
+	let elem = document.createElement("div");
 	elem.id = tar + "Button";
 	elem.className = "upgradeButton";
 	elem.onclick = function() {
@@ -1090,10 +1054,10 @@ function createUpgradeButton(tar) {
 	elem.onmouseout = function() {
 		$("#"+tar+"ButtonTooltip").css("display","none");
 	}
-	var user = document.getElementById(upgrades[tar].user + "Upgrades");
-	var text1 = document.createElement("span");
-	var text2 = document.createElement("span");
-	var image = document.createElement("img");
+	let user = document.getElementById(upgrades[tar].user + "Upgrades");
+	let text1 = document.createElement("span");
+	let text2 = document.createElement("span");
+	let image = document.createElement("img");
 	text1.id = tar + "ButtonText1";
 	text1.className = "upgradeText1";
 	text2.id = tar + "ButtonText2"
@@ -1104,22 +1068,22 @@ function createUpgradeButton(tar) {
 	elem.appendChild(text2);
 	elem.appendChild(image);
 	user.appendChild(elem);
-	var tooltip = document.createElement("div");
+	let tooltip = document.createElement("div");
 	tooltip.id = tar + "ButtonTooltip";
 	tooltip.className = "tooltip";
 	user.appendChild(tooltip);
 }
 function createSkillButton(tar) {
-	var elem = document.createElement("div");
+	let elem = document.createElement("div");
 	elem.id = tar + "SkillButton";
 	elem.className = "skillButton path"+skills[tar].path;
 	elem.onclick = function() {buySkill(tar)};
 	elem.onmouseover = function() {$("#"+tar+"SkillButtonTooltip").css("display","inline-block")};
 	elem.onmouseout = function() {$("#"+tar+"SkillButtonTooltip").css("display","none")};
-	var tooltip = document.createElement("div");
+	let tooltip = document.createElement("div");
 	tooltip.id = tar + "SkillButtonTooltip";
 	tooltip.className = "tooltip skillTooltip";
-	var skillWrapper = document.getElementById("skillWrapper");
+	let skillWrapper = document.getElementById("skillWrapper");
 	skillWrapper.append(elem);
 	skillWrapper.append(tooltip);
 	$("#"+tar+"SkillButton").css("background-image","url(dat/"+tar+".png)");
@@ -1127,17 +1091,17 @@ function createSkillButton(tar) {
 function updateStats() {
 	for(var i in upgrades) {
 		var target = upgrades[i];
-		if(target.minEnemyLevel > player.maxLevel) {
+		if(target.minEnemyLevel < player.maxLevel && hasUpgradeRequirement(target)) {
+			target.unlocked = true;
+		}
+		if(target.unlocked) {
+			target.cost = Decimal(10).times(target.baseCost).times(target.costScaling.toPower(target.bought)).plus(target.bought*3.25);
+			$("#"+i+"Button").css("display","inline-block");
+		} else {
 			upgrades[i].cost = Decimal(Infinity);
 			$("#"+i+"Button").css("display","none");
-		} else {
-			$("#"+i+"Button").css("display","inline-block");
 		}
-		if((target.bought<target.maxLevel || target.maxLevel===-1) && player.maxLevel.gt(target.minEnemyLevel) && (target.maxLevel>100 || target.maxLevel===-1) && hasUpgradeRequirement(target)) { //Same as below but without the linear 1% increase
-			target.cost = Decimal(10).times(target.baseCost).times(1+target.bought*0.01).times(target.costScaling.toPower(target.bought));
-		} else if((target.bought<target.maxLevel || target.maxLevel===-1) && player.maxLevel.gt(target.minEnemyLevel) && hasUpgradeRequirement(target)) { //If upgrade isn't maxed(or there isn't a max), if required upgrade is bought(if there is one)
-			target.cost = Decimal(10).times(target.baseCost).times(target.costScaling.toPower(target.bought)); //Upgrades with large max levels get a linear 1% cost increase per level
-		} else {
+		if(target.bought>=target.maxLevel && target.maxLevel!==-1) {
 			target.cost = Decimal(Infinity);
 			$("#"+i+"Button").css("display","none");
 		}
@@ -1148,14 +1112,14 @@ function updateStats() {
 		}
 	}
 }
-for(var i in upgrades) {
+for(let i in upgrades) {
 	createUpgradeButton(i);
 }
-for(var i in skills) {
+for(let i in skills) {
 	createSkillButton(i);
 }
 function updateButtonText() { //This is quite heavy performance wise.
-	for(var i in upgrades) {
+	for(let i in upgrades) {
 		var target = document.getElementById(i + "ButtonText1");
 		var tar = upgrades[i];
 		target.textContent = tar.buttonText.replace("X", format(upgrades[i].buttonCalc(i)));
@@ -1164,16 +1128,19 @@ function updateButtonText() { //This is quite heavy performance wise.
 		if(tar.maxLevel-tar.bought<buyBulk && tar.maxLevel!==-1) {actualBuyBulk=tar.maxLevel-tar.bought};
 		target.textContent = "\n" + format(tar.cost.times(calcBuyBulk(tar.costScaling.minus(1), actualBuyBulk))) + " Gold";
 		target = document.getElementById(i + "ButtonTooltip");
+		let boughtText = "Bought: "+tar.bought;
+		if(document.getElementById("showMaxLevels").checked) {boughtText += " {"+tar.maxLevel+"}"}
+		boughtText = boughtText.replace("-1", "∞")
 		if(upgrades[i].displayPercentage) {
-			target.textContent = tar.tooltip + "\n\n" + tar.tooltipStatName + ":\n" + format(window[tar.user][tar.stat]) + "% -> " +format(eval(tar.tooltipCalc)) + "%\n\nBought: "+tar.bought;
+			target.textContent = tar.tooltip + "\n\n" + tar.tooltipStatName + ":\n" + format(window[tar.user][tar.stat]) + "% -> " +format(eval(tar.tooltipCalc)) + "%\n\n"+boughtText;
 		} else if(upgrades[i].upgradeUnlocker) {
 			target.textContent = tar.tooltip + "\n\nUnlocked:\nFalse -> True";
 		} else {
-			target.textContent = tar.tooltip + "\n\n" + tar.tooltipStatName + ":\n" + format(window[tar.user][tar.stat]) + " -> " +format(eval(tar.tooltipCalc)) + "\n\nBought: "+tar.bought;
+			target.textContent = tar.tooltip + "\n\n" + tar.tooltipStatName + ":\n" + format(window[tar.user][tar.stat]) + " -> " +format(eval(tar.tooltipCalc)) + "\n\n"+boughtText;
 		}
 	}
-	for(var i in skills) {
-		var tar = skills[i];
+	for(let i in skills) {
+		let tar = skills[i];
 		target = document.getElementById(i + "SkillButtonTooltip");
 		target.textContent = tar.tooltip + "\nCost: " + format(tar.cost, 3, 2, 0) + "\nLevel: "+tar.level+"/"+tar.maxLevel;
 	}
@@ -1212,7 +1179,7 @@ function combat() {
 			priest.castReq=Decimal(0);
 			$("#castBar").css("display", "none");
 		}
-		while(enemy.attackReq.gte(1)) {
+		while(enemy.attackReq.gte(1) && player.level.gte(upgrades.maxHp1.minEnemyLevel)) {
 			if(Random(0, 100) < knight.blockChance%100) {
 				pendingKnightDmg = pendingKnightDmg.plus((enemy.dmg.times(enemy.power)).div(knight.armor).div(knight.blockFactor.toPower(Math.floor(knight.blockChance/100)).plus(1)));
 			} else {
@@ -1235,40 +1202,52 @@ function combat() {
 }
 var deathDelay;
 var usefulData = [];
+var lastZoneTime = Date.parse(Date());
+var baseKillGoal = 3
+var killGoal = baseKillGoal;
+if(autoPlayTest) {
+	setInterval(function(){buyCheapest()},100);
+	setInterval(function(){if(player.kills.gt(killGoal)) {document.getElementById("autoProgress").checked=true}},100)
+}
 function checkDeath() {
-	if(knight.hp.lte(1)) {
+	if(knight.hp.lte(0)) {
 		knight.hp = Decimal(0);
 		pendingHpRegen = Decimal(0);
 		pendingManaRegen = Decimal(0);
 		pendingKnightDmg = Decimal(0);
 		pendingEnemyDmg = Decimal(0);
 	} 
-	if(enemy.hp.lte(1)) {
+	if(enemy.hp.lte(0)) {
 		enemy.hp = Decimal(0);
 		pendingHpRegen = Decimal(0);
 		pendingManaRegen = Decimal(0);
 		pendingKnightDmg = Decimal(0);
 		pendingEnemyDmg = Decimal(0);
 	}
-	if(knight.hp.lte(1) || enemy.hp.lte(1)) {
+	if(knight.hp.lte(0) || enemy.hp.lte(0)) {
 		document.getElementById("pause").checked = true;
 		deathTimer = 1/(archer.attackSpeed**0.71533828)*1000; //1 second at first, 2/3rds of a second later, 1/10ths of a second at cap.
-		if(knight.hp.lte(1)) {
+		if(knight.hp.lte(0)) {
 				player.deaths = player.deaths.plus(1);
-		} else if(enemy.hp.lte(1)) {
+		} else if(enemy.hp.lte(0)) {
 				player.kills = player.kills.plus(1);
 				player.gold = player.gold.plus(enemy.gold);
 				player.totalGold = player.totalGold.plus(enemy.gold);
 				player.exp = player.exp.plus(enemy.exp);
 		}
 		deathDelay = setTimeout(function() {
-			if(knight.hp.lte(1)) {
+			if(knight.hp.lte(0)) {
 				player.level === 1 ? gotoLevel(player.level) : gotoLevel(player.level.minus(1));
 				document.getElementById("autoProgress").checked=false;
-			} else if(enemy.hp.lte(1)) {
+				if(player.kills.gt(killGoal)) {killGoal += Math.floor(Math.random()*7)}
+			} else if(enemy.hp.lte(0)) {
 				if(player.level.eq(player.maxLevel)) {
 					player.maxLevel=player.maxLevel.plus(1);
-					usefulData.push({zone: player.level.toNumber(), speed: currOverallGrowthSpeed.toPrecision(5)});
+					usefulData.push({zone: player.level.toNumber(), time: (Math.round(new Date().getTime()-lastZoneTime)/gameTickSpeed), kills: player.kills.toNumber(), killGoal: killGoal});
+					console.log({zone: player.level.toNumber(), time: (Math.round(new Date().getTime()-lastZoneTime)/gameTickSpeed), kills: player.kills.toNumber(), killGoal: killGoal})
+					lastZoneTime = new Date().getTime();
+					player.kills = Decimal(0);
+					killGoal = baseKillGoal;
 				}
 				if(document.getElementById("autoProgress").checked) {
 					gotoLevel(player.maxLevel);
@@ -1282,6 +1261,7 @@ function checkDeath() {
 }
 var showEnemyGold = false;
 var slowVisuals = false;
+var autoBuyActive = true;
 var buyBulk = 1;
 function updateBuyBulk() {
 	if(player.level.gte(upgrades.milestone1.minEnemyLevel) && !(isNaN(document.getElementById("buyBulk").value))) {
@@ -1299,17 +1279,32 @@ function updateBuyBulk() {
 }
 updateBuyBulk();
 setInterval(function() {updateBuyBulk()},2500);
+const statisticsExclusions = [["player", "skillsUnlocked"], ["player", "level"], ["fps"], ["player", "visualFps"], ["player", "fps"]];
+function testIt(toTest) { //change these names what the hell man
+	for(let i in statisticsExclusions) {
+		let thing = statisticsExclusions[i];
+		if(thing[0] === toTest[0] && thing[1] === toTest[1]) {
+			return true;
+		}
+	}
+	return false;
+}
 function updateStatistic(name) {
-	var tar = document.getElementById(name + "Statistics");
+	let tar = document.getElementById(name + "Statistics");
 	tar.textContent = "";
 	window[name+"Header"] = document.createElement("span");
 	window[name+"Header"].textContent = (name.charAt(0).toUpperCase() + name.slice(1)) + " Stats";
 	tar.appendChild(window[name+"Header"]);
 	tar.appendChild(document.createElement("br"));
-	var object = window[name];
-	for(var a in object) {
-		var elem = document.createElement("span");
-		elem.textContent = a + ": " + format(object[a], 4, 3);
+	let object = window[name];
+	for(let a in object) {
+		if(testIt([name, a])) {
+			continue;
+		}
+		let elem = document.createElement("span");
+		let value = "nope";
+		Decimal.isDecimal(object[a]) ? value = format(object[a]) : value = object[a];
+		elem.textContent = a + ": " + value;
 		tar.appendChild(elem);
 		tar.appendChild(document.createElement("br"));
 	}
@@ -1322,8 +1317,8 @@ function updateStatistics() {
 	updateStatistic("enemy");
 }
 function updateInactiveVisuals() {
-	for(var i in upgrades) {
-		actualBuyBulk = buyBulk;
+	for(let i in upgrades) {
+		let actualBuyBulk = buyBulk;
 		if(upgrades[i].maxLevel-upgrades[i].bought<buyBulk && upgrades[i].maxLevel!==-1) {actualBuyBulk=upgrades[i].maxLevel-upgrades[i].bought};
 		if(upgrades[i].cost.times(calcBuyBulk(upgrades[i].costScaling.minus(1), actualBuyBulk)).gt(player.gold)) {
 			$("#"+i+"Button").css("background-color","#CC9999");
@@ -1341,8 +1336,9 @@ function updateInactiveVisuals() {
 	$("#fpsCount").text("FPS: " + player.fps.toNumber());
 	$("#visualFpsCount").text("Visual FPS: " + player.visualFps.toNumber());
 	if(player.maxLevel.gt(1)) {$("#autoProgress, #autoProgressText").css("display", "inline")};
-	if(player.maxLevel.gt(upgrades[upgradesKeys[1]].minEnemyLevel)) {$("#buyCheapestButton").css("display", "inline")};
+	if(player.maxLevel.gt(unlockLevels.buyCheapest)) {$("#buyCheapestButton").css("display", "inline")};
 	showEnemyGold = document.getElementById("showEnemyGold").checked;
+	autoBuyActive = document.getElementById("toggleAutobuy").checked;
 	if(showEnemyGold) {
 		if(player.gold.eq(0)) {
 			$("#gold").text("0" + " \(" + format(enemy.gold) + "\)");
@@ -1364,6 +1360,9 @@ function updateInactiveVisuals() {
 	}
 	if(player.maxLevel.gt(upgrades.milestone1.minEnemyLevel)) {
 		$("#playerUpgrades").css("display", "inline");
+	}
+	if(upgrades.autoBuyUnlock.bought===1) {
+		$("#toggleAutobuy, #toggleAutobuyText").css("display", "inline");
 	}
 	if(player.maxLevel.gte(1e3)) {
 		$("#level").css("font-size", "17px");
@@ -1387,18 +1386,30 @@ function updateInactiveVisuals() {
 	}
 	$("#level").text("Zone: " + player.level + "/" + player.maxLevel);
 	$("#expLevel").text("Group Level: "+player.pLvl.plus(player.freePLvls));
-	if(player.pLvl.plus(player.freePLvls).minus(1).gte(2094)) {
-		$("#expTooltip").text("Each level increases the archer's damage, the knight's maximum health and the priest's healing by 2%.\n\n Current Bonus:\n"+format(scaling.expPow.toPower(player.pLvl.plus(player.freePLvls).minus(1)).minus(1).times(100))+"%");
+	if(player.pLvl.plus(player.freePLvls).gt(1000)) {
+		$("#expTooltip").text("Each level increases the archer's damage, the knight's maximum health and the priest's healing by "+scaling.expPow.minus(1).times(100).toNumber()+"%.\n\n Current Bonus:\n"+format(scaling.expPow.toPower(player.pLvl.plus(player.freePLvls).minus(1)).minus(1).times(100))+"%");
 		$("#expTooltip").css("top", "-165px");
 	} else {
-		$("#expTooltip").text("Each level increases the archer's damage, the knight's maximum health and the priest's healing by 2%.\n\n Current Bonus:\n"+(scaling.expPow.toPower(player.pLvl.plus(player.freePLvls).minus(1)).minus(1).times(100)).round().toNumber().toLocaleString()+"%");
+		$("#expTooltip").text("Each level increases the archer's damage, the knight's maximum health and the priest's healing by "+scaling.expPow.minus(1).times(100).toNumber()+"%.\n\n Current Bonus:\n"+(scaling.expPow.toPower(player.pLvl.plus(player.freePLvls).minus(1)).minus(1).times(100)).round().toNumber().toLocaleString()+"%");
 		$("#expTooltip").css("top", "-150px");
 	}
 	if(upgrades.skillsUnlock.bought===1) {
 		$("#tab2Button").css("display", "inline");
-		player.skillPoints = Decimal(player.maxLevel.div(500).floor());
-		$("#skillPoints").text("Skill points: "+player.skillPoints.floor().toNumber()+"/"+player.maxLevel.div(500).floor().toNumber());
+		$("#skillPoints").text("Skill points: "+player.skillPoints.floor().toNumber()+"/"+player.totalSkillPoints.floor().toNumber());
 	}
+	let nextUpgrade = 5;
+	for(let i in upgradeUnlockLevels) {
+		let up = upgradeUnlockLevels[i];
+		if(up>player.maxLevel.toNumber()) {
+			nextUpgrade = up;
+			break;
+		}
+	}
+	document.getElementById("nextUpgradeUnlockLevel").textContent = "Next upgrade at Zone "+nextUpgrade;
+	let skillPointButton = document.getElementById("buySkillPointButton");
+	skillPointButton.textContent = "Buy skill point - "+format(player.skillPointCost)+" XP";
+	player.exp.gt(player.skillPointCost) ? skillPointButton.style.color="green" : skillPointButton.style.color="red";
+	if(player.gold.gt(player.totalGold)) {player.cheated=true}
 	updateStats();
 	updateButtonText();
 }
@@ -1407,7 +1418,7 @@ function updateVisuals() {
 	$("#enemyHp").css({
 		"width": ((enemy.hp.div(enemy.maxHp)) * 450)
 	});
-	if(archer.attackSpeed.lt(5)) {
+	if(archer.attackSpeed.lt(5) && !hideAttackBars.checked) {
 		$("#archerAttackBar").css({
 		"width": ((archer.attackReq) * 450),
 		"display": "inline"
@@ -1421,7 +1432,7 @@ function updateVisuals() {
 		"width": ((knight.hp.div(knight.maxHp)) * 450),
 		"display": "inline"
 	});
-	if(enemy.attackSpeed.lt(4)) {
+	if(enemy.attackSpeed.lt(4) && !hideAttackBars.checked) {
 		$("#enemyAttackBar").css({
 		"width": ((enemy.attackReq) * 450),
 		"display": "inline"
@@ -1437,7 +1448,7 @@ function updateVisuals() {
 		"display": "inline"
 	});
 	var castTime = Decimal(1).div(priest.castSpeed) //In seconds
-	if(priest.castSpeed.lt(4.99) && priest.castReq.gt(0)) {
+	if(priest.castSpeed.lt(4.99) && priest.castReq.gt(0) && !hideAttackBars.checked) {
 		$("#castBar").css({
 			"width": ((priest.castReq) * 450),
 			"display": "inline"
@@ -1456,30 +1467,30 @@ function checkOverflow() {
 	if(enemy.hp.gt(enemy.maxHp)) {enemy.hp=enemy.maxHp};
 	if(priest.mana.gt(priest.maxMana)) {priest.mana=priest.maxMana};
 	if(priest.mana.lte(0.25)) {priest.mana=Decimal(0)};
-	for(var i in upgrades) {
+	for(let i in upgrades) {
 		if(upgrades[i].maxLevel<upgrades[i].bought && upgrades[i].maxLevel>0) {
 			upgrades[i].bought=upgrades[i].maxLevel;
 		}
 	}
-	player.expReq=Decimal(500).plus(Decimal(100).times(player.pLvl-1)).times(scaling.expReq.toPower(player.pLvl-1));
+	player.expReq=Decimal(100).plus(Decimal(100).times(player.pLvl-1)).times(scaling.expReq.toPower(player.pLvl-1));
 	while(player.exp.gte(player.expReq)) {
 		player.pLvl=player.pLvl.plus(1);
 		player.exp=player.exp.minus(player.expReq);
-		player.expReq=Decimal(500).plus(Decimal(100).times(player.pLvl-1)).times(scaling.expReq.toPower(player.pLvl-1));
+		player.expReq=Decimal(100).plus(Decimal(100).times(player.pLvl-1)).times(scaling.expReq.toPower(player.pLvl-1));
 	}
 }
 function loop() {
 	combat();
 	checkOverflow();
-	window.setTimeout(loop, 1000 / player.fps);
+	window.setTimeout(loop, gameTickSpeed / player.fps);
 }
 function visualLoop() {
 	updateVisuals();
-	window.setTimeout(visualLoop, 1000 / player.visualFps);
+	window.setTimeout(visualLoop, gameTickSpeed / player.visualFps);
 }
 var offlineAutoBuys = 0;
 function autoBuyLoop() {
-	if(upgrades.autoBuyUnlock.bought===1 && !paused) {
+	if(upgrades.autoBuyUnlock.bought===1 && !paused && autoBuyActive) {
 		buyCheapest();
 	}
 	window.setTimeout(autoBuyLoop, player.autoBuyFrequency.times(1000).toNumber());
@@ -1504,7 +1515,7 @@ function buyCheapest() {
 	for(var x=0;x<player.bulkAmount;x++) {
 		var value = upgrades[keys[x]].cost;
 		var index = 0;
-		for(var i = 1; i < keys.length; i++) {
+		for(let i = 1; i < keys.length; i++) {
 			if(upgrades[keys[i]].cost.lt(value)) {
 				value = upgrades[keys[i]].cost;
 				index = i;
@@ -1517,7 +1528,7 @@ function getCheapest() {
 	var keys = Object.keys(upgrades);
 	var value = upgrades[keys[0]].cost;
 	var index = 0;
-	for(var i = 1; i < keys.length; i++) {
+	for(let i = 1; i < keys.length; i++) {
 		if(upgrades[keys[i]].cost.lt(value)) {
 			value = upgrades[keys[i]].cost;
 			index = i;
@@ -1525,7 +1536,7 @@ function getCheapest() {
 	}
 	return index;
 }
-$(window).keydown(function(e) { //Key bindings
+$(window).keydown(function(e) { //Key bindings; Keybindings
 	switch(e.key) {
 		case "a":
 		case "A":
@@ -1533,7 +1544,9 @@ $(window).keydown(function(e) { //Key bindings
 			break;
 		case "b":
 		case "B":
-			buyCheapest();
+			if(player.maxLevel.gte(unlockLevels.buyCheapest)) {
+				buyCheapest();
+			}
 			break;
 		case "d":
 		case "D":
@@ -1560,37 +1573,43 @@ $(window).keydown(function(e) { //Key bindings
 });
 var playerVarsBL = ["bulkAmount"];
 function save() {
-	var playersave = {};
-	for(var i in player) {
+	let playersave = {};
+	for(let i in player) {
 		if(playerVarsBL.indexOf(i)===-1) {
 			playersave[i]=player[i];
 		}
 	}
-	var upgradessave = {};
-	for(var i in upgrades) {
+	let upgradessave = {};
+	for(let i in upgrades) {
 		upgradessave[i] = {bought: upgrades[i].bought};
 	}
-	var prefsSave = [];
+	let prefsSave = [];
 	prefsSave.push(player.fps);
 	prefsSave.push(slowVisuals);
 	prefsSave.push(showEnemyGold);
-	prefsSave.push(scientific.checked);
+	prefsSave.push(document.getElementById("scientific").checked);
+	prefsSave.push(autoBuyActive);
+	prefsSave.push(document.getElementById("hideAttackBars").checked);
+	prefsSave.push(document.getElementById("showMaxLevels").checked)
 	localStorage.setItem("playersave", JSON.stringify(playersave));
 	localStorage.setItem("upgradessave", JSON.stringify(upgradessave));
 	localStorage.setItem("preferences", JSON.stringify(prefsSave));
-	console.log("Saved!");
+	//console.log("Saved!");
 }
 function load() {
 	var upgradessave = JSON.parse(localStorage.getItem("upgradessave"));
 	var playersave = JSON.parse(localStorage.getItem("playersave"));
 	var prefsSave = JSON.parse(localStorage.getItem("preferences"));
-	for(var a in playersave) {player[a]=Decimal(playersave[a])};
+	for(var a in playersave) {typeof playersave[a] === "boolean" ? player[a] = playersave[a] : player[a]=Decimal(playersave[a])}
 	for(var b in upgradessave) {if(upgrades[b]!==undefined) {upgrades[b].bought=upgradessave[b].bought}};
 	for(var c in prefsSave) {prefs[c]=prefsSave[c]};
 	document.getElementById("fpsSlider").value=prefs[0];
 	document.getElementById("slowVisuals").checked=prefs[1];
 	document.getElementById("showEnemyGold").checked=prefs[2];
 	document.getElementById("scientific").checked=prefs[3];
+	document.getElementById("toggleAutobuy").checked=prefs[4];
+	document.getElementById("hideAttackBars").checked=prefs[5];
+	document.getElementById("showMaxLevels").checked=prefs[6];
 	updateStats();
 	gotoLevel(player.level);
 	console.log("Loaded!");
@@ -1606,11 +1625,11 @@ updateStats();
 gotoLevel(player.level);
 loop();
 visualLoop();
-autoBuyLoop()
+autoBuyLoop();
 document.title = "Zone " + player.level;
 setInterval(function() {
 	updateInactiveVisuals();
-}, 333);
+}, 300);
 setInterval(function() {
 	if(!paused) {player.exp=player.exp.plus(enemy.exp.times(player.passiveExp.div(1000)))};
 }, 100);
@@ -1626,53 +1645,53 @@ setInterval(function() {
 //offline progression kicks in, and stops updating player.lastTime
 //The reason it does this is so that coming back to the tab won't reset the time passed.
 //Once you claim your gold it resets timeArray to a sum of 10 seconds(not 0 so you can leave again right after claiming)
-var offlineGain = [new Decimal(0)];
-var newTime = (Date.parse(Date())/1000)-1;
-var timeArray = new Array;
+let offlineGain = [new Decimal(0)];
+let newTime = (Date.parse(Date())/1000)-1;
+let timeArray = new Array;
 newTime-player.lastTime>=60 ? timeArray = [60,1,1,1,1,1,1,1,1,1] : timeArray = [1,1,1,1,1,1,1,1,1,1]; //Don't reset player.lastTime if it's over 60 seconds behind current time.
 function claimOfflineProgress() {
 	player.gold=player.gold.plus(offlineGain[0]);
+	player.totalGold=player.totalGold.plus(offlineGain[0]);
 	player.exp=player.exp.plus(offlineGain[1]);
 	document.title = "Zone " + player.level;
-	var newTime = Decimal(Date.parse(Date())/1000).minus(1);
+	newTime = Decimal(Date.parse(Date())/1000).minus(1);
 	player.lastTime = newTime;
-	timePassed = 0;
 	timeArray = [1,1,1,1,1,1,1,1,1,1];
 	$("#offlineProgressWrapper").css("display", "none");
 	document.getElementById("pause").checked=false;
 	paused=false;
-	console.log(offlineAutoBuys);
-	console.log("starting to buy cheapest...");
-	window.setTimeout(function(){
-		for(var n=0;n<offlineAutoBuys;n++) {
-			console.log("buying cheapest");
-			buyCheapest();
-		}
-	},1000);
-};
+	//console.log(offlineAutoBuys);
+	//console.log("starting to buy cheapest...");
+	//window.setTimeout(function(){
+	//	for(var n=0;n<offlineAutoBuys;n++) {
+	//		console.log("buying cheapest");
+	//		buyCheapest();
+	//	}
+	//},1000);
+}
 function add(a,b) {return a+b};
 function formatTime(t) {
-	var hours = Math.floor(t/3600);
-	var seconds = t-hours*3600;
-	var minutes = Math.floor(seconds/60);
+	let hours = Math.floor(t/3600);
+	let seconds = t-hours*3600;
+	let minutes = Math.floor(seconds/60);
 	seconds -= minutes*60;
 	return [seconds, minutes, hours];
 }
 function getDPS() {
 	return archer.dmg.times(archer.attackSpeed).times(archer.critFactor.toPower(archer.critChance.div(100)).div(priest.curse.div(100)));
 }
-var timeSum = 0;
+let timeSum = 0;
 function timeDecay(x) {
-	var result = (x*5.8)**0.7; //anything <= to 1 minute is 100%, 6 minutes = 58.5%, 60 minutes = 29.3%, 600 minutes = 14.7%, 6000 minutes = 7.4%
-	if(result/x>1) {result = x}; //Offline progress is nice and all but for this game I feel it can ruin the experience when you return to a mound of gold appropriate for someone 20 levels above you.
+	let result = (x*5.8)**0.7; //anything <= to 1 minute is 100%, 10 minutes = 50.2%, 100 minutes = 25.2%, 600 minutes = 12.6%, 6000 minutes = 6.3%
+	if(result/x>1) {result = x};
 	return result; //so now, 10x more time = 5x more gold(when offline).
 }
 currOverallGrowthSpeed = Decimal(1);
-var paused = false;
+let paused = false;
 setInterval(function() {
 	newTime = Decimal(Date.parse(Date())/1000).minus(1);
 	timePassed = newTime-player.lastTime;
-	offlineKills = getDPS().div(enemy.maxHp).times(timeDecay(timePassed));
+	let offlineKills = getDPS().div(enemy.maxHp).times(timeDecay(timePassed));
 	offlineGain = [offlineKills.times(enemy.gold), offlineKills.times(enemy.exp).times(player.passiveExp.div(100))];
 	timeArray.push(timePassed);
 	if(timeArray.length>10) {
@@ -1686,8 +1705,8 @@ setInterval(function() {
 	} else {
 		player.lastTime = newTime;
 	}
-	var displayTimePassed = formatTime(timePassed);
-	var textElem = $("#offlineProgressText");
+	let displayTimePassed = formatTime(timePassed);
+	let textElem = $("#offlineProgressText");
 	textElem.text("You've been offline/inactive for:\n"+displayTimePassed[2]);
 	//displayTimePassed[2]===1 ? textElem.text(textElem.text() + " hour\n"+displayTimePassed[1]) : textElem.text(textElem.text() + " hours\n"+displayTimePassed[1]);
 	//displayTimePassed[1]===1 ? textElem.text(textElem.text() + " minute\n"+displayTimePassed[0]) : textElem.text(textElem.text() + " minutes\n"+displayTimePassed[0]);
@@ -1717,17 +1736,20 @@ setInterval(function() {
 	if(!stopSaving) {
 		save();
 	}
-},30000);
+},5000);
 window.onbeforeunload = function(e) {
 	if(!stopSaving) {
 		save();
 	}
-}
-for(var i in upgrades) {
+};
+for(let i in upgrades) {
 	document.getElementById(i+"ButtonImage").src = "dat/"+i+".png";
 }
 if(localStorage.preferences===undefined) {
 	document.getElementById("slowVisuals").checked=false;
-	document.getElementById("showEnemyGold").checked=false;
-	document.getElementById("scientifc").checked=false;
+	autoPlayTest ? document.getElementById("fpsSlider").value=defaultAutoPlayTestFps : document.getElementById("fpsSlider").value=defaultFps;
+	document.getElementById("showEnemyGold").checked=true;
+	document.getElementById("scientific").checked=false;
+	document.getElementById("hideAttackBars").checked=false;
+	document.getElementById("showMaxLevels").checked=false;
 }

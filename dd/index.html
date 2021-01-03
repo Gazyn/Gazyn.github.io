@@ -28,7 +28,9 @@
         <button id="prevLevel"><</button><button id="level">Level: 1/1</button><button id="nextLevel">></button>
     </div>
     <button id="buyCheapestButton" onclick="buyCheapest()">Buy cheapest upgrade</button>
+    <span id="nextUpgradeUnlockLevel"></span>
     <span id="autoProgressText">Autoprogress:</span><input type="checkbox" id="autoProgress">
+	<span id="toggleAutobuyText">Toggle autobuy: </span><input type="checkbox" id="toggleAutobuy" checked=True>
     <button class="tabButton" onclick="switchTab(1)">Upgrades</button>
 	<button class="tabButton" id="tab2Button" onclick="switchTab(2)">Skills</button>
 	<button class="tabButton" id="tab8Button" onclick="switchTab(8)">Debug</button>
@@ -45,32 +47,37 @@
         </div>
         <div id="playerUpgrades">
             <span id="fourthCornerText" class="upgradeHeader">General Upgrades</span><br>
-			<span id="buyBulkWrapper">Bulk: <input id="buyBulk" oninput="updateBuyBulk()" onchange="if(document.getElementById('buyBulk').value==='') {document.getElementById('buyBulk').value='1'}" size="5"></span>
+			<span id="buyBulkWrapper">Bulk: <input id="buyBulk" value="2" oninput="updateBuyBulk()" onchange="if(document.getElementById('buyBulk').value==='') {document.getElementById('buyBulk').value='2'}" size="5"></span>
         </div>
     </div>
 	<div id="tab2" class="tab">
 		<div id="skillWrapper">
+            <button id="buySkillPointButton" onclick="buySkillPoint()">Buy skill point - 10T XP</button>
 			<div id="skillPoints">Skill points: 0/0</div>
 			<div id="autoUpgradeSkill"></div>
 		</div>
 	</div>
     <div id="tab8" class="tab">
-		<div id="playerStatistics">
-		</div>
-		<div id="archerStatistics">
-		</div>
-		<div id="knightStatistics">
-		</div>
-		<div id="priestStatistics">
-		</div>
-		<div id="enemyStatistics">
-		</div>
+        <div id="statistics">
+		    <div id="archerStatistics">
+		    </div><br>
+		    <div id="knightStatistics">
+		    </div><br>
+		    <div id="priestStatistics">
+		    </div><br>
+            <div id="playerStatistics">
+            </div><br>
+		    <div id="enemyStatistics">
+		    </div><br>
+        </div>
     </div>
     <div id="tab9" class="tab">
-		<input id="fpsSlider" type="range" min="15" max="60"><span id="fpsCount"></span><br>
+		<input id="fpsSlider" type="range" min="15" max="60" value="60"><span id="fpsCount"></span><br>
 		Don't update visuals: <input id="slowVisuals" type="checkbox"><br>
-		Show enemy gold: <input id="showEnemyGold" type="checkbox"><br>
+		Show enemy gold: <input id="showEnemyGold" type="checkbox" checked=True><br>
 		Use scientific notation: <input id="scientific" type="checkbox"><br>
+        Always hide attack bars: <input id="hideAttackBars" type="checkbox"><br>
+        Show upgrade max levels: <input id="showMaxLevels" type="checkbox"><br>
         <button onclick="save()">Save</button>
         <button onclick="load()">Load</button><br>
         <button onclick="deleteSave()">DELETE SAVE</button><br>
