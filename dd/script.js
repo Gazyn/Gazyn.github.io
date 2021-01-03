@@ -1747,9 +1747,6 @@ for(let i in upgrades) {
 }
 if(localStorage.preferences===undefined) {
 	document.getElementById("slowVisuals").checked=false;
-	autoPlayTest ? document.getElementById("fpsSlider").value=defaultAutoPlayTestFps : document.getElementById("fpsSlider").value=defaultFps;
-	document.getElementById("showEnemyGold").checked=true;
+	document.getElementById("showEnemyGold").checked=false;
 	document.getElementById("scientific").checked=false;
-	document.getElementById("hideAttackBars").checked=false;
-	document.getElementById("showMaxLevels").checked=false;
 }
