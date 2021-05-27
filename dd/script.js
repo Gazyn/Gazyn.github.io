@@ -1,8 +1,8 @@
 var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 var exponents = [];
 const globalDifficulty = 0.96;
-const autoPlayTest = true;
-const gameTickSpeed = 250; //gotta reduce fps to compensate. bad idea to go below 250ms / 15fps
+const autoPlayTest = false;
+const gameTickSpeed = 1000; //gotta reduce fps to compensate. bad idea to go below 250ms / 15fps
 const defaultFps = "60";
 const defaultAutoPlayTestFps = "15";
 for(let a=0; a<26; a+=1) {
