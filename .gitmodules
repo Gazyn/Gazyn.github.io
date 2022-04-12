@@ -1,0 +1,3 @@
+[submodule "cards-against-bossanity"]
+	path = cards-against-bossanity
+	url = https://github.com/Bossanity/cards-against-bossanity
